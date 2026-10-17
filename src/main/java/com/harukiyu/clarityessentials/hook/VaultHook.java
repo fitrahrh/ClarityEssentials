@@ -25,6 +25,10 @@ public class VaultHook {
         }
     }
 
+    public static void init() {
+        initialize();
+    }
+
     public static boolean hasEconomy() {
         return isVaultPresent && economy != null;
     }

@@ -101,10 +101,13 @@ sounds:
   action-failure: "block.note_block.bass"
 
 # ESC (Pause Menu) Custom Button & Native Dialog Menu (Referencing Donut SMP)
+# Minecraft syncs dialog registry data and tags during player login.
+# A full server restart and client reconnect is required when changing these settings.
 esc-menu:
   enabled: true
-  button-text: "Clarity"
-  dialog-title: "Clarity"
+  button-text: "Clarity Menu"
+  dialog-title: "Clarity Menu"
+  columns: 2
   commands:
     rtp: "rtp"
     rtp-queue: "rtp queue"

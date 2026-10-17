@@ -68,6 +68,9 @@ public class UserSettingsManager {
         for (String p : config.getStringList("teleportList")) {
             settings.addTeleportPlayer(p);
         }
+        for (String p : config.getStringList("payList")) {
+            settings.addPayPlayer(p);
+        }
         for (String f : config.getStringList("friendsList")) {
             settings.addFriend(f);
         }
@@ -112,6 +115,7 @@ public class UserSettingsManager {
         config.set("notifications.followAlerts", settings.isFollowAlerts());
 
         config.set("teleportList", settings.getTeleportList());
+        config.set("payList", settings.getPayList());
         config.set("friendsList", settings.getFriendsList());
         config.set("followingList", settings.getFollowingList());
 

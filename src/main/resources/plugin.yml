@@ -4,4 +4,4 @@ main: com.harukiyu.clarityessentials.ClarityEssentials
 api-version: '1.21'
 author: Harukiyu
 description: ClarityEssentials is the foundational core plugin for Clarity Network, featuring chat formatting, nicknames, TPA, homes, and dashboard powered by Paper Native Dialog API.
-softdepend: [ClarityLangCore, LuckPerms, PlaceholderAPI]
+softdepend: [ClarityLangCore, LuckPerms, PlaceholderAPI, Vault]

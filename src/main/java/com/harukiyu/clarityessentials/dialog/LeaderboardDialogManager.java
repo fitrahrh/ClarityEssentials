@@ -9,6 +9,7 @@ import io.papermc.paper.registry.data.dialog.action.DialogAction;
 import io.papermc.paper.registry.data.dialog.body.DialogBody;
 import io.papermc.paper.registry.data.dialog.type.DialogType;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickCallback;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.entity.Player;
@@ -20,6 +21,7 @@ import java.util.List;
 public class LeaderboardDialogManager {
 
     private static final MiniMessage MM = MiniMessage.miniMessage();
+    private static final ClickCallback.Options DEFAULT_OPTIONS = ClickCallback.Options.builder().build();
 
     private final LeaderboardManager leaderboardManager;
     private MenuDialogManager menuDialogManager;
@@ -44,49 +46,48 @@ public class LeaderboardDialogManager {
         buttons.add(ActionButton.builder(LanguageHook.getComponent("leaderboards.btn_money", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) openLeaderboard(p, "money", "Top Money");
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // 2. Deaths
         buttons.add(ActionButton.builder(LanguageHook.getComponent("leaderboards.btn_deaths", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) openLeaderboard(p, "deaths", "Top Deaths");
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // 3. Playtime
         buttons.add(ActionButton.builder(LanguageHook.getComponent("leaderboards.btn_playtime", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) openLeaderboard(p, "playtime", "Top Playtime");
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // 4. Blocks Placed
         buttons.add(ActionButton.builder(LanguageHook.getComponent("leaderboards.btn_blocks_placed", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) openLeaderboard(p, "blocks_placed", "Top Blocks Placed");
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // 5. Blocks Broken
         buttons.add(ActionButton.builder(LanguageHook.getComponent("leaderboards.btn_blocks_broken", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) openLeaderboard(p, "blocks_broken", "Top Blocks Broken");
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // 6. Mobs Killed
         buttons.add(ActionButton.builder(LanguageHook.getComponent("leaderboards.btn_mobs_killed", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) openLeaderboard(p, "mobs_killed", "Top Mobs Killed");
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         ActionButton exitBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p && menuDialogManager != null) {
                         menuDialogManager.openDashboard(p);
                     }
-                })).build();
+                }, DEFAULT_OPTIONS)).build();
 
-        Dialog dialog = Dialog.create(builder -> builder
+        Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title).build())
                 .type(DialogType.multiAction(buttons, exitBtn, 3))
-                .build()
         );
 
         player.showDialog(dialog);
@@ -120,19 +121,18 @@ public class LeaderboardDialogManager {
         buttons.add(ActionButton.builder(LanguageHook.getComponent("leaderboards.btn_view_full", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) openCategories(p);
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         ActionButton backBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) openCategories(p);
-                })).build();
+                }, DEFAULT_OPTIONS)).build();
 
-        Dialog dialog = Dialog.create(builder -> builder
+        Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
                         .body(List.of(DialogBody.plainMessage(bodyComp)))
                         .build())
                 .type(DialogType.confirmation(backBtn, buttons.get(0)))
-                .build()
         );
 
         player.showDialog(dialog);

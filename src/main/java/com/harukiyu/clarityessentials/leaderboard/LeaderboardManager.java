@@ -5,7 +5,6 @@ import com.harukiyu.clarityessentials.hook.VaultHook;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
@@ -15,11 +14,9 @@ public class LeaderboardManager {
 
     public record Entry(String name, String formattedValue, double rawValue) {}
 
-    private final ClarityEssentials plugin;
     private final DecimalFormat countFormat = new DecimalFormat("#,##0");
 
     public LeaderboardManager(@NotNull ClarityEssentials plugin) {
-        this.plugin = plugin;
     }
 
     @NotNull
@@ -76,7 +73,7 @@ public class LeaderboardManager {
                     int mined = 0;
                     try {
                         mined = op.getStatistic(Statistic.MINE_BLOCK, org.bukkit.Material.STONE);
-                    } catch (Throwable ignored) {}
+                    } catch (IllegalArgumentException ignored) {}
                     list.add(new AbstractMap.SimpleEntry<>(op.getName(), mined));
                 }
                 list.sort((a, b) -> Integer.compare(b.getValue(), a.getValue()));
