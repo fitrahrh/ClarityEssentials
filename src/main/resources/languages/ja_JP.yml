@@ -132,7 +132,7 @@ menu:
   btn_settings: "<white>設定</white>"
   btn_close: "<white>閉じる</white>"
   btn_back: "<white>戻る</white>"
-  open_link_chat: "<prefix><green>Webstore: <click:open_url:'<url>'><hover:show_text:'<green>Open <url>'><gold><underlined><url></underlined></gold> <aqua><bold>[LINK]</bold></aqua></hover></click></green>"
+  open_link_chat: "<prefix><newline><green>----------------------------------------</green><newline><yellow><bold>  CLARITY NETWORK STORE</bold></yellow><newline><gray>  ランク、アイテム、特典については公式Webストアをご覧ください:</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>ブラウザで <aqua><url></aqua> を開くにはここをクリック</green>'><gold><underlined><url></underlined></gold> <aqua><bold>[ストアリンクを開く]</bold></aqua></hover></click><newline><green>----------------------------------------</green>"
 
 pay:
   title: "<white>送金</white>"

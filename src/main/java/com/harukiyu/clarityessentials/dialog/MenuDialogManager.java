@@ -176,7 +176,26 @@ public class MenuDialogManager {
             player.playSound(player.getLocation(), configManager.getSoundActionSuccess(), 1.0f, 1.0f);
         }
 
-        LanguageHook.sendMessage(player, "menu.open_link_chat", Placeholder.unparsed("url", url));
+        String langCode = LanguageHook.getEffectiveLanguageCode(player);
+        String raw = LanguageHook.getRawString("menu.open_link_chat", langCode);
+        if (raw == null || raw.isBlank()) {
+            raw = "<newline><green>----------------------------------------</green><newline><yellow><bold>  CLARITY NETWORK STORE</bold></yellow><newline><gray>  Visit our official webstore for ranks, items & perks:</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>Click here to open <aqua><url></aqua> in your browser</green>'><gold><underlined><url></underlined></gold> <aqua><bold>[OPEN STORE LINK]</bold></aqua></hover></click><newline><green>----------------------------------------</green>";
+        }
+
+        // Remove any globe symbol or icon in title, per user request: "cukup CLARITY NETWORK STORE"
+        raw = raw.replace("🌐 ", "").replace("🌐", "");
+
+        // Directly substitute URL so MiniMessage parses <click:open_url:'...'> with real URL
+        String resolved = raw.replace("{url}", url).replace("<url>", url);
+
+        String prefix = LanguageHook.getRawString("prefix", langCode);
+        if (prefix == null) prefix = "";
+
+        Component message = MiniMessage.miniMessage().deserialize(resolved, 
+            Placeholder.parsed("prefix", prefix)
+        );
+
+        player.sendMessage(message);
     }
 
     /**

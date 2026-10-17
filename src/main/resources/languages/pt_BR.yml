@@ -132,7 +132,7 @@ menu:
   btn_settings: "<white>Configurações</white>"
   btn_close: "<white>Fechar</white>"
   btn_back: "<white>Voltar</white>"
-  open_link_chat: "<prefix><green>Webstore: <click:open_url:'<url>'><hover:show_text:'<green>Open <url>'><gold><underlined><url></underlined></gold> <aqua><bold>[LINK]</bold></aqua></hover></click></green>"
+  open_link_chat: "<prefix><newline><green>----------------------------------------</green><newline><yellow><bold>  CLARITY NETWORK STORE</bold></yellow><newline><gray>  Visite nossa loja oficial para ranks, itens e vantagens:</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>Clique aqui para abrir <aqua><url></aqua> no seu navegador</green>'><gold><underlined><url></underlined></gold> <aqua><bold>[ABRIR LINK DA LOJA]</bold></aqua></hover></click><newline><green>----------------------------------------</green>"
 
 pay:
   title: "<white>Pagar</white>"

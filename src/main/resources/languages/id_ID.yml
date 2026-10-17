@@ -135,7 +135,7 @@ menu:
   btn_settings: "<white>Pengaturan</white>"
   btn_close: "<white>Tutup</white>"
   btn_back: "<white>Kembali</white>"
-  open_link_chat: "<prefix><newline><green>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</green><newline><yellow><bold>  🌐 TOKO RESMI CLARITY NETWORK</bold></yellow><newline><gray>  Kunjungi webstore resmi kami untuk rank, item & donasi:</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>Klik di sini untuk membuka <url> di browser'><gold><underlined><url></underlined></gold> <aqua><bold>[BUKA LINK STORE]</bold></aqua></hover></click><newline><green>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</green>"
+  open_link_chat: "<prefix><newline><green>----------------------------------------</green><newline><yellow><bold>  CLARITY NETWORK STORE</bold></yellow><newline><gray>  Kunjungi webstore resmi kami untuk rank, item & donasi:</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>Klik di sini untuk membuka <aqua><url></aqua> di browser</green>'><gold><underlined><url></underlined></gold> <aqua><bold>[BUKA LINK STORE]</bold></aqua></hover></click><newline><green>----------------------------------------</green>"
 
 pay:
   title: "<white>Kirim Uang</white>"

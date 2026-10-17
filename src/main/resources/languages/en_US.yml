@@ -135,7 +135,7 @@ menu:
   btn_settings: "<white>Settings</white>"
   btn_close: "<white>Close</white>"
   btn_back: "<white>Back</white>"
-  open_link_chat: "<prefix><newline><green>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</green><newline><yellow><bold>  🌐 CLARITY NETWORK STORE</bold></yellow><newline><gray>  Visit our official webstore for ranks, items & perks:</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>Click here to open <url> in your browser'><gold><underlined><url></underlined></gold> <aqua><bold>[OPEN STORE LINK]</bold></aqua></hover></click><newline><green>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</green>"
+  open_link_chat: "<prefix><newline><green>----------------------------------------</green><newline><yellow><bold>  CLARITY NETWORK STORE</bold></yellow><newline><gray>  Visit our official webstore for ranks, items & perks:</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>Click here to open <aqua><url></aqua> in your browser</green>'><gold><underlined><url></underlined></gold> <aqua><bold>[OPEN STORE LINK]</bold></aqua></hover></click><newline><green>----------------------------------------</green>"
 
 pay:
   title: "<white>Pay</white>"

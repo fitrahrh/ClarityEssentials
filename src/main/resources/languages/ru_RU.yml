@@ -132,7 +132,7 @@ menu:
   btn_settings: "<white>Настройки</white>"
   btn_close: "<white>Закрыть</white>"
   btn_back: "<white>Назад</white>"
-  open_link_chat: "<prefix><green>Webstore: <click:open_url:'<url>'><hover:show_text:'<green>Open <url>'><gold><underlined><url></underlined></gold> <aqua><bold>[LINK]</bold></aqua></hover></click></green>"
+  open_link_chat: "<prefix><newline><green>----------------------------------------</green><newline><yellow><bold>  CLARITY NETWORK STORE</bold></yellow><newline><gray>  Посетите наш официальный магазин для покупки рангов, предметов и бонусов:</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>Нажмите здесь, чтобы открыть <aqua><url></aqua> в браузере</green>'><gold><underlined><url></underlined></gold> <aqua><bold>[ОТКРЫТЬ МАГАЗИН]</bold></aqua></hover></click><newline><green>----------------------------------------</green>"
 
 pay:
   title: "<white>Перевод</white>"
