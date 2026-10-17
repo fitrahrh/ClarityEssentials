@@ -1,0 +1,20 @@
+# Gradle build artifacts
+build/
+.gradle/
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Local machine settings
+gradle.properties
+
+# Logs
+*.log
+
+# Server run / tests
+run/
+

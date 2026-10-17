@@ -4,94 +4,160 @@
 [![Platform](https://img.shields.io/badge/Paper-26.3+-red.svg?style=for-the-badge)](https://papermc.io)
 [![Java](https://img.shields.io/badge/Java-25-orange.svg?style=for-the-badge)](https://openjdk.org)
 
-**ClarityEssentials** adalah plugin core modern yang dirancang khusus untuk **Clarity Network** sebagai pengganti fitur-fitur esensial lama (seperti EssentialsX). Plugin ini memanfaatkan sepenuhnya **Paper Native Dialog API** dan **Adventure MiniMessage**, sehingga seluruh interaksi antarmuka (UI) disajikan melalui dialog native resmi client Minecraft tanpa menggunakan Chest GUI / inventory hack.
+**ClarityEssentials** is a next-generation core plugin custom-engineered for **Clarity Network** (Minecraft 1.21.4+ / Paper 26.3+). Built to completely replace legacy essentials plugins (such as EssentialsX), it leverages **Paper Native Dialog API** and **Adventure MiniMessage** to deliver a sleek, modern user experience entirely rendered through native client dialog screens without chest GUI hacks or inventory tricks.
 
 ---
 
-## ✨ Fitur Utama
+## ✨ Features
 
-### 💬 1. Custom Chat & Group Formatting
-* Ditenagai oleh **Adventure MiniMessage** dengan dukungan penuh untuk format warna HEX (`<#RRGGBB>`), gradien (`<gradient:#color1:#color2>`), dan styling teks modern.
-* Integrasi **LuckPerms Group**: Format chat otomatis disesuaikan dengan primary group pemain (misalnya `owner`, `admin`, `vip`, `default`).
-* Dukungan **PlaceholderAPI (PAPI)** secara native pada template chat (`{prefix}`, `{suffix}`, `{player}`, `{nickname}`, `{message}`, dan placeholder `%...%`).
-* Perlindungan keamanan: Pemain tanpa izin `clarityessentials.chat.color` tidak dapat menyisipkan tag MiniMessage eksploitatif.
+### 🎮 1. Native ESC / Pause Menu Button ("Clarity Menu")
+* Adds a native button directly onto Minecraft's Game Menu (ESC screen) via the `#minecraft:pause_screen_additions` dialog tag.
+* Client-native integration inspired by top modern servers (like Donut SMP) that opens a multi-action dialog directly from the pause screen.
+* Configurable button label and dialog title in `config.yml` (`esc-menu.button-text` and `esc-menu.dialog-title`).
+* Provides instant access to all core gameplay features arranged cleanly in 2 columns.
 
-### 🏷️ 2. Smart Nickname System (`/nick`, `/realname`)
-* Pemain dapat mengganti display name mereka secara dinamis.
-* **Validasi Regex Ketat** (`allowed-nicks-regex: "^[a-zA-Z0-9_]{3,16}$"`) untuk mencegah penyalahgunaan simbol dan font aneh.
-* Opsi bypass izin (`clarityessentials.nick.allowunsafe`) untuk Administrator & VIP.
-* Dukungan warna MiniMessage (`clarityessentials.nick.color`).
-* Sinkronisasi nama pada display name chat dan tablist.
-* Perintah `/realname <nickname>` untuk mendeteksi identitas username asli pemain.
+### 🧭 2. Centralized Player Dashboard (`/menu`, `/dashboard`)
+* Comprehensive player hub rendered using Paper's native multi-action dialog.
+* **14 Core Feature Actions (2 Columns)**:
+  * **Left Column**: Homes, Auction, Quick Buy, Orders, Sell, Teleport, Leaderboards
+  * **Right Column**: RTP, RTP Queue, Friends, Shard Shop, Pay, Stats, Settings
+  * **Bottom**: Clean exit button to return to gameplay.
+* Clean, minimalist design using white typography without distracting clutter.
 
-### 🌀 3. Teleportation Request System (`/tpa`, `/tpahere`, `/tptoggle`)
-* Manajemen permintaan teleportasi antar pemain (`/tpa`, `/tpahere`, `/tpaccept`, `/tpdeny`).
-* Pesan interaktif chat yang dapat langsung diklik (`[TERIMA]` dan `[TOLAK]`).
-* Batas waktu kedaluwarsa request (default: 60 detik).
-* Hitung mundur teleport warmup (default: 3 detik) dengan deteksi pembatalan jika pemain bergerak (movement cancellation).
-* Perintah `/tptoggle` untuk mengaktifkan atau menonaktifkan permintaan teleportasi masuk.
+### 🏠 3. Native Dialog Home Management (`/home`, `/sethome`, `/delhome`)
+* All home operations (listing, creating, teleporting, deleting) operate via native dialogs.
+* **Interactive Text Input**: `/sethome` (or clicking "+ New Home") opens a native text dialog to name the home.
+* **Deletion Confirmation**: Prompts a confirmation dialog before deleting to prevent accidental loss.
+* Rank-based home quotas configured via permissions (`clarityessentials.homes.<rank>`) or unlimited (`clarityessentials.homes.unlimited`).
 
-### 🏠 4. Native Dialog Home Management (`/home`, `/sethome`, `/delhome`)
-* Seluruh manajemen home (melihat daftar home, teleportasi, dan hapus) dikelola melalui **Paper Native Dialog API**.
-* Tidak menggunakan inventory chest GUI sama sekali!
-* Batas jumlah home per pemain dapat disesuaikan berdasarkan permission rank (`clarityessentials.homes.<rank>`).
-* Dialog konfirmasi native sebelum menghapus home untuk mencegah penghapusan yang tidak sengaja.
+### 👥 4. Friends System
+* Add friends with instant player validation (prevents adding yourself or non-existent players).
+* Real-time online/offline player status.
+* Quick actions for each friend:
+  * Send instant Teleport Request (`/tpa`).
+  * Send Money via quick pay dialog.
+  * Friendly-fire protection toggle to avoid harming teammates.
+  * Remove friend with a native confirmation dialog.
 
-### 🧭 5. Centralized Native Player Dashboard (`/menu`, `/dashboard`)
-* Hub dialog interaktif native yang menyatukan seluruh fitur plugin dalam satu layar:
-  - Status pemain (Rank, Ping, Nickname, Status TPA, Jumlah Home).
-  - Tombol pintas **Home Manager**.
-  - Tombol pintas **Nickname Settings**.
-  - Tombol langsung untuk **Toggle TPA** (On/Off).
-  - Integrasi langsung dengan **ClarityLangCore Language Dialog** (`/lang`).
+### 🌀 5. Teleportation & Player List (`/tpa`, `/tpahere`, `/tptoggle`)
+* Interactive clickable chat messages for incoming teleport requests (`[ACCEPT]` and `[DENY]`).
+* Request timeout handling (default: 60s) and warmup countdown with movement cancellation.
+* Toggle incoming requests on/off via `/tptoggle`.
+* Quick teleport list in the dialog menu to quickly request teleport to saved players.
+
+### 💰 6. Quick Pay System (`/pay`)
+* Vault Economy integration with transaction validation and balance checks.
+* Saved recipient list for quick transfers.
+* Preset denomination buttons and native text input dialog for custom transfer amounts.
+
+### 🏷️ 7. Smart Nickname System (`/nick`, `/realname`)
+* Native text dialog to preview, change, or reset nicknames.
+* Strict regex validation (`allowed-nicks-regex: "^[a-zA-Z0-9_]{3,16}$"`) prevents exploit characters.
+* Dedicated permissions for colors (`clarityessentials.nick.color`) and unsafe character bypass (`clarityessentials.nick.allowunsafe`).
+* Automatic synchronization across chat and tablist.
+* `/realname <nickname>` command to resolve a player's real username.
+
+### 💬 8. Modern Chat & Group Formatting
+* Full Adventure MiniMessage support including RGB Hex (`<#RRGGBB>`), gradients (`<gradient:#ff5555:#ffaa00>`), and tags.
+* Primary LuckPerms group matching for custom prefixes, suffixes, and formats.
+* Native PlaceholderAPI (PAPI) expansion support.
+* Permission protection (`clarityessentials.chat.color`) prevents unauthorized styling.
+
+### ⚙️ 9. Player Settings & Leaderboards
+* Interactive native toggles for player preferences: Chat, Notifications, PvP, Visuals, Privacy, and Scoreboard.
+* Real-time leaderboards across multiple categories: Balance, Deaths, Playtime, Blocks Placed, Blocks Broken, and Mobs Killed.
+
+### 🌐 10. Multi-Language Support (ClarityLangCore Integration)
+* Automatically connects to **ClarityLangCore** when available, enabling per-player dynamic language switching (`/lang`).
+* Includes 9 bundled language localizations: English (`en_US`), Indonesian (`id_ID`), German (`de_DE`), Spanish (`es_ES`), French (`fr_FR`), Japanese (`ja_JP`), Portuguese (`pt_BR`), Russian (`ru_RU`), and Chinese (`zh_CN`).
+* Self-contained standalone fallback when running without ClarityLangCore.
 
 ---
 
-## 🌐 Integrasi ClarityLangCore
+## 📜 Commands & Permissions
 
-Plugin ini terhubung langsung dengan **`ClarityLangCore`** melalui `ClarityLangAPI`:
-* Bundle bahasa terdaftar secara otomatis di `onEnable()`.
-* Mendukung multi-bahasa dinamis per-pemain (`id_ID.yml`, `en_US.yml`).
-* Dilengkapi dengan fallback internal mandiri jika dijalankan tanpa `ClarityLangCore`.
-
----
-
-## 📜 Daftar Perintah & Izin (Permissions)
-
-| Perintah | Alias | Deskripsi | Izin (Permission) |
+| Command | Aliases | Description | Permission |
 | :--- | :--- | :--- | :--- |
-| `/menu` | `/dashboard`, `/cp` | Membuka Player Dashboard Dialog | `clarityessentials.command.menu` |
-| `/nick <nama\|reset>` | `/nickname` | Mengganti atau mereset nama panggilan | `clarityessentials.command.nick` |
-| `/realname <nick>` | - | Melihat username asli pemain bernickname | `clarityessentials.command.realname` |
-| `/tpa <player>` | - | Mengirim permintaan teleportasi ke pemain | `clarityessentials.command.tpa` |
-| `/tpahere <player>` | - | Mengajak pemain berteleportasi ke lokasi Anda | `clarityessentials.command.tpahere` |
-| `/tpaccept [player]` | `/tpyes` | Menerima permintaan teleportasi | `clarityessentials.command.tpaccept` |
-| `/tpdeny [player]` | `/tpno` | Menolak permintaan teleportasi | `clarityessentials.command.tpdeny` |
-| `/tptoggle` | - | Mengaktifkan/menonaktifkan TPA masuk | `clarityessentials.command.tptoggle` |
-| `/home [name]` | `/homes` | Membuka Home Dialog atau teleportasi ke home | `clarityessentials.command.home` |
-| `/sethome [name]` | - | Menyimpan lokasi saat ini sebagai home | `clarityessentials.command.sethome` |
-| `/delhome [name]` | `/deletehome` | Menghapus home tersimpan via dialog konfirmasi | `clarityessentials.command.delhome` |
-| `/ce reload` | `/clarityessentials`, `/essentials` | Memuat ulang konfigurasi dan data plugin | `clarityessentials.admin` |
+| `/menu` | `/dashboard`, `/cp` | Open Centralized Player Dashboard | `clarityessentials.command.menu` |
+| `/nick <name\|reset>` | `/nickname` | Set or reset your custom nickname | `clarityessentials.command.nick` |
+| `/realname <nickname>` | - | Lookup real username from nickname | `clarityessentials.command.realname` |
+| `/tpa <player>` | - | Send teleport request to a player | `clarityessentials.command.tpa` |
+| `/tpahere <player>` | - | Request a player to teleport to you | `clarityessentials.command.tpahere` |
+| `/tpaccept [player]` | `/tpyes` | Accept a pending teleport request | `clarityessentials.command.tpaccept` |
+| `/tpdeny [player]` | `/tpno` | Decline a pending teleport request | `clarityessentials.command.tpdeny` |
+| `/tptoggle` | - | Toggle incoming teleport requests | `clarityessentials.command.tptoggle` |
+| `/home [name]` | `/homes` | Open Home Dialog or teleport to a home | `clarityessentials.command.home` |
+| `/sethome [name]` | - | Save current location as a home | `clarityessentials.command.sethome` |
+| `/delhome [name]` | `/deletehome` | Delete a saved home with confirmation | `clarityessentials.command.delhome` |
+| `/ce reload` | `/clarityessentials` | Reload plugin configuration and data | `clarityessentials.admin` |
 
-### Izin Khusus Tambahan:
-* `clarityessentials.chat.color`: Izin menggunakan tag warna MiniMessage di chat.
-* `clarityessentials.nick.color`: Izin menggunakan warna pada nickname.
-* `clarityessentials.nick.allowunsafe`: Izin bypass batasan karakter dan regex nickname.
-* `clarityessentials.nick.others`: Izin mengganti nickname pemain lain.
-* `clarityessentials.tpa.bypasswarmup`: Izin teleportasi instan tanpa delay hitung mundur.
-* `clarityessentials.homes.unlimited`: Izin jumlah home tanpa batas.
-* `clarityessentials.homes.<rank>`: Izin kuota home sesuai konfigurasi `config.yml`.
+### Special Permissions:
+* `clarityessentials.chat.color`: Permission to use color and MiniMessage tags in chat.
+* `clarityessentials.nick.color`: Permission to format nicknames with colors.
+* `clarityessentials.nick.allowunsafe`: Permission to bypass regex and length limits on nicknames.
+* `clarityessentials.nick.others`: Permission to modify other players' nicknames.
+* `clarityessentials.tpa.bypasswarmup`: Permission to teleport instantly without warmup delay.
+* `clarityessentials.homes.unlimited`: Grants unlimited home creation slots.
+* `clarityessentials.homes.<rank>`: Grants home limit matching specific rank group defined in `config.yml`.
 
 ---
 
-## 🛠️ Build & Kompilasi
+## ⚙️ Configuration
 
-Proyek ini dibangun menggunakan **JDK 25** dan **Gradle Kotlin DSL**:
+The main configuration file is located at `plugins/ClarityEssentials/config.yml`.
 
-```powershell
-# Build plugin JAR
-.\gradlew build
+```yaml
+# ESC (Pause Menu) Custom Button & Native Dialog Menu
+# Note: Minecraft client syncs dialog registry and tags during login.
+# Server restart and client reconnect is required when changing these settings.
+esc-menu:
+  enabled: true
+  button-text: "Clarity Menu"   # Button text on ESC Game Menu
+  dialog-title: "Clarity Menu"  # Title header inside the dialog
+  columns: 2
+  commands:
+    rtp: "rtp"
+    rtp-queue: "rtp queue"
+    auction: "ah"
+    quick-buy: "buy"
+    orders: "orders"
+    shard-shop: "shards"
+    sell: "sell"
+    stats: "stats"
+
+# Home settings
+homes:
+  enabled: true
+  default-limit: 3
+  limits:
+    vip: 5
+    mvp: 10
+    elite: 20
+    sponsor: 50
 ```
 
-File JAR hasil kompilasi terletak di:
+---
+
+## 🛠️ Building from Source
+
+### Requirements
+* **Java 25** (JDK 25 LTS or newer)
+* **Gradle 9.5+** (Gradle wrapper included)
+
+### Compile
+```powershell
+# On Windows
+.\gradlew build
+
+# On Linux / macOS
+./gradlew build
+```
+
+The output jar will be generated at:
 `build/libs/ClarityEssentials-1.0.0.jar`
+
+---
+
+## 📄 License
+
+This project is licensed under the **GNU General Public License v3.0** - see the [LICENSE](LICENSE) file for details.
