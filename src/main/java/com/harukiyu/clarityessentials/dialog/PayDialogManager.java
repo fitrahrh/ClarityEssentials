@@ -136,6 +136,11 @@ public class PayDialogManager {
                                         }
 
                                         String targetName = res.resolvedName();
+                                        if (targetName == null) {
+                                            openPayPlayerList(p);
+                                            return;
+                                        }
+
                                         UserSettings s = settingsManager.getSettings(p);
                                         if (s.isPayPlayer(targetName)) {
                                             LanguageHook.sendMessage(p, "general.already_added", Placeholder.unparsed("player", targetName));
@@ -311,8 +316,26 @@ public class PayDialogManager {
             return;
         }
 
+        // Privacy setting check for receiver
+        UserSettings targetSettings = settingsManager.getSettings(target.getUniqueId());
+        String allowPay = targetSettings.getAllowPayments();
+        if ("Off".equalsIgnoreCase(allowPay)) {
+            LanguageHook.sendMessage(player, "pay.disabled_target", Placeholder.unparsed("target", targetName));
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            return;
+        }
+        if ("Friends".equalsIgnoreCase(allowPay) && !targetSettings.isFriend(player.getName())) {
+            LanguageHook.sendMessage(player, "pay.friends_only", Placeholder.unparsed("target", targetName));
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            return;
+        }
+
         if (!VaultHook.hasEconomy()) {
-            player.performCommand("pay " + targetName + " " + amount);
+            try {
+                player.performCommand("pay " + targetName + " " + amount);
+            } catch (Throwable t) {
+                LanguageHook.sendMessage(player, "pay.economy_not_found");
+            }
             return;
         }
 
@@ -329,10 +352,12 @@ public class PayDialogManager {
                     Placeholder.unparsed("target", target.getName()));
             player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
             if (target.isOnline() && target.getPlayer() != null) {
-                LanguageHook.sendMessage(target.getPlayer(), "pay.success_receiver",
-                        Placeholder.unparsed("amount", VaultHook.formatMoney(amount)),
-                        Placeholder.unparsed("sender", player.getName()));
-                target.getPlayer().playSound(target.getPlayer().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
+                if (targetSettings.isPayAlerts()) {
+                    LanguageHook.sendMessage(target.getPlayer(), "pay.success_receiver",
+                            Placeholder.unparsed("amount", VaultHook.formatMoney(amount)),
+                            Placeholder.unparsed("sender", player.getName()));
+                    target.getPlayer().playSound(target.getPlayer().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
+                }
             }
         } else {
             LanguageHook.sendMessage(player, "pay.failed");

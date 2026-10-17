@@ -3,6 +3,8 @@ package com.harukiyu.clarityessentials.teleport;
 import com.harukiyu.clarityessentials.config.ConfigManager;
 import com.harukiyu.clarityessentials.data.DataManager;
 import com.harukiyu.clarityessentials.hook.LanguageHook;
+import com.harukiyu.clarityessentials.settings.UserSettings;
+import com.harukiyu.clarityessentials.settings.UserSettingsManager;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -22,6 +24,7 @@ public class TeleportManager {
     private final Plugin plugin;
     private final ConfigManager configManager;
     private final DataManager dataManager;
+    private final UserSettingsManager userSettingsManager;
 
     // Target UUID -> TeleportRequest
     private final Map<UUID, TeleportRequest> pendingRequests = new ConcurrentHashMap<>();
@@ -31,10 +34,12 @@ public class TeleportManager {
 
     public TeleportManager(@NotNull Plugin plugin,
                            @NotNull ConfigManager configManager,
-                           @NotNull DataManager dataManager) {
+                           @NotNull DataManager dataManager,
+                           @NotNull UserSettingsManager userSettingsManager) {
         this.plugin = plugin;
         this.configManager = configManager;
         this.dataManager = dataManager;
+        this.userSettingsManager = userSettingsManager;
     }
 
     /**
@@ -54,6 +59,42 @@ public class TeleportManager {
             );
             playSound(sender, configManager.getSoundActionFailure());
             return;
+        }
+
+        // Check target's Privacy Settings
+        UserSettings targetSettings = userSettingsManager.getSettings(target.getUniqueId());
+        if (type == TeleportRequest.Type.NORMAL) {
+            String pref = targetSettings.getTeleportRequests();
+            if ("Off".equalsIgnoreCase(pref)) {
+                LanguageHook.sendMessage(sender, "teleport.target_disabled_tpa",
+                        Placeholder.unparsed("target", target.getName())
+                );
+                playSound(sender, configManager.getSoundActionFailure());
+                return;
+            }
+            if ("Friends".equalsIgnoreCase(pref) && !targetSettings.isFriend(sender.getName())) {
+                LanguageHook.sendMessage(sender, "teleport.target_friends_only_tpa",
+                        Placeholder.unparsed("target", target.getName())
+                );
+                playSound(sender, configManager.getSoundActionFailure());
+                return;
+            }
+        } else {
+            String pref = targetSettings.getTeleportHereRequests();
+            if ("Off".equalsIgnoreCase(pref)) {
+                LanguageHook.sendMessage(sender, "teleport.target_disabled_tpahere",
+                        Placeholder.unparsed("target", target.getName())
+                );
+                playSound(sender, configManager.getSoundActionFailure());
+                return;
+            }
+            if ("Friends".equalsIgnoreCase(pref) && !targetSettings.isFriend(sender.getName())) {
+                LanguageHook.sendMessage(sender, "teleport.target_friends_only_tpahere",
+                        Placeholder.unparsed("target", target.getName())
+                );
+                playSound(sender, configManager.getSoundActionFailure());
+                return;
+            }
         }
 
         // Check if a request is already pending to this target from this sender
@@ -87,8 +128,11 @@ public class TeleportManager {
 
         // Store request
         TeleportRequest oldReq = pendingRequests.put(target.getUniqueId(), request);
-        if (oldReq != null && oldReq.getExpireTask() != null) {
-            oldReq.getExpireTask().cancel();
+        if (oldReq != null) {
+            BukkitTask oldTask = oldReq.getExpireTask();
+            if (oldTask != null) {
+                oldTask.cancel();
+            }
         }
 
         // Notify sender & target
@@ -105,7 +149,9 @@ public class TeleportManager {
         LanguageHook.sendMessage(target, "teleport.tpa_click_deny");
 
         playSound(sender, configManager.getSoundDialogOpen());
-        playSound(target, configManager.getSoundDialogOpen());
+        if (targetSettings.isTeleportAlerts()) {
+            playSound(target, configManager.getSoundDialogOpen());
+        }
     }
 
     /**
@@ -128,15 +174,19 @@ public class TeleportManager {
         Player sender = Bukkit.getPlayer(request.getSenderId());
         if (sender == null || !sender.isOnline()) {
             pendingRequests.remove(target.getUniqueId());
-            if (request.getExpireTask() != null) request.getExpireTask().cancel();
+            BukkitTask task = request.getExpireTask();
+            if (task != null) {
+                task.cancel();
+            }
             LanguageHook.sendMessage(target, "general.player_not_found", Placeholder.unparsed("player", "Sender"));
             playSound(target, configManager.getSoundActionFailure());
             return;
         }
 
         // Cancel expiration task and remove
-        if (request.getExpireTask() != null) {
-            request.getExpireTask().cancel();
+        BukkitTask task = request.getExpireTask();
+        if (task != null) {
+            task.cancel();
         }
         pendingRequests.remove(target.getUniqueId());
 
@@ -176,8 +226,9 @@ public class TeleportManager {
         Player sender = Bukkit.getPlayer(request.getSenderId());
 
         // Cancel expiration task and remove
-        if (request.getExpireTask() != null) {
-            request.getExpireTask().cancel();
+        BukkitTask task = request.getExpireTask();
+        if (task != null) {
+            task.cancel();
         }
         pendingRequests.remove(target.getUniqueId());
 
@@ -291,8 +342,11 @@ public class TeleportManager {
     public void handleQuit(@NotNull Player player) {
         cancelWarmup(player);
         TeleportRequest request = pendingRequests.remove(player.getUniqueId());
-        if (request != null && request.getExpireTask() != null) {
-            request.getExpireTask().cancel();
+        if (request != null) {
+            BukkitTask task = request.getExpireTask();
+            if (task != null) {
+                task.cancel();
+            }
         }
     }
 

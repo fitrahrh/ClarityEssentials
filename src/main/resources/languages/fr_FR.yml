@@ -13,10 +13,6 @@ general:
   reload_success: "<prefix><green>Configuration et langues rechargées avec succès en <yellow><time></yellow> ms !</green>"
   unknown_command: "<prefix><red>Sous-commande inconnue ! Tapez <yellow>/ce help</yellow> pour voir la liste des commandes.</red>"
 
-validation:
-  name_empty: "<prefix><red>Le pseudo du joueur ne peut pas être vide !</red>"
-  cannot_add_self: "<prefix><red>Vous ne pouvez pas vous sélectionner vous-même !</red>"
-  player_not_found: "<prefix><red>Le joueur '<player>' est introuvable ou n'a jamais joué sur le serveur !</red>"
   help:
     header: "<white><bold>=== Commandes ClarityEssentials ===</bold></white>"
     menu: "<gray><yellow>/menu</yellow> <dark_gray>-</dark_gray> <white>Ouvrir le tableau de bord du joueur</white></gray>"
@@ -31,6 +27,12 @@ validation:
     sethome: "<gray><yellow>/sethome [nom]</yellow> <dark_gray>-</dark_gray> <white>Sauvegarder l'emplacement actuel comme home</white></gray>"
     delhome: "<gray><yellow>/delhome [nom]</yellow> <dark_gray>-</dark_gray> <white>Supprimer un home sauvegardé</white></gray>"
     reload: "<gray><yellow>/ce reload</yellow> <dark_gray>-</dark_gray> <white>Recharger la configuration et les données</white></gray>"
+
+validation:
+  name_empty: "<prefix><red>Le pseudo du joueur ne peut pas être vide !</red>"
+  cannot_add_self: "<prefix><red>Vous ne pouvez pas vous sélectionner vous-même !</red>"
+  player_not_found: "<prefix><red>Le joueur '<player>' est introuvable ou n'a jamais joué sur le serveur !</red>"
+
 
 chat:
   color_no_permission: "<prefix><red>Vous n'avez pas la permission d'utiliser les couleurs ou balises dans le tchat !</red>"
@@ -120,6 +122,7 @@ menu:
   btn_quick_buy: "<white>Achat Rapide</white>"
   btn_friends: "<white>Amis</white>"
   btn_orders: "<white>Commandes</white>"
+  btn_webstore: "<white>Webstore</white>"
   btn_shard_shop: "<white>Boutique d'Éclats</white>"
   btn_sell: "<white>Vendre</white>"
   btn_pay: "<white>Payer</white>"
@@ -129,6 +132,7 @@ menu:
   btn_settings: "<white>Paramètres</white>"
   btn_close: "<white>Fermer</white>"
   btn_back: "<white>Retour</white>"
+  open_link_chat: "<prefix><green>Webstore: <click:open_url:'<url>'><hover:show_text:'<green>Open <url>'><gold><underlined><url></underlined></gold> <aqua><bold>[LINK]</bold></aqua></hover></click></green>"
 
 pay:
   title: "<white>Payer</white>"

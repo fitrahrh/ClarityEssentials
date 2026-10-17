@@ -13,10 +13,6 @@ general:
   reload_success: "<prefix><green>Configuration and language data reloaded successfully in <yellow><time></yellow> ms!</green>"
   unknown_command: "<prefix><red>Unknown subcommand! Type <yellow>/ce help</yellow> to view available commands.</red>"
 
-validation:
-  name_empty: "<prefix><red>Player name cannot be empty!</red>"
-  cannot_add_self: "<prefix><red>You cannot select yourself!</red>"
-  player_not_found: "<prefix><red>Player '<player>' was not found or has never played before!</red>"
   help:
     header: "<white><bold>=== ClarityEssentials Commands ===</bold></white>"
     menu: "<gray><yellow>/menu</yellow> <dark_gray>-</dark_gray> <white>Open Centralized Player Dashboard</white></gray>"
@@ -30,10 +26,20 @@ validation:
     home: "<gray><yellow>/home [name]</yellow> <dark_gray>-</dark_gray> <white>Open Home Dialog or teleport to a home</white></gray>"
     sethome: "<gray><yellow>/sethome [name]</yellow> <dark_gray>-</dark_gray> <white>Save current location as a home</white></gray>"
     delhome: "<gray><yellow>/delhome [name]</yellow> <dark_gray>-</dark_gray> <white>Delete a saved home</white></gray>"
+    homelimit: "<gray><yellow>/homelimit</yellow> <dark_gray>-</dark_gray> <white>View or manage home limits</white></gray>"
+    msg: "<gray><yellow>/msg <player> <message></yellow> <dark_gray>-</dark_gray> <white>Send a private message</white></gray>"
+    reply: "<gray><yellow>/r <message></yellow> <dark_gray>-</dark_gray> <white>Quick reply to last message</white></gray>"
+    socialspy: "<gray><yellow>/socialspy</yellow> <dark_gray>-</dark_gray> <white>Toggle monitoring private messages</white></gray>"
     reload: "<gray><yellow>/ce reload</yellow> <dark_gray>-</dark_gray> <white>Reload plugin configuration and data</white></gray>"
+
+validation:
+  name_empty: "<prefix><red>Player name cannot be empty!</red>"
+  cannot_add_self: "<prefix><red>You cannot select yourself!</red>"
+  player_not_found: "<prefix><red>Player '<player>' was not found or has never played before!</red>"
 
 chat:
   color_no_permission: "<prefix><red>You do not have permission to use color or formatting tags in chat!</red>"
+  public_chat_disabled: "<prefix><red>You have public chat disabled in /menu settings!</red>"
 
 nickname:
   usage_nick: "<prefix><red>Usage: <yellow>/nick <new_name|off|reset></yellow></red>"
@@ -70,6 +76,9 @@ teleport:
   cannot_tpa_self: "<prefix><red>You cannot send a teleport request to yourself!</red>"
   already_sent: "<prefix><red>You already have a pending teleport request to this player!</red>"
   target_disabled_tpa: "<prefix><red><target></red> <gray>has disabled incoming teleport requests!</gray>"
+  target_disabled_tpahere: "<prefix><red><target></red> <gray>has disabled incoming teleport-here requests!</gray>"
+  target_friends_only_tpa: "<prefix><red><target></red> <gray>only accepts teleport requests from friends!</gray>"
+  target_friends_only_tpahere: "<prefix><red><target></red> <gray>only accepts teleport-here requests from friends!</gray>"
   tptoggle_on: "<prefix><green>Teleport requests have been <bold>ENABLED</bold>.</green>"
   tptoggle_off: "<prefix><red>Teleport requests have been <bold>DISABLED</bold>.</red>"
   warmup_countdown: "<prefix><green>Teleporting in <yellow><seconds></yellow> seconds... Do not move!</green>"
@@ -112,15 +121,12 @@ homes:
   locked_notice: "<prefix><red>This home slot is locked! Upgrade your rank to unlock more slots.</red>"
 
 menu:
-  title: "<white>Clarity</white>"
+  title: "<white>Clarity Menu</white>"
   btn_homes: "<white>Homes</white>"
   btn_rtp: "<white>RTP</white>"
   btn_auction: "<white>Auction</white>"
-  btn_rtp_queue: "<white>RTP Queue</white>"
-  btn_quick_buy: "<white>Quick Buy</white>"
   btn_friends: "<white>Friends</white>"
-  btn_orders: "<white>Orders</white>"
-  btn_shard_shop: "<white>Shard Shop</white>"
+  btn_webstore: "<white>Webstore</white>"
   btn_sell: "<white>Sell</white>"
   btn_pay: "<white>Pay</white>"
   btn_teleport: "<white>Teleport</white>"
@@ -129,6 +135,7 @@ menu:
   btn_settings: "<white>Settings</white>"
   btn_close: "<white>Close</white>"
   btn_back: "<white>Back</white>"
+  open_link_chat: "<prefix><newline><green>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</green><newline><yellow><bold>  🌐 CLARITY NETWORK STORE</bold></yellow><newline><gray>  Visit our official webstore for ranks, items & perks:</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>Click here to open <url> in your browser'><gold><underlined><url></underlined></gold> <aqua><bold>[OPEN STORE LINK]</bold></aqua></hover></click><newline><green>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</green>"
 
 pay:
   title: "<white>Pay</white>"
@@ -149,6 +156,8 @@ pay:
   btn_pay: "<white>Pay</white>"
   invalid_amount: "<prefix><red>Invalid payment amount!</red>"
   cannot_pay_self: "<prefix><red>You cannot send money to yourself!</red>"
+  disabled_target: "<prefix><red><target></red> <gray>has disabled incoming payments in settings!</gray>"
+  friends_only: "<prefix><red><target></red> <gray>only accepts payments from friends!</gray>"
   not_enough_money: "<prefix><red>You do not have enough money!</red>"
   success_sender: "<prefix><green>You sent <yellow>$<amount></yellow> to <yellow><target></yellow>!</green>"
   success_receiver: "<prefix><green>You received <yellow>$<amount></yellow> from <yellow><sender></yellow>!</green>"
@@ -239,3 +248,31 @@ friends:
   search_not_found: "<prefix><red>Friend '<target>' not found in your friends list!</red>"
   target_offline: "<prefix><red><target> is currently offline!</red>"
   friendly_fire_blocked: "<prefix><red>Friendly fire is blocked! You cannot harm your friend <target>!</red>"
+
+homelimit:
+  usage: "<prefix><red>Usage: <yellow>/homelimit <give|take|set|check> <player> [amount]</yellow></red>"
+  invalid_amount: "<prefix><red>Amount must be a valid positive integer!</red>"
+  info_header: "<prefix><white><bold>=== Home Quota: <player> ===</bold></white>"
+  info_count: "<prefix><gray>Homes Created: <yellow><current></yellow> / <yellow><max></yellow></gray>"
+  info_breakdown: "<prefix><gray>Base Quota: <white><base></white> | Bonus Extra: <green>+<extra></green></gray>"
+  given: "<prefix><green>Added <yellow><amount></yellow> extra home slots to <yellow><player></yellow>! New limit: <yellow><max></yellow>.</green>"
+  received: "<prefix><green>You received <yellow><amount></yellow> extra home limit slots! Your new limit is <yellow><max></yellow>.</green>"
+  taken: "<prefix><green>Deducted <yellow><amount></yellow> extra home slots from <yellow><player></yellow>! New limit: <yellow><max></yellow>.</green>"
+  deducted: "<prefix><red><yellow><amount></yellow> home slots were deducted from your quota. New limit: <yellow><max></yellow>.</red>"
+  set: "<prefix><green>Set bonus home slots for <yellow><player></yellow> to <yellow><amount></yellow>! New limit: <yellow><max></yellow>.</green>"
+  received_set: "<prefix><green>Your bonus home quota was updated to <yellow><amount></yellow>! New limit: <yellow><max></yellow>.</green>"
+
+message:
+  usage_msg: "<prefix><red>Usage: <yellow>/msg <player> <message></yellow></red>"
+  usage_reply: "<prefix><red>Usage: <yellow>/r <message></yellow></red>"
+  cannot_message_self: "<prefix><red>You cannot send private messages to yourself!</red>"
+  sender_pm_off: "<prefix><red>You have private messages disabled in /menu settings!</red>"
+  recipient_pm_off: "<prefix><red><player> has private messages disabled.</red>"
+  recipient_pm_friends_only: "<prefix><red><player> only accepts private messages from friends.</red>"
+  no_reply_target: "<prefix><red>You have nobody to reply to.</red>"
+  reply_offline: "<prefix><red>The player you were messaging is no longer online.</red>"
+  format_to: "<dark_gray>[</dark_gray><gray>To <white><target></white></gray><dark_gray>]</dark_gray> <white><message></white>"
+  format_from: "<dark_gray>[</dark_gray><gray>From <white><sender></white></gray><dark_gray>]</dark_gray> <white><message></white>"
+  socialspy_enabled: "<prefix><green>Social Spy has been <bold>enabled</bold>.</green>"
+  socialspy_disabled: "<prefix><yellow>Social Spy has been <bold>disabled</bold>.</yellow>"
+  socialspy_format: "<dark_gray>[</dark_gray><red>Spy</red><dark_gray>]</dark_gray> <gray><sender></gray> <dark_gray>»</dark_gray> <gray><target></gray><dark_gray>:</dark_gray> <white><message></white>"

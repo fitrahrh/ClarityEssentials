@@ -24,13 +24,27 @@
   * **Bottom**: Clean exit button to return to gameplay.
 * Clean, minimalist design using white typography without distracting clutter.
 
-### 🏠 3. Native Dialog Home Management (`/home`, `/sethome`, `/delhome`)
+### 🏠 3. Native Dialog Home Management & Digital Currency Limit (`/home`, `/sethome`, `/delhome`, `/homelimit`)
 * All home operations (listing, creating, teleporting, deleting) operate via native dialogs.
 * **Interactive Text Input**: `/sethome` (or clicking "+ New Home") opens a native text dialog to name the home.
 * **Deletion Confirmation**: Prompts a confirmation dialog before deleting to prevent accidental loss.
-* Rank-based home quotas configured via permissions (`clarityessentials.homes.<rank>`) or unlimited (`clarityessentials.homes.unlimited`).
+* **Digital Currency / Numerical Home Limit Quota**:
+  * Player home limits can be incremented, decremented, or set dynamically via commands (`/homelimit give/take/set <player> <amount>`).
+  * Total Allowed Homes = Base Quota (from rank/default) + Extra Bonus Limit slots.
+  * Perfect for store packages, voting rewards, or token purchases!
 
-### 👥 4. Friends System
+### 💬 4. Private Messaging & Admin SocialSpy (`/msg`, `/r`, `/socialspy`)
+* Fast, private 1-on-1 player messaging (`/msg <player> <message>`, aliases: `/tell`, `/w`, `/whisper`).
+* Quick reply command (`/r <message>`).
+* Privacy-aware: respects individual player `/menu` privacy settings (Anyone, Friends Only, Off).
+* **Staff Social Spy (`/socialspy`)**: Allows authorized administrators (`clarityessentials.socialspy`) to monitor player private messages in real-time. Preferences persist across restarts.
+
+### 🚪 5. Custom Join & Leave Messages (Default + VIP Permissions)
+* Suppresses vanilla join/quit notifications and broadcasts customizable MiniMessage announcements.
+* **VIP Custom Join Messages**: Priority-based permission checks (`clarityessentials.join.<group>`) allow ranks (Owner, Admin, VIP) to have unique entrance broadcasts.
+* Individual player control: players can filter join/leave broadcasts in `/menu` Settings (Anyone, Friends Only, or Off).
+
+### 👥 6. Friends System
 * Add friends with instant player validation (prevents adding yourself or non-existent players).
 * Real-time online/offline player status.
 * Quick actions for each friend:
@@ -39,38 +53,56 @@
   * Friendly-fire protection toggle to avoid harming teammates.
   * Remove friend with a native confirmation dialog.
 
-### 🌀 5. Teleportation & Player List (`/tpa`, `/tpahere`, `/tptoggle`)
+### 🌀 7. Teleportation & Player List (`/tpa`, `/tpahere`, `/tptoggle`)
 * Interactive clickable chat messages for incoming teleport requests (`[ACCEPT]` and `[DENY]`).
 * Request timeout handling (default: 60s) and warmup countdown with movement cancellation.
 * Toggle incoming requests on/off via `/tptoggle`.
 * Quick teleport list in the dialog menu to quickly request teleport to saved players.
 
-### 💰 6. Quick Pay System (`/pay`)
+### 💰 8. Quick Pay System (`/pay`)
 * Vault Economy integration with transaction validation and balance checks.
 * Saved recipient list for quick transfers.
 * Preset denomination buttons and native text input dialog for custom transfer amounts.
 
-### 🏷️ 7. Smart Nickname System (`/nick`, `/realname`)
+### 🏷️ 9. Smart Nickname System (`/nick`, `/realname`)
 * Native text dialog to preview, change, or reset nicknames.
 * Strict regex validation (`allowed-nicks-regex: "^[a-zA-Z0-9_]{3,16}$"`) prevents exploit characters.
 * Dedicated permissions for colors (`clarityessentials.nick.color`) and unsafe character bypass (`clarityessentials.nick.allowunsafe`).
 * Automatic synchronization across chat and tablist.
 * `/realname <nickname>` command to resolve a player's real username.
 
-### 💬 8. Modern Chat & Group Formatting
-* Full Adventure MiniMessage support including RGB Hex (`<#RRGGBB>`), gradients (`<gradient:#ff5555:#ffaa00>`), and tags.
-* Primary LuckPerms group matching for custom prefixes, suffixes, and formats.
-* Native PlaceholderAPI (PAPI) expansion support.
-* Permission protection (`clarityessentials.chat.color`) prevents unauthorized styling.
-
-### ⚙️ 9. Player Settings & Leaderboards
-* Interactive native toggles for player preferences: Chat, Notifications, PvP, Visuals, Privacy, and Scoreboard.
+### ⚙️ 10. Player Settings & Leaderboards
+* Interactive native toggles for player preferences: Chat (Public Chat filter), Notifications, PvP, Visuals, Privacy, and Scoreboard.
 * Real-time leaderboards across multiple categories: Balance, Deaths, Playtime, Blocks Placed, Blocks Broken, and Mobs Killed.
 
-### 🌐 10. Multi-Language Support (ClarityLangCore Integration)
+### 🌐 11. Multi-Language Support (ClarityLangCore Integration)
 * Automatically connects to **ClarityLangCore** when available, enabling per-player dynamic language switching (`/lang`).
 * Includes 9 bundled language localizations: English (`en_US`), Indonesian (`id_ID`), German (`de_DE`), Spanish (`es_ES`), French (`fr_FR`), Japanese (`ja_JP`), Portuguese (`pt_BR`), Russian (`ru_RU`), and Chinese (`zh_CN`).
 * Self-contained standalone fallback when running without ClarityLangCore.
+
+---
+
+## 🧩 PlaceholderAPI Expansion
+
+ClarityEssentials natively registers expansion identifiers: `%clarityessentials_<placeholder>%` and `%clarity_<placeholder>%`.
+
+| Placeholder | Description | Example Output |
+| :--- | :--- | :--- |
+| `%clarityessentials_homes_count%` | Number of homes created by the player | `2` |
+| `%clarityessentials_homes_max%` | Total maximum allowed homes | `5` or `Unlimited` |
+| `%clarityessentials_homes_base%` | Base home limit from rank/config | `3` |
+| `%clarityessentials_homes_extra%` | Extra purchased/granted home slots | `2` |
+| `%clarityessentials_homes_remaining%` | Remaining home slots available | `3` |
+| `%clarityessentials_nickname%` | Player's custom formatted nickname | `<#00fbff>Haruki</#00fbff>` |
+| `%clarityessentials_raw_nickname%` | Plain unformatted nickname | `Haruki` |
+| `%clarityessentials_realname%` | Player's original Minecraft username | `Harukiyu` |
+| `%clarityessentials_tpa_status%` | Incoming TPA toggle state | `Enabled` / `Disabled` |
+| `%clarityessentials_friends_count%` | Total friends added | `12` |
+| `%clarityessentials_friends_online%` | Number of friends currently online | `4` |
+| `%clarityessentials_setting_public_chat%` | Public chat toggle state | `ON` / `OFF` |
+| `%clarityessentials_setting_pm%` | Private message privacy setting | `Anyone` / `Friends` / `Off` |
+| `%clarityessentials_setting_socialspy%` | Admin Social Spy toggle state | `ON` / `OFF` |
+| `%clarityessentials_setting_join_leave%` | Join/Leave broadcast filter | `Anyone` / `Friends` / `Off` |
 
 ---
 
@@ -79,6 +111,13 @@
 | Command | Aliases | Description | Permission |
 | :--- | :--- | :--- | :--- |
 | `/menu` | `/dashboard`, `/cp` | Open Centralized Player Dashboard | `clarityessentials.command.menu` |
+| `/msg <player> <msg>` | `/tell`, `/w`, `/whisper` | Send a private message to a player | `clarityessentials.command.msg` |
+| `/reply <msg>` | `/r` | Reply to the last messaged player | `clarityessentials.command.reply` |
+| `/socialspy` | `/spy` | Toggle admin monitoring of private messages | `clarityessentials.socialspy` |
+| `/homelimit` | `/hl` | View your home quota or give/take slots | `clarityessentials.command.homelimit` |
+| `/home [name]` | `/homes` | Open Home Dialog or teleport to a home | `clarityessentials.command.home` |
+| `/sethome [name]` | - | Save current location as a home | `clarityessentials.command.sethome` |
+| `/delhome [name]` | `/deletehome` | Delete a saved home with confirmation | `clarityessentials.command.delhome` |
 | `/nick <name\|reset>` | `/nickname` | Set or reset your custom nickname | `clarityessentials.command.nick` |
 | `/realname <nickname>` | - | Lookup real username from nickname | `clarityessentials.command.realname` |
 | `/tpa <player>` | - | Send teleport request to a player | `clarityessentials.command.tpa` |
@@ -86,12 +125,11 @@
 | `/tpaccept [player]` | `/tpyes` | Accept a pending teleport request | `clarityessentials.command.tpaccept` |
 | `/tpdeny [player]` | `/tpno` | Decline a pending teleport request | `clarityessentials.command.tpdeny` |
 | `/tptoggle` | - | Toggle incoming teleport requests | `clarityessentials.command.tptoggle` |
-| `/home [name]` | `/homes` | Open Home Dialog or teleport to a home | `clarityessentials.command.home` |
-| `/sethome [name]` | - | Save current location as a home | `clarityessentials.command.sethome` |
-| `/delhome [name]` | `/deletehome` | Delete a saved home with confirmation | `clarityessentials.command.delhome` |
 | `/ce reload` | `/clarityessentials` | Reload plugin configuration and data | `clarityessentials.admin` |
 
 ### Special Permissions:
+* `clarityessentials.homelimit.admin`: Permission to view others' home quotas or give/take extra slots (`/homelimit give/take/set/check`).
+* `clarityessentials.socialspy`: Permission to toggle and view private messages via `/socialspy`.
 * `clarityessentials.chat.color`: Permission to use color and MiniMessage tags in chat.
 * `clarityessentials.nick.color`: Permission to format nicknames with colors.
 * `clarityessentials.nick.allowunsafe`: Permission to bypass regex and length limits on nicknames.
@@ -99,6 +137,7 @@
 * `clarityessentials.tpa.bypasswarmup`: Permission to teleport instantly without warmup delay.
 * `clarityessentials.homes.unlimited`: Grants unlimited home creation slots.
 * `clarityessentials.homes.<rank>`: Grants home limit matching specific rank group defined in `config.yml`.
+* `clarityessentials.join.<rank>`: Custom entrance join message matching VIP rules in `config.yml`.
 
 ---
 
@@ -108,8 +147,6 @@ The main configuration file is located at `plugins/ClarityEssentials/config.yml`
 
 ```yaml
 # ESC (Pause Menu) Custom Button & Native Dialog Menu
-# Note: Minecraft client syncs dialog registry and tags during login.
-# Server restart and client reconnect is required when changing these settings.
 esc-menu:
   enabled: true
   button-text: "Clarity Menu"   # Button text on ESC Game Menu
@@ -134,6 +171,22 @@ homes:
     mvp: 10
     elite: 20
     sponsor: 50
+
+# Custom Join & Leave Messages
+join-leave:
+  enabled: true
+  default-join: "<dark_gray>[<green>+</green>]</dark_gray> <white><player></white> <gray>joined the game.</gray>"
+  default-leave: "<dark_gray>[<red>-</red>]</dark_gray> <white><player></white> <gray>left the game.</gray>"
+  vip-join:
+    owner:
+      permission: "clarityessentials.join.owner"
+      message: "<gold>★ <bold>[Owner]</bold> <gradient:#ff5555:#ffaa00><player></gradient> has joined the game! ★</gold>"
+    admin:
+      permission: "clarityessentials.join.admin"
+      message: "<red>★ <bold>[Admin]</bold> <red><player></red> has joined the game! ★</red>"
+    vip:
+      permission: "clarityessentials.join.vip"
+      message: "<yellow>★ <gold>[VIP]</gold> <yellow><player></yellow> joined the server! ★</yellow>"
 ```
 
 ---

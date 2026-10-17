@@ -13,10 +13,6 @@ general:
   reload_success: "<prefix><green>Konfigurasi dan data bahasa berhasil dimuat ulang dalam <yellow><time></yellow> ms!</green>"
   unknown_command: "<prefix><red>Subperintah tidak dikenal! Ketik <yellow>/ce help</yellow> untuk melihat daftar bantuan.</red>"
 
-validation:
-  name_empty: "<prefix><red>Nama pemain tidak boleh kosong!</red>"
-  cannot_add_self: "<prefix><red>Anda tidak dapat memilih diri Anda sendiri!</red>"
-  player_not_found: "<prefix><red>Pemain '<player>' tidak ditemukan atau belum pernah bermain!</red>"
   help:
     header: "<white><bold>=== Bantuan Perintah ClarityEssentials ===</bold></white>"
     menu: "<gray><yellow>/menu</yellow> <dark_gray>-</dark_gray> <white>Buka Dashboard Pemain Terpusat</white></gray>"
@@ -30,7 +26,16 @@ validation:
     home: "<gray><yellow>/home [nama]</yellow> <dark_gray>-</dark_gray> <white>Buka Menu Home atau teleportasi</white></gray>"
     sethome: "<gray><yellow>/sethome [nama]</yellow> <dark_gray>-</dark_gray> <white>Simpan lokasi saat ini sebagai home</white></gray>"
     delhome: "<gray><yellow>/delhome [nama]</yellow> <dark_gray>-</dark_gray> <white>Hapus home tersimpan</white></gray>"
+    homelimit: "<gray><yellow>/homelimit</yellow> <dark_gray>-</dark_gray> <white>Lihat atau kelola kuota limit home</white></gray>"
+    msg: "<gray><yellow>/msg <pemain> <pesan></yellow> <dark_gray>-</dark_gray> <white>Kirim pesan pribadi (private message)</white></gray>"
+    reply: "<gray><yellow>/r <pesan></yellow> <dark_gray>-</dark_gray> <white>Balas cepat pesan pribadi terakhir</white></gray>"
+    socialspy: "<gray><yellow>/socialspy</yellow> <dark_gray>-</dark_gray> <white>Pantau obrolan privat pemain (khusus staf)</white></gray>"
     reload: "<gray><yellow>/ce reload</yellow> <dark_gray>-</dark_gray> <white>Muat ulang konfigurasi dan data plugin</white></gray>"
+
+validation:
+  name_empty: "<prefix><red>Nama pemain tidak boleh kosong!</red>"
+  cannot_add_self: "<prefix><red>Anda tidak dapat memilih diri Anda sendiri!</red>"
+  player_not_found: "<prefix><red>Pemain '<player>' tidak ditemukan atau belum pernah bermain!</red>"
 
 chat:
   color_no_permission: "<prefix><red>Anda tidak memiliki izin untuk menggunakan tag warna atau format chat!</red>"
@@ -71,6 +76,9 @@ teleport:
   cannot_tpa_self: "<prefix><red>Anda tidak dapat mengirim permintaan teleportasi ke diri sendiri!</red>"
   already_sent: "<prefix><red>Anda sudah memiliki permintaan teleportasi aktif ke pemain ini!</red>"
   target_disabled_tpa: "<prefix><red><target></red> <gray>telah menonaktifkan permintaan teleportasi masuk!</gray>"
+  target_disabled_tpahere: "<prefix><red><target></red> <gray>telah menonaktifkan permintaan jemput teleportasi (tpahere)!</gray>"
+  target_friends_only_tpa: "<prefix><red><target></red> <gray>hanya menerima permintaan teleportasi dari teman!</gray>"
+  target_friends_only_tpahere: "<prefix><red><target></red> <gray>hanya menerima permintaan jemput teleportasi (tpahere) dari teman!</gray>"
   tptoggle_on: "<prefix><green>Permintaan teleportasi telah <bold>DIAKTIFKAN</bold>.</green>"
   tptoggle_off: "<prefix><red>Permintaan teleportasi telah <bold>DINONAKTIFKAN</bold>.</red>"
   warmup_countdown: "<prefix><green>Teleportasi dalam <yellow><seconds></yellow> detik... Jangan bergerak!</green>"
@@ -113,15 +121,12 @@ homes:
   locked_notice: "<prefix><red>Slot home ini terkunci! Tingkatkan rank Anda untuk membuka lebih banyak home.</red>"
 
 menu:
-  title: "<white>Clarity</white>"
+  title: "<white>Clarity Menu</white>"
   btn_homes: "<white>Homes</white>"
   btn_rtp: "<white>RTP</white>"
   btn_auction: "<white>Lelang</white>"
-  btn_rtp_queue: "<white>Antrean RTP</white>"
-  btn_quick_buy: "<white>Beli Cepat</white>"
   btn_friends: "<white>Teman</white>"
-  btn_orders: "<white>Pesanan</white>"
-  btn_shard_shop: "<white>Toko Shard</white>"
+  btn_webstore: "<white>Webstore</white>"
   btn_sell: "<white>Jual</white>"
   btn_pay: "<white>Kirim Uang</white>"
   btn_teleport: "<white>Teleportasi</white>"
@@ -130,6 +135,7 @@ menu:
   btn_settings: "<white>Pengaturan</white>"
   btn_close: "<white>Tutup</white>"
   btn_back: "<white>Kembali</white>"
+  open_link_chat: "<prefix><newline><green>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</green><newline><yellow><bold>  🌐 TOKO RESMI CLARITY NETWORK</bold></yellow><newline><gray>  Kunjungi webstore resmi kami untuk rank, item & donasi:</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>Klik di sini untuk membuka <url> di browser'><gold><underlined><url></underlined></gold> <aqua><bold>[BUKA LINK STORE]</bold></aqua></hover></click><newline><green>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</green>"
 
 pay:
   title: "<white>Kirim Uang</white>"
@@ -150,6 +156,8 @@ pay:
   btn_pay: "<white>Kirim</white>"
   invalid_amount: "<prefix><red>Jumlah pembayaran tidak valid!</red>"
   cannot_pay_self: "<prefix><red>Anda tidak dapat mengirim uang ke diri sendiri!</red>"
+  disabled_target: "<prefix><red><target></red> <gray>menonaktifkan penerimaan pembayaran di pengaturan!</gray>"
+  friends_only: "<prefix><red><target></red> <gray>hanya menerima pembayaran dari teman!</gray>"
   not_enough_money: "<prefix><red>Uang Anda tidak mencukupi!</red>"
   success_sender: "<prefix><green>Anda mengirim <yellow>$<amount></yellow> ke <yellow><target></yellow>!</green>"
   success_receiver: "<prefix><green>Anda menerima <yellow>$<amount></yellow> dari <yellow><sender></yellow>!</green>"

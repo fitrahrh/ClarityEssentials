@@ -13,10 +13,6 @@ general:
   reload_success: "<prefix><green>設定と各言語データを <yellow><time></yellow> ms で正常に再読み込みしました！</green>"
   unknown_command: "<prefix><red>不明なサブコマンドです！ <yellow>/ce help</yellow> でコマンド一覧を確認できます。</red>"
 
-validation:
-  name_empty: "<prefix><red>プレイヤー名は空にできません！</red>"
-  cannot_add_self: "<prefix><red>自分自身を選択することはできません！</red>"
-  player_not_found: "<prefix><red>プレイヤー '<player>' は存在しないか、参加履歴がありません！</red>"
   help:
     header: "<white><bold>=== ClarityEssentials コマンド一覧 ===</bold></white>"
     menu: "<gray><yellow>/menu</yellow> <dark_gray>-</dark_gray> <white>ネイティブプレイヤーダッシュボードを開く</white></gray>"
@@ -31,6 +27,12 @@ validation:
     sethome: "<gray><yellow>/sethome [名前]</yellow> <dark_gray>-</dark_gray> <white>現在地にホームを設定する</white></gray>"
     delhome: "<gray><yellow>/delhome [名前]</yellow> <dark_gray>-</dark_gray> <white>保存したホームを削除する</white></gray>"
     reload: "<gray><yellow>/ce reload</yellow> <dark_gray>-</dark_gray> <white>設定ファイルとデータを再読み込みする</white></gray>"
+
+validation:
+  name_empty: "<prefix><red>プレイヤー名は空にできません！</red>"
+  cannot_add_self: "<prefix><red>自分自身を選択することはできません！</red>"
+  player_not_found: "<prefix><red>プレイヤー '<player>' は存在しないか、参加履歴がありません！</red>"
+
 
 chat:
   color_no_permission: "<prefix><red>チャット内でカラータグや書式設定を使用する権限がありません！</red>"
@@ -120,6 +122,7 @@ menu:
   btn_quick_buy: "<white>クイック購入</white>"
   btn_friends: "<white>フレンド</white>"
   btn_orders: "<white>注文</white>"
+  btn_webstore: "<white>Webstore</white>"
   btn_shard_shop: "<white>シャードショップ</white>"
   btn_sell: "<white>売却</white>"
   btn_pay: "<white>送金</white>"
@@ -129,6 +132,7 @@ menu:
   btn_settings: "<white>設定</white>"
   btn_close: "<white>閉じる</white>"
   btn_back: "<white>戻る</white>"
+  open_link_chat: "<prefix><green>Webstore: <click:open_url:'<url>'><hover:show_text:'<green>Open <url>'><gold><underlined><url></underlined></gold> <aqua><bold>[LINK]</bold></aqua></hover></click></green>"
 
 pay:
   title: "<white>送金</white>"

@@ -13,10 +13,6 @@ general:
   reload_success: "<prefix><green>Configuração e idiomas recarregados com sucesso em <yellow><time></yellow> ms!</green>"
   unknown_command: "<prefix><red>Subcomando desconhecido! Digite <yellow>/ce help</yellow> para ver os comandos disponíveis.</red>"
 
-validation:
-  name_empty: "<prefix><red>O nome do jogador não pode estar vazio!</red>"
-  cannot_add_self: "<prefix><red>Você não pode selecionar a si mesmo!</red>"
-  player_not_found: "<prefix><red>O jogador '<player>' não foi encontrado ou nunca jogou antes!</red>"
   help:
     header: "<white><bold>=== Comandos ClarityEssentials ===</bold></white>"
     menu: "<gray><yellow>/menu</yellow> <dark_gray>-</dark_gray> <white>Abrir Painel do Jogador</white></gray>"
@@ -31,6 +27,12 @@ validation:
     sethome: "<gray><yellow>/sethome [nome]</yellow> <dark_gray>-</dark_gray> <white>Salvar localização atual como home</white></gray>"
     delhome: "<gray><yellow>/delhome [nome]</yellow> <dark_gray>-</dark_gray> <white>Excluir uma home salva</white></gray>"
     reload: "<gray><yellow>/ce reload</yellow> <dark_gray>-</dark_gray> <white>Recarregar configurações e dados</white></gray>"
+
+validation:
+  name_empty: "<prefix><red>O nome do jogador não pode estar vazio!</red>"
+  cannot_add_self: "<prefix><red>Você não pode selecionar a si mesmo!</red>"
+  player_not_found: "<prefix><red>O jogador '<player>' não foi encontrado ou nunca jogou antes!</red>"
+
 
 chat:
   color_no_permission: "<prefix><red>Você não tem permissão para usar cores ou formatações no chat!</red>"
@@ -120,6 +122,7 @@ menu:
   btn_quick_buy: "<white>Compra Rápida</white>"
   btn_friends: "<white>Amigos</white>"
   btn_orders: "<white>Pedidos</white>"
+  btn_webstore: "<white>Webstore</white>"
   btn_shard_shop: "<white>Loja Shard</white>"
   btn_sell: "<white>Vender</white>"
   btn_pay: "<white>Pagar</white>"
@@ -129,6 +132,7 @@ menu:
   btn_settings: "<white>Configurações</white>"
   btn_close: "<white>Fechar</white>"
   btn_back: "<white>Voltar</white>"
+  open_link_chat: "<prefix><green>Webstore: <click:open_url:'<url>'><hover:show_text:'<green>Open <url>'><gold><underlined><url></underlined></gold> <aqua><bold>[LINK]</bold></aqua></hover></click></green>"
 
 pay:
   title: "<white>Pagar</white>"

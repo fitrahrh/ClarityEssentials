@@ -108,14 +108,10 @@ esc-menu:
   button-text: "Clarity Menu"
   dialog-title: "Clarity Menu"
   columns: 2
+  webstore-url: "https://store.clarity-id.net"
   commands:
     rtp: "rtp"
-    rtp-queue: "rtp queue"
     auction: "ah"
-    quick-buy: "buy"
-    orders: "orders"
-    shard-shop: "shards"
-    sell: "sell"
     stats: "stats"
 
 # Custom Join & Leave Messages
@@ -135,4 +131,10 @@ join-leave:
     vip:
       permission: "clarityessentials.join.vip"
       message: "<yellow>★ <gold>[VIP]</gold> <yellow><player></yellow> joined the server! ★</yellow>"
+
+# Settings commands executed by buttons
+settings:
+  commands:
+    pvp: "pvp"
+    scoreboard: "sb toggle"
 

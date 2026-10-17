@@ -70,6 +70,12 @@ public class ClarityEssentialsCommand implements BasicCommand {
         LanguageHook.sendMessage(sender, "general.help.home");
         LanguageHook.sendMessage(sender, "general.help.sethome");
         LanguageHook.sendMessage(sender, "general.help.delhome");
+        LanguageHook.sendMessage(sender, "general.help.homelimit");
+        LanguageHook.sendMessage(sender, "general.help.msg");
+        LanguageHook.sendMessage(sender, "general.help.reply");
+        if (sender.hasPermission("clarityessentials.socialspy")) {
+            LanguageHook.sendMessage(sender, "general.help.socialspy");
+        }
         if (sender.hasPermission("clarityessentials.admin")) {
             LanguageHook.sendMessage(sender, "general.help.reload");
         }

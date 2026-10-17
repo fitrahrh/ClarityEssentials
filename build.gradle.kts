@@ -22,6 +22,11 @@ dependencies {
     compileOnly("net.luckperms:api:5.4")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     compileOnly(files("libs/ClarityLangCore-1.0.0.jar"))
+
+    testImplementation("org.yaml:snakeyaml:2.2")
+    testImplementation(platform("org.junit:junit-bom:5.10.2"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 eclipse {
@@ -52,6 +57,10 @@ tasks.processResources {
 
 tasks.shadowJar {
     archiveClassifier.set("")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks.build {

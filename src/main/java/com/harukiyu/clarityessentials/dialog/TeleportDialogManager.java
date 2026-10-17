@@ -135,6 +135,11 @@ public class TeleportDialogManager {
                                         }
 
                                         String targetName = res.resolvedName();
+                                        if (targetName == null) {
+                                            openTeleportList(p);
+                                            return;
+                                        }
+
                                         UserSettings s = settingsManager.getSettings(p);
                                         if (s.getTeleportList().stream().anyMatch(n -> n.equalsIgnoreCase(targetName))) {
                                             LanguageHook.sendMessage(p, "general.already_added", Placeholder.unparsed("player", targetName));

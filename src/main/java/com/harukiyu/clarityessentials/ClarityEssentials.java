@@ -62,7 +62,7 @@ public class ClarityEssentials extends JavaPlugin {
         this.leaderboardManager = new LeaderboardManager(this);
 
         this.nicknameManager = new NicknameManager(configManager, dataManager);
-        this.teleportManager = new TeleportManager(this, configManager, dataManager);
+        this.teleportManager = new TeleportManager(this, configManager, dataManager, userSettingsManager);
         this.homeManager = new HomeManager(configManager, dataManager, teleportManager);
         this.homeDialogManager = new HomeDialogManager(configManager, homeManager);
 
@@ -155,7 +155,7 @@ public class ClarityEssentials extends JavaPlugin {
                 getLogger().info(() -> "Cleaned up legacy pause menu datapack from: " + datapacksDir.getAbsolutePath());
             }
         } catch (Throwable e) {
-            getLogger().warning("Failed to clean up legacy datapack: " + e.getMessage());
+            getLogger().warning(() -> "Failed to clean up legacy datapack: " + e.getMessage());
         }
     }
 

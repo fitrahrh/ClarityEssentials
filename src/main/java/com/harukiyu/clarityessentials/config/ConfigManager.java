@@ -134,6 +134,8 @@ public class ConfigManager {
         this.cmdShardShop = config.getString("esc-menu.commands.shard-shop", "shards");
         this.cmdSell = config.getString("esc-menu.commands.sell", "sell");
         this.cmdStats = config.getString("esc-menu.commands.stats", "stats");
+        this.webstoreUrl = config.getString("esc-menu.webstore-url", "https://store.clarity-id.net");
+        this.sellUrl = config.getString("esc-menu.sell-url", "https://store.clarity-id.net");
 
         // Join & Leave Messages
         this.joinLeaveEnabled = config.getBoolean("join-leave.enabled", true);
@@ -148,6 +150,10 @@ public class ConfigManager {
                 vipJoinRules.add(new VipJoinRule(key, perm, msg));
             }
         }
+
+        // Settings commands
+        this.cmdPvp = config.getString("settings.commands.pvp", "pvp");
+        this.cmdScoreboard = config.getString("settings.commands.scoreboard", "sb toggle");
     }
 
     @SuppressWarnings("removal")
@@ -201,6 +207,8 @@ public class ConfigManager {
     private String cmdShardShop = "shards";
     private String cmdSell = "sell";
     private String cmdStats = "stats";
+    private String webstoreUrl = "https://store.clarity-id.net";
+    private String sellUrl = "https://store.clarity-id.net";
 
     public boolean isSoundsEnabled() { return soundsEnabled; }
     public Sound getSoundTeleportWarmup() { return soundTeleportWarmup; }
@@ -221,6 +229,8 @@ public class ConfigManager {
     public String getCmdShardShop() { return cmdShardShop; }
     public String getCmdSell() { return cmdSell; }
     public String getCmdStats() { return cmdStats; }
+    public String getWebstoreUrl() { return webstoreUrl; }
+    public String getSellUrl() { return sellUrl; }
 
     // Join & Leave Messages
     private boolean joinLeaveEnabled = true;
@@ -234,4 +244,11 @@ public class ConfigManager {
     public String getDefaultJoinMessage() { return defaultJoinMessage; }
     public String getDefaultLeaveMessage() { return defaultLeaveMessage; }
     public java.util.List<VipJoinRule> getVipJoinRules() { return vipJoinRules; }
+
+    // Settings Commands
+    private String cmdPvp = "pvp";
+    private String cmdScoreboard = "sb toggle";
+
+    public String getCmdPvp() { return cmdPvp; }
+    public String getCmdScoreboard() { return cmdScoreboard; }
 }

@@ -13,10 +13,6 @@ general:
   reload_success: "<prefix><green>Конфигурация и данные языков успешно перезагружены за <yellow><time></yellow> мс!</green>"
   unknown_command: "<prefix><red>Неизвестная подкоманда! Введите <yellow>/ce help</yellow> для просмотра списка команд.</red>"
 
-validation:
-  name_empty: "<prefix><red>Имя игрока не может быть пустым!</red>"
-  cannot_add_self: "<prefix><red>Вы не можете выбрать самого себя!</red>"
-  player_not_found: "<prefix><red>Игрок '<player>' не найден или никогда не играл на сервере!</red>"
   help:
     header: "<white><bold>=== Команды ClarityEssentials ===</bold></white>"
     menu: "<gray><yellow>/menu</yellow> <dark_gray>-</dark_gray> <white>Открыть меню игрока</white></gray>"
@@ -31,6 +27,12 @@ validation:
     sethome: "<gray><yellow>/sethome [название]</yellow> <dark_gray>-</dark_gray> <white>Сохранить текущую позицию как дом</white></gray>"
     delhome: "<gray><yellow>/delhome [название]</yellow> <dark_gray>-</dark_gray> <white>Удалить сохраненную точку дома</white></gray>"
     reload: "<gray><yellow>/ce reload</yellow> <dark_gray>-</dark_gray> <white>Перезагрузить конфигурацию и данные</white></gray>"
+
+validation:
+  name_empty: "<prefix><red>Имя игрока не может быть пустым!</red>"
+  cannot_add_self: "<prefix><red>Вы не можете выбрать самого себя!</red>"
+  player_not_found: "<prefix><red>Игрок '<player>' не найден или никогда не играл на сервере!</red>"
+
 
 chat:
   color_no_permission: "<prefix><red>У вас нет прав на использование цветов и форматирования в чате!</red>"
@@ -120,6 +122,7 @@ menu:
   btn_quick_buy: "<white>Быстрая покупка</white>"
   btn_friends: "<white>Друзья</white>"
   btn_orders: "<white>Заказы</white>"
+  btn_webstore: "<white>Webstore</white>"
   btn_shard_shop: "<white>Магазин осколков</white>"
   btn_sell: "<white>Продать</white>"
   btn_pay: "<white>Перевод</white>"
@@ -129,6 +132,7 @@ menu:
   btn_settings: "<white>Настройки</white>"
   btn_close: "<white>Закрыть</white>"
   btn_back: "<white>Назад</white>"
+  open_link_chat: "<prefix><green>Webstore: <click:open_url:'<url>'><hover:show_text:'<green>Open <url>'><gold><underlined><url></underlined></gold> <aqua><bold>[LINK]</bold></aqua></hover></click></green>"
 
 pay:
   title: "<white>Перевод</white>"

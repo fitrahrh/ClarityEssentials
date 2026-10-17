@@ -86,17 +86,6 @@ public class ClarityBootstrap implements PluginBootstrap {
                                 .build())
                         .type(DialogType.multiAction(buttons, exitButton, columns))
                 );
-
-                // Also register CUSTOM_OPTIONS as a fallback
-                event.registry().registerWith(DialogKeys.CUSTOM_OPTIONS, builderFactory -> builderFactory.empty()
-                        .base(DialogBase.builder(title)
-                                .externalTitle(externalTitle)
-                                .canCloseWithEscape(true)
-                                .pause(false)
-                                .afterAction(DialogAfterAction.NONE)
-                                .build())
-                        .type(DialogType.multiAction(buttons, exitButton, columns))
-                );
             } catch (Throwable t) {
                 context.getLogger().warn("Failed to compose DIALOG registry: " + t.getMessage());
             }
@@ -218,7 +207,9 @@ public class ClarityBootstrap implements PluginBootstrap {
             ClarityEssentials plugin = ClarityEssentials.getInstance();
             if (plugin == null || !plugin.isEnabled()) {
                 if (!commandFallback.isBlank()) {
-                    player.performCommand(commandFallback.startsWith("/") ? commandFallback.substring(1) : commandFallback);
+                    try {
+                        player.performCommand(commandFallback.startsWith("/") ? commandFallback.substring(1) : commandFallback);
+                    } catch (Throwable ignored) {}
                 }
                 return;
             }
@@ -233,7 +224,9 @@ public class ClarityBootstrap implements PluginBootstrap {
                 case "menu", "dashboard" -> plugin.getMenuDialogManager().openDashboard(player);
                 default -> {
                     if (!commandFallback.isBlank()) {
-                        player.performCommand(commandFallback.startsWith("/") ? commandFallback.substring(1) : commandFallback);
+                        try {
+                            player.performCommand(commandFallback.startsWith("/") ? commandFallback.substring(1) : commandFallback);
+                        } catch (Throwable ignored) {}
                     }
                 }
             }
@@ -247,11 +240,13 @@ public class ClarityBootstrap implements PluginBootstrap {
         String finalCmd = cmd;
 
         closeScreenThenRun(player, () -> {
-            if ("console-command".equalsIgnoreCase(type) || "console".equalsIgnoreCase(type)) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCmd);
-            } else {
-                player.performCommand(finalCmd);
-            }
+            try {
+                if ("console-command".equalsIgnoreCase(type) || "console".equalsIgnoreCase(type)) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCmd);
+                } else {
+                    player.performCommand(finalCmd);
+                }
+            } catch (Throwable ignored) {}
         });
     }
 

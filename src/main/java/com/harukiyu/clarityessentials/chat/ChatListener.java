@@ -45,4 +45,22 @@ public class ChatListener implements Listener {
             chatManager.formatMessage(source, message)
         );
     }
+
+    @SuppressWarnings("deprecation")
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onLegacyAsyncPlayerChat(org.bukkit.event.player.AsyncPlayerChatEvent event) {
+        Player sender = event.getPlayer();
+        UserSettings senderSettings = userSettingsManager.getSettings(sender.getUniqueId());
+
+        if (!senderSettings.isPublicChat()) {
+            LanguageHook.sendMessage(sender, "chat.public_chat_disabled");
+            event.setCancelled(true);
+            return;
+        }
+
+        event.getRecipients().removeIf(recipient -> {
+            UserSettings viewerSettings = userSettingsManager.getSettings(recipient.getUniqueId());
+            return !viewerSettings.isPublicChat();
+        });
+    }
 }

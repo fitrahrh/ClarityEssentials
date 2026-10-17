@@ -124,4 +124,44 @@ public class PlayerListener implements Listener {
             attacker.playSound(attacker.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
         }
     }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerDeath(org.bukkit.event.entity.PlayerDeathEvent event) {
+        Component deathMsg = event.deathMessage();
+        if (deathMsg == null) {
+            return;
+        }
+
+        Player victim = event.getEntity();
+        event.deathMessage(null); // Cancel global broadcast to filter per recipient
+
+        for (Player online : org.bukkit.Bukkit.getOnlinePlayers()) {
+            UserSettings s = userSettingsManager.getSettings(online.getUniqueId());
+            String pref = s.getDeathMessages();
+            if ("Off".equalsIgnoreCase(pref)) continue;
+            if ("Friends".equalsIgnoreCase(pref) && !online.equals(victim) && !s.isFriend(victim.getName())) continue;
+            online.sendMessage(deathMsg);
+        }
+        org.bukkit.Bukkit.getConsoleSender().sendMessage(deathMsg);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerAdvancementDone(org.bukkit.event.player.PlayerAdvancementDoneEvent event) {
+        Component advMsg = event.message();
+        if (advMsg == null) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+        event.message(null); // Cancel global broadcast to filter per recipient
+
+        for (Player online : org.bukkit.Bukkit.getOnlinePlayers()) {
+            UserSettings s = userSettingsManager.getSettings(online.getUniqueId());
+            String pref = s.getAdvancementMessages();
+            if ("Off".equalsIgnoreCase(pref)) continue;
+            if ("Friends".equalsIgnoreCase(pref) && !online.equals(player) && !s.isFriend(player.getName())) continue;
+            online.sendMessage(advMsg);
+        }
+        org.bukkit.Bukkit.getConsoleSender().sendMessage(advMsg);
+    }
 }

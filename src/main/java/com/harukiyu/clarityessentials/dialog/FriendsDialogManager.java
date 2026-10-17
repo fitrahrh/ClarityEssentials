@@ -136,6 +136,11 @@ public class FriendsDialogManager {
                                         }
 
                                         String targetName = res.resolvedName();
+                                        if (targetName == null) {
+                                            openFriends(p);
+                                            return;
+                                        }
+
                                         UserSettings s = settingsManager.getSettings(p);
                                         if (s.isFriend(targetName)) {
                                             LanguageHook.sendMessage(p, "general.already_added", Placeholder.unparsed("player", targetName));

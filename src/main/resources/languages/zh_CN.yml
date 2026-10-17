@@ -13,10 +13,6 @@ general:
   reload_success: "<prefix><green>配置文件与语言数据已成功重载，耗时 <yellow><time></yellow> 毫秒！</green>"
   unknown_command: "<prefix><red>未知子命令！输入 <yellow>/ce help</yellow> 查看可用命令。</red>"
 
-validation:
-  name_empty: "<prefix><red>玩家名称不能为空！</red>"
-  cannot_add_self: "<prefix><red>你不能选择你自己！</red>"
-  player_not_found: "<prefix><red>未找到玩家 '<player>' 或该玩家从未加入过服务器！</red>"
   help:
     header: "<white><bold>=== ClarityEssentials 指令帮助 ===</bold></white>"
     menu: "<gray><yellow>/menu</yellow> <dark_gray>-</dark_gray> <white>打开原生玩家控制面板</white></gray>"
@@ -31,6 +27,12 @@ validation:
     sethome: "<gray><yellow>/sethome [名称]</yellow> <dark_gray>-</dark_gray> <white>在当前位置设置家</white></gray>"
     delhome: "<gray><yellow>/delhome [名称]</yellow> <dark_gray>-</dark_gray> <white>删除已保存的家</white></gray>"
     reload: "<gray><yellow>/ce reload</yellow> <dark_gray>-</dark_gray> <white>重载插件配置及数据</white></gray>"
+
+validation:
+  name_empty: "<prefix><red>玩家名称不能为空！</red>"
+  cannot_add_self: "<prefix><red>你不能选择你自己！</red>"
+  player_not_found: "<prefix><red>未找到玩家 '<player>' 或该玩家从未加入过服务器！</red>"
+
 
 chat:
   color_no_permission: "<prefix><red>你没有在聊天中使用颜色或排版标签的权限！</red>"
@@ -120,6 +122,7 @@ menu:
   btn_quick_buy: "<white>快捷购买</white>"
   btn_friends: "<white>好友</white>"
   btn_orders: "<white>订单</white>"
+  btn_webstore: "<white>Webstore</white>"
   btn_shard_shop: "<white>碎片商店</white>"
   btn_sell: "<white>出售</white>"
   btn_pay: "<white>转账</white>"
@@ -129,6 +132,7 @@ menu:
   btn_settings: "<white>设置</white>"
   btn_close: "<white>关闭</white>"
   btn_back: "<white>返回</white>"
+  open_link_chat: "<prefix><green>Webstore: <click:open_url:'<url>'><hover:show_text:'<green>Open <url>'><gold><underlined><url></underlined></gold> <aqua><bold>[LINK]</bold></aqua></hover></click></green>"
 
 pay:
   title: "<white>转账</white>"

@@ -25,6 +25,7 @@ public class SettingsDialogManager {
     private static final MiniMessage MM = MiniMessage.miniMessage();
     private static final ClickCallback.Options DEFAULT_OPTIONS = ClickCallback.Options.builder().build();
 
+    private final ConfigManager configManager;
     private final UserSettingsManager settingsManager;
     private final TeleportManager teleportManager;
     private MenuDialogManager menuDialogManager;
@@ -32,12 +33,23 @@ public class SettingsDialogManager {
     public SettingsDialogManager(@NotNull ConfigManager configManager,
                                  @NotNull UserSettingsManager settingsManager,
                                  @NotNull TeleportManager teleportManager) {
+        this.configManager = configManager;
         this.settingsManager = settingsManager;
         this.teleportManager = teleportManager;
     }
 
     public void setMenuDialogManager(@NotNull MenuDialogManager menuDialogManager) {
         this.menuDialogManager = menuDialogManager;
+    }
+
+    private void executeSafeCommand(@NotNull Player player, @NotNull String command) {
+        if (command.isBlank()) return;
+        String cleanCmd = command.startsWith("/") ? command.substring(1) : command;
+        try {
+            player.performCommand(cleanCmd);
+        } catch (Throwable t) {
+            player.sendMessage(MM.deserialize("<prefix><gray>Command <yellow>/" + cleanCmd + "</yellow> could not be executed or is not installed.</gray>"));
+        }
     }
 
     /**
@@ -65,7 +77,7 @@ public class SettingsDialogManager {
         buttons.add(ActionButton.builder(LanguageHook.getComponent("settings.btn_pvp", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) {
-                        p.performCommand("pvp");
+                        executeSafeCommand(p, configManager.getCmdPvp());
                         openMainSettings(p);
                     }
                 }, DEFAULT_OPTIONS)).build());
@@ -86,7 +98,7 @@ public class SettingsDialogManager {
         buttons.add(ActionButton.builder(LanguageHook.getComponent("settings.btn_scoreboard", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) {
-                        p.performCommand("scoreboard toggle");
+                        executeSafeCommand(p, configManager.getCmdScoreboard());
                         openMainSettings(p);
                     }
                 }, DEFAULT_OPTIONS)).build());

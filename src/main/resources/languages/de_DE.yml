@@ -13,10 +13,6 @@ general:
   reload_success: "<prefix><green>Konfiguration und Sprachdateien erfolgreich in <yellow><time></yellow> ms neu geladen!</green>"
   unknown_command: "<prefix><red>Unbekannter Unterbefehl! Tippe <yellow>/ce help</yellow> für eine Übersicht aller Befehle.</red>"
 
-validation:
-  name_empty: "<prefix><red>Spielername darf nicht leer sein!</red>"
-  cannot_add_self: "<prefix><red>Du kannst dich nicht selbst auswählen!</red>"
-  player_not_found: "<prefix><red>Spieler '<player>' wurde nicht gefunden oder hat den Server nie betreten!</red>"
   help:
     header: "<white><bold>=== ClarityEssentials Befehle ===</bold></white>"
     menu: "<gray><yellow>/menu</yellow> <dark_gray>-</dark_gray> <white>Öffnet das Spieler-Dashboard</white></gray>"
@@ -31,6 +27,12 @@ validation:
     sethome: "<gray><yellow>/sethome [Name]</yellow> <dark_gray>-</dark_gray> <white>Aktuellen Ort als Home speichern</white></gray>"
     delhome: "<gray><yellow>/delhome [Name]</yellow> <dark_gray>-</dark_gray> <white>Ein gespeichertes Home löschen</white></gray>"
     reload: "<gray><yellow>/ce reload</yellow> <dark_gray>-</dark_gray> <white>Konfiguration und Daten neu laden</white></gray>"
+
+validation:
+  name_empty: "<prefix><red>Spielername darf nicht leer sein!</red>"
+  cannot_add_self: "<prefix><red>Du kannst dich nicht selbst auswählen!</red>"
+  player_not_found: "<prefix><red>Spieler '<player>' wurde nicht gefunden oder hat den Server nie betreten!</red>"
+
 
 chat:
   color_no_permission: "<prefix><red>Du hast keine Berechtigung für Farb- oder Formatierungstags im Chat!</red>"
@@ -120,6 +122,7 @@ menu:
   btn_quick_buy: "<white>Schnellkauf</white>"
   btn_friends: "<white>Freunde</white>"
   btn_orders: "<white>Bestellungen</white>"
+  btn_webstore: "<white>Webstore</white>"
   btn_shard_shop: "<white>Scherben-Shop</white>"
   btn_sell: "<white>Verkaufen</white>"
   btn_pay: "<white>Bezahlen</white>"
@@ -129,6 +132,7 @@ menu:
   btn_settings: "<white>Einstellungen</white>"
   btn_close: "<white>Schließen</white>"
   btn_back: "<white>Zurück</white>"
+  open_link_chat: "<prefix><green>Webstore: <click:open_url:'<url>'><hover:show_text:'<green>Open <url>'><gold><underlined><url></underlined></gold> <aqua><bold>[LINK]</bold></aqua></hover></click></green>"
 
 pay:
   title: "<white>Bezahlen</white>"

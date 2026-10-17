@@ -124,7 +124,7 @@ public class UserSettingsManager {
         try {
             config.save(file);
         } catch (IOException e) {
-            plugin.getLogger().warning("Failed to save user settings for " + uuid + ": " + e.getMessage());
+            plugin.getLogger().warning(() -> "Failed to save user settings for " + uuid + ": " + e.getMessage());
         }
     }
 

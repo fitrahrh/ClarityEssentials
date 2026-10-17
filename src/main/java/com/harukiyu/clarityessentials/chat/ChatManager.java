@@ -41,10 +41,16 @@ public class ChatManager {
             formatPattern = configManager.getDefaultChatFormat();
         }
 
-        // 2. Parse PlaceholderAPI on the format template
+        // 2. Convert non-core {placeholder} tokens to %placeholder% for PlaceholderAPI
+        formatPattern = Utils.convertCurlyToPapi(formatPattern);
+
+        // 3. Parse PlaceholderAPI on the format template
         formatPattern = PlaceholderAPIHook.setPlaceholders(player, formatPattern);
 
-        // Standardize template tokens to MiniMessage tags
+        // 4. Convert legacy colors (§ and &) returned by PAPI into MiniMessage tags
+        formatPattern = Utils.convertLegacyToMiniMessage(formatPattern);
+
+        // 5. Standardize core template tokens to MiniMessage tags
         formatPattern = formatPattern
                 .replace("{prefix}", "<prefix>")
                 .replace("{suffix}", "<suffix>")

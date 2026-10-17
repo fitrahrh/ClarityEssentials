@@ -18,7 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PrivateMessageManager {
 
-    private final ClarityEssentials plugin;
     private final UserSettingsManager userSettingsManager;
     private final NicknameManager nicknameManager;
 
@@ -28,7 +27,6 @@ public class PrivateMessageManager {
     public PrivateMessageManager(@NotNull ClarityEssentials plugin,
                                  @NotNull UserSettingsManager userSettingsManager,
                                  @NotNull NicknameManager nicknameManager) {
-        this.plugin = plugin;
         this.userSettingsManager = userSettingsManager;
         this.nicknameManager = nicknameManager;
     }

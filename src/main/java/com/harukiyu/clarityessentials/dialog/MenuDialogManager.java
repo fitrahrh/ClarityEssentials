@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import com.harukiyu.clarityessentials.nickname.NicknameManager;
 import io.papermc.paper.registry.data.dialog.input.DialogInput;
 import io.papermc.paper.registry.data.dialog.input.TextDialogInput;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 import java.util.ArrayList;
@@ -71,9 +72,12 @@ public class MenuDialogManager {
 
         Component title = LanguageHook.getComponent("menu.title", player);
 
-        // 14 Buttons arranged in 2 columns (7 rows) exactly matching image copy.png:
-        // Left Column: Homes, Auction, Quick Buy, Orders, Sell, Teleport, Leaderboards
-        // Right Column: RTP, RTP Queue, Friends, Shard Shop, Pay, Stats, Settings
+        // Arranged in 2 columns (5 rows, 10 buttons):
+        // Row 1: Homes (L), RTP (R)
+        // Row 2: Auction (L), Friends (R)
+        // Row 3: Webstore (L), Teleport (R)
+        // Row 4: Pay (L), Stats (R)
+        // Row 5: Leaderboards (L), Settings (R)
         List<ActionButton> buttons = new ArrayList<>();
 
         // Row 1
@@ -86,7 +90,7 @@ public class MenuDialogManager {
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) {
                         p.closeDialog();
-                        p.performCommand(configManager.getCmdRtp());
+                        executeSafeCommand(p, configManager.getCmdRtp());
                     }
                 }, DEFAULT_OPTIONS)).build());
 
@@ -95,24 +99,7 @@ public class MenuDialogManager {
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) {
                         p.closeDialog();
-                        p.performCommand(configManager.getCmdAuction());
-                    }
-                }, DEFAULT_OPTIONS)).build());
-
-        buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_rtp_queue", player))
-                .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) {
-                        p.closeDialog();
-                        p.performCommand(configManager.getCmdRtpQueue());
-                    }
-                }, DEFAULT_OPTIONS)).build());
-
-        // Row 3
-        buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_quick_buy", player))
-                .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) {
-                        p.closeDialog();
-                        p.performCommand(configManager.getCmdQuickBuy());
+                        executeSafeCommand(p, configManager.getCmdAuction());
                     }
                 }, DEFAULT_OPTIONS)).build());
 
@@ -121,52 +108,35 @@ public class MenuDialogManager {
                     if (audience instanceof Player p) friendsDialogManager.openFriends(p);
                 }, DEFAULT_OPTIONS)).build());
 
-        // Row 4
-        buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_orders", player))
+        // Row 3
+        buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_webstore", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) {
                         p.closeDialog();
-                        p.performCommand(configManager.getCmdOrders());
+                        openWebstoreLink(p, configManager.getWebstoreUrl());
                     }
                 }, DEFAULT_OPTIONS)).build());
 
-        buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_shard_shop", player))
-                .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) {
-                        p.closeDialog();
-                        p.performCommand(configManager.getCmdShardShop());
-                    }
-                }, DEFAULT_OPTIONS)).build());
-
-        // Row 5
-        buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_sell", player))
-                .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) {
-                        p.closeDialog();
-                        p.performCommand(configManager.getCmdSell());
-                    }
-                }, DEFAULT_OPTIONS)).build());
-
-        buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_pay", player))
-                .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) payDialogManager.openPayPlayerList(p);
-                }, DEFAULT_OPTIONS)).build());
-
-        // Row 6
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_teleport", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) teleportDialogManager.openTeleportList(p);
+                }, DEFAULT_OPTIONS)).build());
+
+        // Row 4
+        buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_pay", player))
+                .action(DialogAction.customClick((view, audience) -> {
+                    if (audience instanceof Player p) payDialogManager.openPayPlayerList(p);
                 }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_stats", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) {
                         p.closeDialog();
-                        p.performCommand(configManager.getCmdStats());
+                        executeSafeCommand(p, configManager.getCmdStats());
                     }
                 }, DEFAULT_OPTIONS)).build());
 
-        // Row 7
+        // Row 5
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_leaderboards", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) leaderboardDialogManager.openCategories(p);
@@ -191,6 +161,22 @@ public class MenuDialogManager {
         );
 
         player.showDialog(dialog);
+    }
+
+    /**
+     * Sends an interactive clickable webstore link to player chat
+     */
+    public void openWebstoreLink(@NotNull Player player, @NotNull String rawUrl) {
+        String url = rawUrl.trim();
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "https://" + url;
+        }
+
+        if (configManager.isSoundsEnabled()) {
+            player.playSound(player.getLocation(), configManager.getSoundActionSuccess(), 1.0f, 1.0f);
+        }
+
+        LanguageHook.sendMessage(player, "menu.open_link_chat", Placeholder.unparsed("url", url));
     }
 
     /**
@@ -256,5 +242,15 @@ public class MenuDialogManager {
         );
 
         player.showDialog(dialog);
+    }
+
+    private void executeSafeCommand(@NotNull Player player, @NotNull String command) {
+        if (command.isBlank()) return;
+        String cleanCmd = command.startsWith("/") ? command.substring(1) : command;
+        try {
+            player.performCommand(cleanCmd);
+        } catch (Throwable t) {
+            player.sendMessage(MiniMessage.miniMessage().deserialize("<prefix><gray>Command <yellow>/" + cleanCmd + "</yellow> could not be executed or is not installed.</gray>"));
+        }
     }
 }
