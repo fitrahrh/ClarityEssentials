@@ -1,0 +1,117 @@
+# ========================================================
+# 🌟 ClarityEssentials Configuration
+# Core plugin custom-built for Clarity Network
+# ========================================================
+
+# Chat formatting settings
+chat:
+  enabled: true
+  
+  # Default chat format when no group format matches
+  # Variables available:
+  # {prefix}    - LuckPerms prefix (or empty)
+  # {suffix}    - LuckPerms suffix (or empty)
+  # {player}    - Player original Minecraft username
+  # {nickname}  - Player nickname if set, otherwise username
+  # {message}   - The chat message
+  # PlaceholderAPI is supported (e.g. %player_ping%, %vault_eco_balance%, etc.)
+  default-format: "<gray>{prefix}</gray><white>{nickname}</white><gray>{suffix}</gray><dark_gray> » </dark_gray><white>{message}</white>"
+  
+  # Group-specific chat formats (matched against player's primary LuckPerms group)
+  # Group names must be lowercase.
+  group-formats:
+    owner: "<dark_red><bold>[Owner]</bold></dark_red> <gradient:#ff5555:#ffaa00><bold>{nickname}</bold></gradient><dark_gray> » </dark_gray><white>{message}</white>"
+    admin: "<red><bold>[Admin]</bold></red> <red>{nickname}</red><dark_gray> » </dark_gray><white>{message}</white>"
+    mod: "<dark_purple><bold>[Mod]</bold></dark_purple> <light_purple>{nickname}</light_purple><dark_gray> » </dark_gray><white>{message}</white>"
+    vip: "<gold>[VIP]</gold> <yellow>{nickname}</yellow><dark_gray> » </dark_gray><white>{message}</white>"
+    mvp: "<aqua><bold>[MVP]</bold></aqua> <aqua>{nickname}</aqua><dark_gray> » </dark_gray><white>{message}</white>"
+    default: "<gray>[Member]</gray> <white>{nickname}</white><dark_gray> » </dark_gray><gray>{message}</gray>"
+
+  # Permission required to use MiniMessage tags & color codes in chat messages
+  color-permission: "clarityessentials.chat.color"
+
+# Nickname system settings (/nick, /realname)
+nickname:
+  enabled: true
+  
+  # Regex to strictly validate allowed characters in nicknames
+  # Note: Color tags (e.g. <green>, <#ff0000>) are stripped before regex testing
+  allowed-nicks-regex: "^[a-zA-Z0-9_]{3,16}$"
+  
+  # Length boundaries
+  min-length: 3
+  max-length: 16
+  
+  # Update player tablist name alongside display name
+  change-tab-name: true
+  
+  # Permission to bypass regex and length limits
+  unsafe-bypass-permission: "clarityessentials.nick.allowunsafe"
+  
+  # Permission to use color tags in nickname
+  color-permission: "clarityessentials.nick.color"
+
+# Teleportation system settings (/tpa, /tpahere, /tpaccept, /tpdeny, /tptoggle)
+teleport:
+  # Timeout duration for teleport requests in seconds
+  timeout-seconds: 60
+  
+  # Warmup delay before teleporting (in seconds). 0 to disable.
+  warmup-seconds: 3
+  
+  # Cancel teleport warmup if the player moves
+  cancel-on-move: true
+  
+  # Movement tolerance threshold (in blocks squared)
+  move-tolerance-squared: 0.05
+  
+  # Default state for new players receiving TPA requests
+  allow-toggle-default: true
+  
+  # Permission to bypass the warmup delay
+  bypass-warmup-permission: "clarityessentials.tpa.bypasswarmup"
+
+# Home system settings (/home, /sethome, /delhome)
+# Rendered entirely with Paper Native Dialog API
+homes:
+  enabled: true
+  
+  # Default home limit for players without specific permission
+  default-limit: 3
+  
+  # Permission for unlimited homes: clarityessentials.homes.unlimited
+  unlimited-permission: "clarityessentials.homes.unlimited"
+  
+  # Permission-based home limits: clarityessentials.homes.<key>
+  # Highest matched limit will be applied.
+  limits:
+    vip: 5
+    mvp: 10
+    elite: 20
+    sponsor: 50
+
+# Sound effects (Bukkit Sound Names)
+sounds:
+  enabled: true
+  teleport-warmup: "entity.experience_orb.pickup"
+  teleport-success: "entity.enderman.teleport"
+  teleport-cancel: "block.note_block.bass"
+  dialog-open: "ui.button.click"
+  action-success: "entity.player.levelup"
+  action-failure: "block.note_block.bass"
+
+# ESC (Pause Menu) Custom Button & Native Dialog Menu (Referencing Donut SMP)
+esc-menu:
+  enabled: true
+  button-text: "Clarity"
+  dialog-title: "Clarity"
+  commands:
+    rtp: "rtp"
+    rtp-queue: "rtp queue"
+    auction: "ah"
+    quick-buy: "buy"
+    orders: "orders"
+    shard-shop: "shards"
+    sell: "sell"
+    stats: "stats"
+
