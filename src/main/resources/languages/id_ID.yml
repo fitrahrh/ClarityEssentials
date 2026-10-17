@@ -34,6 +34,7 @@ validation:
 
 chat:
   color_no_permission: "<prefix><red>Anda tidak memiliki izin untuk menggunakan tag warna atau format chat!</red>"
+  public_chat_disabled: "<prefix><red>Anda menonaktifkan chat publik di pengaturan /menu!</red>"
 
 nickname:
   usage_nick: "<prefix><red>Penggunaan: <yellow>/nick <nama_baru|off|reset></yellow></red>"
@@ -239,3 +240,31 @@ friends:
   search_not_found: "<prefix><red>Teman '<target>' tidak ditemukan dalam daftar teman Anda!</red>"
   target_offline: "<prefix><red><target> saat ini sedang offline!</red>"
   friendly_fire_blocked: "<prefix><red>Friendly fire diblokir! Anda tidak dapat melukai teman Anda <target>!</red>"
+
+homelimit:
+  usage: "<prefix><red>Penggunaan: <yellow>/homelimit <give|take|set|check> <pemain> [jumlah]</yellow></red>"
+  invalid_amount: "<prefix><red>Jumlah harus berupa angka bulat positif yang valid!</red>"
+  info_header: "<prefix><white><bold>=== Kuota Home: <player> ===</bold></white>"
+  info_count: "<prefix><gray>Home Dibuat: <yellow><current></yellow> / <yellow><max></yellow></gray>"
+  info_breakdown: "<prefix><gray>Kuota Dasar: <white><base></white> | Bonus Tambahan: <green>+<extra></green></gray>"
+  given: "<prefix><green>Menambahkan <yellow><amount></yellow> slot home ekstra ke <yellow><player></yellow>! Batas baru: <yellow><max></yellow>.</green>"
+  received: "<prefix><green>Anda menerima <yellow><amount></yellow> slot batas home ekstra! Batas baru Anda: <yellow><max></yellow>.</green>"
+  taken: "<prefix><green>Mengurangi <yellow><amount></yellow> slot home ekstra dari <yellow><player></yellow>! Batas baru: <yellow><max></yellow>.</green>"
+  deducted: "<prefix><red><yellow><amount></yellow> slot home dikurangi dari kuota Anda. Batas baru: <yellow><max></yellow>.</red>"
+  set: "<prefix><green>Mengatur slot home bonus untuk <yellow><player></yellow> menjadi <yellow><amount></yellow>! Batas baru: <yellow><max></yellow>.</green>"
+  received_set: "<prefix><green>Kuota bonus home Anda diperbarui menjadi <yellow><amount></yellow>! Batas baru: <yellow><max></yellow>.</green>"
+
+message:
+  usage_msg: "<prefix><red>Penggunaan: <yellow>/msg <pemain> <pesan></yellow></red>"
+  usage_reply: "<prefix><red>Penggunaan: <yellow>/r <pesan></yellow></red>"
+  cannot_message_self: "<prefix><red>Anda tidak dapat mengirim pesan pribadi ke diri sendiri!</red>"
+  sender_pm_off: "<prefix><red>Anda menonaktifkan pesan pribadi di pengaturan /menu!</red>"
+  recipient_pm_off: "<prefix><red><player> menonaktifkan pesan pribadi.</red>"
+  recipient_pm_friends_only: "<prefix><red><player> hanya menerima pesan pribadi dari teman.</red>"
+  no_reply_target: "<prefix><red>Tidak ada pemain yang dapat dibalas.</red>"
+  reply_offline: "<prefix><red>Pemain yang Anda kirimi pesan sedang offline.</red>"
+  format_to: "<dark_gray>[</dark_gray><gray>Ke <white><target></white></gray><dark_gray>]</dark_gray> <white><message></white>"
+  format_from: "<dark_gray>[</dark_gray><gray>Dari <white><sender></white></gray><dark_gray>]</dark_gray> <white><message></white>"
+  socialspy_enabled: "<prefix><green>Social Spy telah <bold>diaktifkan</bold>.</green>"
+  socialspy_disabled: "<prefix><yellow>Social Spy telah <bold>dinonaktifkan</bold>.</yellow>"
+  socialspy_format: "<dark_gray>[</dark_gray><red>Spy</red><dark_gray>]</dark_gray> <gray><sender></gray> <dark_gray>»</dark_gray> <gray><target></gray><dark_gray>:</dark_gray> <white><message></white>"

@@ -42,6 +42,7 @@ public class ClarityEssentials extends JavaPlugin {
     private FriendsDialogManager friendsDialogManager;
     private MenuDialogManager menuDialogManager;
     private ChatManager chatManager;
+    private com.harukiyu.clarityessentials.message.PrivateMessageManager privateMessageManager;
 
     @Override
     public void onEnable() {
@@ -50,7 +51,7 @@ public class ClarityEssentials extends JavaPlugin {
         // 1. Initialize Hooks
         LanguageHook.init(this);
         LuckPermsHook.init();
-        PlaceholderAPIHook.init();
+        PlaceholderAPIHook.init(this);
         VaultHook.init();
 
         // 2. Initialize Managers
@@ -84,11 +85,12 @@ public class ClarityEssentials extends JavaPlugin {
         this.menuDialogManager.wireSubManagers();
 
         this.chatManager = new ChatManager(configManager, nicknameManager);
+        this.privateMessageManager = new com.harukiyu.clarityessentials.message.PrivateMessageManager(this, userSettingsManager, nicknameManager);
 
         // 3. Register Events
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new PlayerListener(configManager, nicknameManager, teleportManager, userSettingsManager), this);
-        pm.registerEvents(new ChatListener(chatManager), this);
+        pm.registerEvents(new ChatListener(chatManager, userSettingsManager), this);
 
         // 4. Clean up legacy pause menu datapack if present
         cleanupLegacyDatapack();
@@ -104,6 +106,10 @@ public class ClarityEssentials extends JavaPlugin {
         registerCommand("home", "Open Home Dialog or teleport to a home", List.of("homes"), new HomeCommand(homeManager, homeDialogManager));
         registerCommand("sethome", "Set a home at your current location", List.of(), new SetHomeCommand(homeManager, homeDialogManager));
         registerCommand("delhome", "Delete a saved home", List.of("deletehome", "remhome"), new DelHomeCommand(homeManager, homeDialogManager));
+        registerCommand("homelimit", "Check or manage player home limit quota", List.of("hl"), new HomeLimitCommand(homeManager));
+        registerCommand("msg", "Send a private message to a player", List.of("tell", "w", "whisper", "message"), new MsgCommand(privateMessageManager));
+        registerCommand("reply", "Reply to the last messaged player", List.of("r"), new ReplyCommand(privateMessageManager));
+        registerCommand("socialspy", "Toggle admin social spy for private messages", List.of("spy"), new SocialSpyCommand(privateMessageManager));
         registerCommand("menu", "Open Centralized Player Dashboard", List.of("dashboard", "cp"), new MenuCommand(menuDialogManager));
         registerCommand("clarityessentials", "ClarityEssentials main command", List.of("ce", "essentials"), new ClarityEssentialsCommand(this));
 
@@ -132,7 +138,7 @@ public class ClarityEssentials extends JavaPlugin {
         dataManager.load();
         LanguageHook.init(this);
         LuckPermsHook.init();
-        PlaceholderAPIHook.init();
+        PlaceholderAPIHook.init(this);
         VaultHook.init();
     }
 
@@ -228,5 +234,9 @@ public class ClarityEssentials extends JavaPlugin {
 
     public ChatManager getChatManager() {
         return chatManager;
+    }
+
+    public com.harukiyu.clarityessentials.message.PrivateMessageManager getPrivateMessageManager() {
+        return privateMessageManager;
     }
 }

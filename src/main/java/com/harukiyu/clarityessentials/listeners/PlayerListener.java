@@ -52,12 +52,50 @@ public class PlayerListener implements Listener {
             } catch (Throwable ignored) {
             }
         }
+
+        if (configManager.isJoinLeaveEnabled()) {
+            event.joinMessage(null);
+            String template = configManager.getDefaultJoinMessage();
+            for (ConfigManager.VipJoinRule rule : configManager.getVipJoinRules()) {
+                if (player.hasPermission(rule.permission())) {
+                    template = rule.message();
+                    break;
+                }
+            }
+            Component joinMsg = net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(template,
+                    Placeholder.component("player", nicknameManager.getDisplayName(player))
+            );
+            for (Player online : org.bukkit.Bukkit.getOnlinePlayers()) {
+                UserSettings s = userSettingsManager.getSettings(online.getUniqueId());
+                String pref = s.getJoinLeaveMessages();
+                if ("Off".equalsIgnoreCase(pref)) continue;
+                if ("Friends".equalsIgnoreCase(pref) && !online.equals(player) && !s.isFriend(player.getName())) continue;
+                online.sendMessage(joinMsg);
+            }
+            org.bukkit.Bukkit.getConsoleSender().sendMessage(joinMsg);
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         teleportManager.handleQuit(player);
+
+        if (configManager.isJoinLeaveEnabled()) {
+            event.quitMessage(null);
+            Component quitMsg = net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(configManager.getDefaultLeaveMessage(),
+                    Placeholder.component("player", nicknameManager.getDisplayName(player))
+            );
+            for (Player online : org.bukkit.Bukkit.getOnlinePlayers()) {
+                if (online.equals(player)) continue;
+                UserSettings s = userSettingsManager.getSettings(online.getUniqueId());
+                String pref = s.getJoinLeaveMessages();
+                if ("Off".equalsIgnoreCase(pref)) continue;
+                if ("Friends".equalsIgnoreCase(pref) && !s.isFriend(player.getName())) continue;
+                online.sendMessage(quitMsg);
+            }
+            org.bukkit.Bukkit.getConsoleSender().sendMessage(quitMsg);
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

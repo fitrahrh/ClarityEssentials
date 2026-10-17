@@ -43,6 +43,9 @@ public class UserSettings {
     private final List<String> friendsList = new ArrayList<>();
     private final List<String> followingList = new ArrayList<>();
 
+    // Staff Social Spy
+    private boolean socialSpy = false;
+
     public UserSettings(UUID uuid) {
         this.uuid = uuid;
     }
@@ -269,5 +272,13 @@ public class UserSettings {
 
     public boolean isFollowing(String name) {
         return followingList.stream().anyMatch(f -> f.equalsIgnoreCase(name));
+    }
+
+    public boolean isSocialSpy() {
+        return socialSpy;
+    }
+
+    public void setSocialSpy(boolean socialSpy) {
+        this.socialSpy = socialSpy;
     }
 }
