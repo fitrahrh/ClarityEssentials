@@ -37,13 +37,9 @@ public class HomeManager {
     }
 
     /**
-     * Calculates maximum home limit for a player based on permissions.
+     * Calculates base maximum home limit for a player from config or rank permissions.
      */
-    public int getMaxHomes(@NotNull Player player) {
-        if (player.hasPermission(configManager.getHomeUnlimitedPermission()) || player.isOp()) {
-            return Integer.MAX_VALUE;
-        }
-
+    public int getBaseHomes(@NotNull Player player) {
         int max = configManager.getHomeDefaultLimit();
         for (Map.Entry<String, Integer> entry : configManager.getHomeRankLimits().entrySet()) {
             if (player.hasPermission("clarityessentials.homes." + entry.getKey())) {
@@ -53,6 +49,40 @@ public class HomeManager {
             }
         }
         return max;
+    }
+
+    /**
+     * Gets bonus / extra purchased home slots (digital currency style).
+     */
+    public int getExtraHomes(@NotNull Player player) {
+        return dataManager.getExtraHomes(player.getUniqueId());
+    }
+
+    public int getExtraHomes(@NotNull java.util.UUID uuid) {
+        return dataManager.getExtraHomes(uuid);
+    }
+
+    public void addExtraHomes(@NotNull java.util.UUID uuid, int amount) {
+        dataManager.addExtraHomes(uuid, amount);
+    }
+
+    public boolean takeExtraHomes(@NotNull java.util.UUID uuid, int amount) {
+        return dataManager.takeExtraHomes(uuid, amount);
+    }
+
+    public void setExtraHomes(@NotNull java.util.UUID uuid, int amount) {
+        dataManager.setExtraHomes(uuid, amount);
+    }
+
+    /**
+     * Calculates total maximum home limit for a player (Base + Extra bonus slots).
+     */
+    public int getMaxHomes(@NotNull Player player) {
+        if (player.hasPermission(configManager.getHomeUnlimitedPermission()) || player.isOp()) {
+            return Integer.MAX_VALUE;
+        }
+
+        return getBaseHomes(player) + getExtraHomes(player);
     }
 
     @NotNull

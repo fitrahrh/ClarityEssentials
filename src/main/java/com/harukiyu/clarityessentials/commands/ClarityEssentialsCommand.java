@@ -48,6 +48,12 @@ public class ClarityEssentialsCommand implements BasicCommand {
             return;
         }
 
+        if (args[0].equalsIgnoreCase("homelimit")) {
+            String[] subArgs = java.util.Arrays.copyOfRange(args, 1, args.length);
+            new HomeLimitCommand(plugin.getHomeManager()).execute(stack, subArgs);
+            return;
+        }
+
         LanguageHook.sendMessage(sender, "general.unknown_command");
     }
 
@@ -78,7 +84,15 @@ public class ClarityEssentialsCommand implements BasicCommand {
             if (stack.getSender().hasPermission("clarityessentials.admin") && "reload".startsWith(prefix)) {
                 list.add("reload");
             }
+            if (stack.getSender().hasPermission("clarityessentials.homelimit.admin") && "homelimit".startsWith(prefix)) {
+                list.add("homelimit");
+            }
             return list;
+        }
+
+        if (args[0].equalsIgnoreCase("homelimit")) {
+            String[] subArgs = java.util.Arrays.copyOfRange(args, 1, args.length);
+            return new HomeLimitCommand(plugin.getHomeManager()).suggest(stack, subArgs);
         }
         return List.of();
     }

@@ -12,6 +12,7 @@ import io.papermc.paper.registry.data.dialog.action.DialogAction;
 import io.papermc.paper.registry.data.dialog.body.DialogBody;
 import io.papermc.paper.registry.data.dialog.type.DialogType;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickCallback;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -22,8 +23,8 @@ import java.util.List;
 public class SettingsDialogManager {
 
     private static final MiniMessage MM = MiniMessage.miniMessage();
+    private static final ClickCallback.Options DEFAULT_OPTIONS = ClickCallback.Options.builder().build();
 
-    private final ConfigManager configManager;
     private final UserSettingsManager settingsManager;
     private final TeleportManager teleportManager;
     private MenuDialogManager menuDialogManager;
@@ -31,7 +32,6 @@ public class SettingsDialogManager {
     public SettingsDialogManager(@NotNull ConfigManager configManager,
                                  @NotNull UserSettingsManager settingsManager,
                                  @NotNull TeleportManager teleportManager) {
-        this.configManager = configManager;
         this.settingsManager = settingsManager;
         this.teleportManager = teleportManager;
     }
@@ -53,13 +53,13 @@ public class SettingsDialogManager {
         buttons.add(ActionButton.builder(LanguageHook.getComponent("settings.btn_chat", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) openChatSettings(p);
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Notifications
         buttons.add(ActionButton.builder(LanguageHook.getComponent("settings.btn_notifications", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) openNotificationSettings(p);
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // PvP
         buttons.add(ActionButton.builder(LanguageHook.getComponent("settings.btn_pvp", player))
@@ -68,19 +68,19 @@ public class SettingsDialogManager {
                         p.performCommand("pvp");
                         openMainSettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Visuals
         buttons.add(ActionButton.builder(LanguageHook.getComponent("settings.btn_visuals", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) openMainSettings(p);
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Privacy
         buttons.add(ActionButton.builder(LanguageHook.getComponent("settings.btn_privacy", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) openPrivacySettings(p);
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Scoreboard
         buttons.add(ActionButton.builder(LanguageHook.getComponent("settings.btn_scoreboard", player))
@@ -89,13 +89,13 @@ public class SettingsDialogManager {
                         p.performCommand("scoreboard toggle");
                         openMainSettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // General (Language & Nickname)
         buttons.add(ActionButton.builder(LanguageHook.getComponent("settings.btn_general", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) LanguageHook.openLanguageDialog(p);
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Back
         ActionButton exitBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
@@ -103,14 +103,13 @@ public class SettingsDialogManager {
                     if (audience instanceof Player p && menuDialogManager != null) {
                         menuDialogManager.openDashboard(p);
                     }
-                })).build();
+                }, DEFAULT_OPTIONS)).build();
 
-        Dialog dialog = Dialog.create(builder -> builder
+        Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .build())
                 .type(DialogType.multiAction(buttons, exitBtn, 2))
-                .build()
         );
 
         player.showDialog(dialog);
@@ -133,7 +132,7 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openChatSettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Private Messages: Anyone / Friends / Off
         buttons.add(ActionButton.builder(MM.deserialize("<white>Private Messages: </white>" + formatState(s.getPrivateMessages())))
@@ -143,7 +142,7 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openChatSettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Server Chat Messages: ON / OFF
         buttons.add(ActionButton.builder(MM.deserialize("<white>Server Chat Messages: </white>" + formatBool(s.isServerChatMessages())))
@@ -153,7 +152,7 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openChatSettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Server Hotbar Messages: ON / OFF
         buttons.add(ActionButton.builder(MM.deserialize("<white>Server Hotbar Messages: </white>" + formatBool(s.isServerHotbarMessages())))
@@ -163,7 +162,7 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openChatSettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Death Messages: Anyone / Friends / Off
         buttons.add(ActionButton.builder(MM.deserialize("<white>Death Messages: </white>" + formatState(s.getDeathMessages())))
@@ -173,7 +172,7 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openChatSettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Advancement Messages: Anyone / Friends / Off
         buttons.add(ActionButton.builder(MM.deserialize("<white>Advancement Messages: </white>" + formatState(s.getAdvancementMessages())))
@@ -183,7 +182,7 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openChatSettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Join/Leave Messages: Anyone / Friends / Off
         buttons.add(ActionButton.builder(MM.deserialize("<white>Join/Leave Messages: </white>" + formatState(s.getJoinLeaveMessages())))
@@ -193,17 +192,16 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openChatSettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         ActionButton exitBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) openMainSettings(p);
-                })).build();
+                }, DEFAULT_OPTIONS)).build();
 
-        Dialog dialog = Dialog.create(builder -> builder
+        Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title).build())
                 .type(DialogType.multiAction(buttons, exitBtn, 1))
-                .build()
         );
 
         player.showDialog(dialog);
@@ -228,7 +226,7 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openPrivacySettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Teleport-Here Requests: Anyone / Friends / Off
         buttons.add(ActionButton.builder(MM.deserialize("<white>Teleport-Here Requests: </white>" + formatState(s.getTeleportHereRequests())))
@@ -238,7 +236,7 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openPrivacySettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Allow Payments: Anyone / Friends / Off
         buttons.add(ActionButton.builder(MM.deserialize("<white>Allow Payments: </white>" + formatState(s.getAllowPayments())))
@@ -248,7 +246,7 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openPrivacySettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Randomized Coords: ON / OFF
         buttons.add(ActionButton.builder(MM.deserialize("<white>Randomized Coords: </white>" + formatBool(s.isRandomizedCoords())))
@@ -258,7 +256,7 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openPrivacySettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Private Transactions: ON / OFF
         buttons.add(ActionButton.builder(MM.deserialize("<white>Private Transactions: </white>" + formatBool(s.isPrivateTransactions())))
@@ -268,17 +266,16 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openPrivacySettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         ActionButton exitBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) openMainSettings(p);
-                })).build();
+                }, DEFAULT_OPTIONS)).build();
 
-        Dialog dialog = Dialog.create(builder -> builder
+        Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title).build())
                 .type(DialogType.multiAction(buttons, exitBtn, 1))
-                .build()
         );
 
         player.showDialog(dialog);
@@ -300,7 +297,7 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openNotificationSettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(MM.deserialize("<white>Teleport Alerts: </white>" + formatBool(s.isTeleportAlerts())))
                 .action(DialogAction.customClick((view, audience) -> {
@@ -309,7 +306,7 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openNotificationSettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(MM.deserialize("<white>Bounty Alerts: </white>" + formatBool(s.isBountyAlerts())))
                 .action(DialogAction.customClick((view, audience) -> {
@@ -318,7 +315,7 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openNotificationSettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(MM.deserialize("<white>Auction Alerts: </white>" + formatBool(s.isAuctionAlerts())))
                 .action(DialogAction.customClick((view, audience) -> {
@@ -327,7 +324,7 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openNotificationSettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(MM.deserialize("<white>Order Alerts: </white>" + formatBool(s.isOrderAlerts())))
                 .action(DialogAction.customClick((view, audience) -> {
@@ -336,7 +333,7 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openNotificationSettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(MM.deserialize("<white>Server Sounds: </white>" + formatBool(s.isServerSounds())))
                 .action(DialogAction.customClick((view, audience) -> {
@@ -345,7 +342,7 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openNotificationSettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(MM.deserialize("<white>Follow Alerts: </white>" + formatBool(s.isFollowAlerts())))
                 .action(DialogAction.customClick((view, audience) -> {
@@ -354,17 +351,16 @@ public class SettingsDialogManager {
                         settingsManager.saveSettingsAsync(p.getUniqueId());
                         openNotificationSettings(p);
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         ActionButton exitBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) openMainSettings(p);
-                })).build();
+                }, DEFAULT_OPTIONS)).build();
 
-        Dialog dialog = Dialog.create(builder -> builder
+        Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title).build())
                 .type(DialogType.multiAction(buttons, exitBtn, 1))
-                .build()
         );
 
         player.showDialog(dialog);

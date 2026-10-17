@@ -9,13 +9,21 @@ import io.papermc.paper.registry.data.dialog.action.DialogAction;
 import io.papermc.paper.registry.data.dialog.body.DialogBody;
 import io.papermc.paper.registry.data.dialog.type.DialogType;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickCallback;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import com.harukiyu.clarityessentials.nickname.NicknameManager;
+import io.papermc.paper.registry.data.dialog.input.DialogInput;
+import io.papermc.paper.registry.data.dialog.input.TextDialogInput;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MenuDialogManager {
+
+    private static final ClickCallback.Options DEFAULT_OPTIONS = ClickCallback.Options.builder().build();
 
     private final ConfigManager configManager;
     private final HomeDialogManager homeDialogManager;
@@ -24,6 +32,7 @@ public class MenuDialogManager {
     private final LeaderboardDialogManager leaderboardDialogManager;
     private final SettingsDialogManager settingsDialogManager;
     private final FriendsDialogManager friendsDialogManager;
+    private final NicknameManager nicknameManager;
 
     public MenuDialogManager(@NotNull ConfigManager configManager,
                              @NotNull HomeDialogManager homeDialogManager,
@@ -31,7 +40,8 @@ public class MenuDialogManager {
                              @NotNull TeleportDialogManager teleportDialogManager,
                              @NotNull LeaderboardDialogManager leaderboardDialogManager,
                              @NotNull SettingsDialogManager settingsDialogManager,
-                             @NotNull FriendsDialogManager friendsDialogManager) {
+                             @NotNull FriendsDialogManager friendsDialogManager,
+                             @NotNull NicknameManager nicknameManager) {
         this.configManager = configManager;
         this.homeDialogManager = homeDialogManager;
         this.payDialogManager = payDialogManager;
@@ -39,8 +49,10 @@ public class MenuDialogManager {
         this.leaderboardDialogManager = leaderboardDialogManager;
         this.settingsDialogManager = settingsDialogManager;
         this.friendsDialogManager = friendsDialogManager;
+        this.nicknameManager = nicknameManager;
+    }
 
-        // Wire references for back-navigation
+    public void wireSubManagers() {
         this.homeDialogManager.setMenuDialogManager(this);
         this.payDialogManager.setMenuDialogManager(this);
         this.teleportDialogManager.setMenuDialogManager(this);
@@ -68,7 +80,7 @@ public class MenuDialogManager {
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_homes", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) homeDialogManager.openHomeDialog(p);
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_rtp", player))
                 .action(DialogAction.customClick((view, audience) -> {
@@ -76,7 +88,7 @@ public class MenuDialogManager {
                         p.closeDialog();
                         p.performCommand(configManager.getCmdRtp());
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Row 2
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_auction", player))
@@ -85,7 +97,7 @@ public class MenuDialogManager {
                         p.closeDialog();
                         p.performCommand(configManager.getCmdAuction());
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_rtp_queue", player))
                 .action(DialogAction.customClick((view, audience) -> {
@@ -93,7 +105,7 @@ public class MenuDialogManager {
                         p.closeDialog();
                         p.performCommand(configManager.getCmdRtpQueue());
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Row 3
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_quick_buy", player))
@@ -102,12 +114,12 @@ public class MenuDialogManager {
                         p.closeDialog();
                         p.performCommand(configManager.getCmdQuickBuy());
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_friends", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) friendsDialogManager.openFriends(p);
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Row 4
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_orders", player))
@@ -116,7 +128,7 @@ public class MenuDialogManager {
                         p.closeDialog();
                         p.performCommand(configManager.getCmdOrders());
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_shard_shop", player))
                 .action(DialogAction.customClick((view, audience) -> {
@@ -124,7 +136,7 @@ public class MenuDialogManager {
                         p.closeDialog();
                         p.performCommand(configManager.getCmdShardShop());
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Row 5
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_sell", player))
@@ -133,18 +145,18 @@ public class MenuDialogManager {
                         p.closeDialog();
                         p.performCommand(configManager.getCmdSell());
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_pay", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) payDialogManager.openPayPlayerList(p);
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Row 6
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_teleport", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) teleportDialogManager.openTeleportList(p);
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_stats", player))
                 .action(DialogAction.customClick((view, audience) -> {
@@ -152,31 +164,95 @@ public class MenuDialogManager {
                         p.closeDialog();
                         p.performCommand(configManager.getCmdStats());
                     }
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Row 7
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_leaderboards", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) leaderboardDialogManager.openCategories(p);
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_settings", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) settingsDialogManager.openMainSettings(p);
-                })).build());
+                }, DEFAULT_OPTIONS)).build());
 
         // Close button
         ActionButton closeBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_close", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) p.closeDialog();
-                })).build();
+                }, DEFAULT_OPTIONS)).build();
 
-        Dialog dialog = Dialog.create(builder -> builder
+        Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
                         .canCloseWithEscape(true)
                         .build())
                 .type(DialogType.multiAction(buttons, closeBtn, 2))
-                .build()
+        );
+
+        player.showDialog(dialog);
+    }
+
+    /**
+     * Opens Native Text Input Dialog to change player nickname
+     */
+    public void openNickDialog(@NotNull Player player) {
+        String currentNick = nicknameManager.getRawNickname(player.getUniqueId());
+        if (currentNick == null) {
+            currentNick = player.getName();
+        }
+
+        Component title = LanguageHook.getComponent("nickname.dialog_title", player);
+        Component body = LanguageHook.getComponent("nickname.dialog_body", player);
+        Component inputLabel = LanguageHook.getComponent("nickname.dialog_input_label", player);
+
+        TextDialogInput textInput = DialogInput.text("nick_value", inputLabel)
+                .initial(currentNick)
+                .maxLength(configManager.getNickMaxLength())
+                .build();
+
+        ActionButton confirmBtn = ActionButton.builder(LanguageHook.getComponent("nickname.dialog_confirm", player))
+                .action(DialogAction.customClick((view, audience) -> {
+                    if (audience instanceof Player p) {
+                        String newNick = view.getText("nick_value");
+                        if (newNick == null || newNick.isBlank() || newNick.equalsIgnoreCase(p.getName()) || newNick.equalsIgnoreCase("off") || newNick.equalsIgnoreCase("reset")) {
+                            nicknameManager.resetNickname(p);
+                            LanguageHook.sendMessage(p, "nickname.reset");
+                            p.closeDialog();
+                            return;
+                        }
+
+                        NicknameManager.NickResult result = nicknameManager.setNickname(p, newNick.trim());
+                        switch (result) {
+                            case SUCCESS -> {
+                                LanguageHook.sendMessage(p, "nickname.changed", Placeholder.component("nickname", nicknameManager.getDisplayName(p)));
+                                p.closeDialog();
+                            }
+                            case TOO_SHORT -> LanguageHook.sendMessage(p, "nickname.too_short", Placeholder.unparsed("min", String.valueOf(configManager.getNickMinLength())));
+                            case TOO_LONG -> LanguageHook.sendMessage(p, "nickname.too_long", Placeholder.unparsed("max", String.valueOf(configManager.getNickMaxLength())));
+                            case INVALID_REGEX -> LanguageHook.sendMessage(p, "nickname.invalid_characters");
+                            case ALREADY_IN_USE -> LanguageHook.sendMessage(p, "nickname.already_taken");
+                            case COLOR_NO_PERMISSION -> LanguageHook.sendMessage(p, "nickname.no_color_permission");
+                        }
+                    }
+                }, DEFAULT_OPTIONS)).build();
+
+        ActionButton resetBtn = ActionButton.builder(LanguageHook.getComponent("nickname.dialog_reset", player))
+                .action(DialogAction.customClick((view, audience) -> {
+                    if (audience instanceof Player p) {
+                        nicknameManager.resetNickname(p);
+                        LanguageHook.sendMessage(p, "nickname.reset");
+                        p.closeDialog();
+                    }
+                }, DEFAULT_OPTIONS)).build();
+
+        Dialog dialog = Dialog.create(builder -> builder.empty()
+                .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .body(List.of(DialogBody.plainMessage(body)))
+                        .inputs(List.of(textInput))
+                        .build())
+                .type(DialogType.confirmation(confirmBtn, resetBtn))
         );
 
         player.showDialog(dialog);

@@ -101,10 +101,13 @@ sounds:
   action-failure: "block.note_block.bass"
 
 # ESC (Pause Menu) Custom Button & Native Dialog Menu (Referencing Donut SMP)
+# Minecraft syncs dialog registry data and tags during player login.
+# A full server restart and client reconnect is required when changing these settings.
 esc-menu:
   enabled: true
-  button-text: "Clarity"
-  dialog-title: "Clarity"
+  button-text: "Clarity Menu"
+  dialog-title: "Clarity Menu"
+  columns: 2
   commands:
     rtp: "rtp"
     rtp-queue: "rtp queue"
@@ -114,4 +117,22 @@ esc-menu:
     shard-shop: "shards"
     sell: "sell"
     stats: "stats"
+
+# Custom Join & Leave Messages
+join-leave:
+  enabled: true
+  # Default messages shown to everyone
+  default-join: "<dark_gray>[<green>+</green>]</dark_gray> <white><player></white> <gray>joined the game.</gray>"
+  default-leave: "<dark_gray>[<red>-</red>]</dark_gray> <white><player></white> <gray>left the game.</gray>"
+  # VIP join messages checked in order from top to bottom (first matching permission is used)
+  vip-join:
+    owner:
+      permission: "clarityessentials.join.owner"
+      message: "<gold>★ <bold>[Owner]</bold> <gradient:#ff5555:#ffaa00><player></gradient> has joined the game! ★</gold>"
+    admin:
+      permission: "clarityessentials.join.admin"
+      message: "<red>★ <bold>[Admin]</bold> <red><player></red> has joined the game! ★</red>"
+    vip:
+      permission: "clarityessentials.join.vip"
+      message: "<yellow>★ <gold>[VIP]</gold> <yellow><player></yellow> joined the server! ★</yellow>"
 

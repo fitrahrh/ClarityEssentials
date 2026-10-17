@@ -50,6 +50,7 @@ public class UserSettingsManager {
         settings.setDeathMessages(config.getString("chat.deathMessages", "Anyone"));
         settings.setAdvancementMessages(config.getString("chat.advancementMessages", "Friends"));
         settings.setJoinLeaveMessages(config.getString("chat.joinLeaveMessages", "Friends"));
+        settings.setSocialSpy(config.getBoolean("chat.socialSpy", false));
 
         settings.setTeleportRequests(config.getString("privacy.teleportRequests", "Anyone"));
         settings.setTeleportHereRequests(config.getString("privacy.teleportHereRequests", "Anyone"));
@@ -67,6 +68,9 @@ public class UserSettingsManager {
 
         for (String p : config.getStringList("teleportList")) {
             settings.addTeleportPlayer(p);
+        }
+        for (String p : config.getStringList("payList")) {
+            settings.addPayPlayer(p);
         }
         for (String f : config.getStringList("friendsList")) {
             settings.addFriend(f);
@@ -96,6 +100,7 @@ public class UserSettingsManager {
         config.set("chat.deathMessages", settings.getDeathMessages());
         config.set("chat.advancementMessages", settings.getAdvancementMessages());
         config.set("chat.joinLeaveMessages", settings.getJoinLeaveMessages());
+        config.set("chat.socialSpy", settings.isSocialSpy());
 
         config.set("privacy.teleportRequests", settings.getTeleportRequests());
         config.set("privacy.teleportHereRequests", settings.getTeleportHereRequests());
@@ -112,6 +117,7 @@ public class UserSettingsManager {
         config.set("notifications.followAlerts", settings.isFollowAlerts());
 
         config.set("teleportList", settings.getTeleportList());
+        config.set("payList", settings.getPayList());
         config.set("friendsList", settings.getFriendsList());
         config.set("followingList", settings.getFollowingList());
 

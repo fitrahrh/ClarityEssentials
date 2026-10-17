@@ -10,8 +10,17 @@ public final class PlaceholderAPIHook {
 
     private static boolean isEnabled = false;
 
-    public static void init() {
+    public static void init(@NotNull com.harukiyu.clarityessentials.ClarityEssentials plugin) {
         isEnabled = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
+        if (isEnabled) {
+            try {
+                new ClarityPlaceholderExpansion(plugin, "clarityessentials").register();
+                new ClarityPlaceholderExpansion(plugin, "clarity").register();
+                plugin.getLogger().info("Registered ClarityPlaceholderExpansion for %clarityessentials_...% and %clarity_...%");
+            } catch (Throwable t) {
+                plugin.getLogger().warning("Failed to register PlaceholderAPI expansion: " + t.getMessage());
+            }
+        }
     }
 
     public static boolean isAvailable() {

@@ -134,6 +134,20 @@ public class ConfigManager {
         this.cmdShardShop = config.getString("esc-menu.commands.shard-shop", "shards");
         this.cmdSell = config.getString("esc-menu.commands.sell", "sell");
         this.cmdStats = config.getString("esc-menu.commands.stats", "stats");
+
+        // Join & Leave Messages
+        this.joinLeaveEnabled = config.getBoolean("join-leave.enabled", true);
+        this.defaultJoinMessage = config.getString("join-leave.default-join", "<dark_gray>[<green>+</green>]</dark_gray> <white><player></white> <gray>joined the game.</gray>");
+        this.defaultLeaveMessage = config.getString("join-leave.default-leave", "<dark_gray>[<red>-</red>]</dark_gray> <white><player></white> <gray>left the game.</gray>");
+        this.vipJoinRules.clear();
+        ConfigurationSection vipSection = config.getConfigurationSection("join-leave.vip-join");
+        if (vipSection != null) {
+            for (String key : vipSection.getKeys(false)) {
+                String perm = vipSection.getString(key + ".permission", "clarityessentials.join." + key);
+                String msg = vipSection.getString(key + ".message", defaultJoinMessage);
+                vipJoinRules.add(new VipJoinRule(key, perm, msg));
+            }
+        }
     }
 
     @SuppressWarnings("removal")
@@ -207,4 +221,17 @@ public class ConfigManager {
     public String getCmdShardShop() { return cmdShardShop; }
     public String getCmdSell() { return cmdSell; }
     public String getCmdStats() { return cmdStats; }
+
+    // Join & Leave Messages
+    private boolean joinLeaveEnabled = true;
+    private String defaultJoinMessage = "<dark_gray>[<green>+</green>]</dark_gray> <white><player></white> <gray>joined the game.</gray>";
+    private String defaultLeaveMessage = "<dark_gray>[<red>-</red>]</dark_gray> <white><player></white> <gray>left the game.</gray>";
+    private final java.util.List<VipJoinRule> vipJoinRules = new java.util.ArrayList<>();
+
+    public record VipJoinRule(String key, String permission, String message) {}
+
+    public boolean isJoinLeaveEnabled() { return joinLeaveEnabled; }
+    public String getDefaultJoinMessage() { return defaultJoinMessage; }
+    public String getDefaultLeaveMessage() { return defaultLeaveMessage; }
+    public java.util.List<VipJoinRule> getVipJoinRules() { return vipJoinRules; }
 }

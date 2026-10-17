@@ -36,9 +36,15 @@ public class UserSettings {
     // Teleport List (image copy 14.png)
     private final List<String> teleportList = new ArrayList<>();
 
+    // Pay List
+    private final List<String> payList = new ArrayList<>();
+
     // Friends and Following (image copy 16.png)
     private final List<String> friendsList = new ArrayList<>();
     private final List<String> followingList = new ArrayList<>();
+
+    // Staff Social Spy
+    private boolean socialSpy = false;
 
     public UserSettings(UUID uuid) {
         this.uuid = uuid;
@@ -210,6 +216,28 @@ public class UserSettings {
         }
     }
 
+    public void removeTeleportPlayer(String name) {
+        teleportList.removeIf(p -> p.equalsIgnoreCase(name));
+    }
+
+    public List<String> getPayList() {
+        return payList;
+    }
+
+    public void addPayPlayer(String name) {
+        if (!payList.contains(name)) {
+            payList.add(name);
+        }
+    }
+
+    public void removePayPlayer(String name) {
+        payList.removeIf(p -> p.equalsIgnoreCase(name));
+    }
+
+    public boolean isPayPlayer(String name) {
+        return payList.stream().anyMatch(p -> p.equalsIgnoreCase(name));
+    }
+
     public List<String> getFriendsList() {
         return friendsList;
     }
@@ -220,6 +248,14 @@ public class UserSettings {
         }
     }
 
+    public void removeFriend(String name) {
+        friendsList.removeIf(f -> f.equalsIgnoreCase(name));
+    }
+
+    public boolean isFriend(String name) {
+        return friendsList.stream().anyMatch(f -> f.equalsIgnoreCase(name));
+    }
+
     public List<String> getFollowingList() {
         return followingList;
     }
@@ -228,5 +264,21 @@ public class UserSettings {
         if (!followingList.contains(name)) {
             followingList.add(name);
         }
+    }
+
+    public void removeFollowing(String name) {
+        followingList.removeIf(f -> f.equalsIgnoreCase(name));
+    }
+
+    public boolean isFollowing(String name) {
+        return followingList.stream().anyMatch(f -> f.equalsIgnoreCase(name));
+    }
+
+    public boolean isSocialSpy() {
+        return socialSpy;
+    }
+
+    public void setSocialSpy(boolean socialSpy) {
+        this.socialSpy = socialSpy;
     }
 }

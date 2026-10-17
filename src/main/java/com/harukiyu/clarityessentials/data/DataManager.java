@@ -40,6 +40,9 @@ public class DataManager {
     // UUID -> TPA enabled status (default true)
     private final Map<UUID, Boolean> tpaToggleCache = new ConcurrentHashMap<>();
 
+    // UUID -> Extra home limit slots (digital currency/amount style)
+    private final Map<UUID, Integer> extraHomesCache = new ConcurrentHashMap<>();
+
     public DataManager(@NotNull Plugin plugin) {
         this.plugin = plugin;
         this.dataFolder = new File(plugin.getDataFolder(), "data");
@@ -79,6 +82,7 @@ public class DataManager {
                     String nick = section.getString(uuidStr + ".nickname");
                     String rawNick = section.getString(uuidStr + ".raw-nickname");
                     boolean tpaEnabled = section.getBoolean(uuidStr + ".tpa-enabled", true);
+                    int extraHomes = section.getInt(uuidStr + ".extra-homes", 0);
 
                     if (nick != null && !nick.isBlank()) {
                         nicknameCache.put(uuid, nick);
@@ -88,6 +92,9 @@ public class DataManager {
                         nicknameToUuidMap.put(rawNick.toLowerCase(Locale.ROOT), uuid);
                     }
                     tpaToggleCache.put(uuid, tpaEnabled);
+                    if (extraHomes > 0) {
+                        extraHomesCache.put(uuid, extraHomes);
+                    }
                 } catch (IllegalArgumentException ignored) {}
             }
         }
@@ -134,16 +141,21 @@ public class DataManager {
         Set<UUID> allUuids = new HashSet<>();
         allUuids.addAll(nicknameCache.keySet());
         allUuids.addAll(tpaToggleCache.keySet());
+        allUuids.addAll(extraHomesCache.keySet());
 
         for (UUID uuid : allUuids) {
             String path = "players." + uuid.toString();
             String nick = nicknameCache.get(uuid);
             String rawNick = rawNicknameCache.get(uuid);
             boolean tpaEnabled = tpaToggleCache.getOrDefault(uuid, true);
+            int extraHomes = extraHomesCache.getOrDefault(uuid, 0);
 
             if (nick != null) playersConfig.set(path + ".nickname", nick);
             if (rawNick != null) playersConfig.set(path + ".raw-nickname", rawNick);
             playersConfig.set(path + ".tpa-enabled", tpaEnabled);
+            if (extraHomes > 0) {
+                playersConfig.set(path + ".extra-homes", extraHomes);
+            }
         }
 
         try {
@@ -245,5 +257,32 @@ public class DataManager {
             return true;
         }
         return false;
+    }
+
+    // --- Extra Homes (Currency / Amount style) ---
+    public int getExtraHomes(@NotNull UUID uuid) {
+        return extraHomesCache.getOrDefault(uuid, 0);
+    }
+
+    public void setExtraHomes(@NotNull UUID uuid, int amount) {
+        if (amount <= 0) {
+            extraHomesCache.remove(uuid);
+        } else {
+            extraHomesCache.put(uuid, amount);
+        }
+        saveAsync();
+    }
+
+    public void addExtraHomes(@NotNull UUID uuid, int amount) {
+        if (amount <= 0) return;
+        setExtraHomes(uuid, getExtraHomes(uuid) + amount);
+    }
+
+    public boolean takeExtraHomes(@NotNull UUID uuid, int amount) {
+        if (amount <= 0) return false;
+        int current = getExtraHomes(uuid);
+        int updated = Math.max(0, current - amount);
+        setExtraHomes(uuid, updated);
+        return true;
     }
 }

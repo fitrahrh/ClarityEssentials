@@ -305,6 +305,18 @@ public class TeleportManager {
         return null;
     }
 
+    public void sendTpa(@NotNull Player sender, @NotNull Player target) {
+        sendRequest(sender, target, TeleportRequest.Type.NORMAL);
+    }
+
+    public void sendTpaHere(@NotNull Player sender, @NotNull Player target) {
+        sendRequest(sender, target, TeleportRequest.Type.HERE);
+    }
+
+    public void setTpaEnabled(@NotNull Player player, boolean enabled) {
+        dataManager.setTpaEnabled(player.getUniqueId(), enabled);
+    }
+
     private void playSound(@NotNull Player player, @Nullable org.bukkit.Sound sound) {
         if (configManager.isSoundsEnabled() && sound != null) {
             player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
