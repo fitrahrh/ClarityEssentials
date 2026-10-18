@@ -122,7 +122,7 @@ menu:
   btn_quick_buy: "<white>Achat Rapide</white>"
   btn_friends: "<white>Amis</white>"
   btn_orders: "<white>Commandes</white>"
-  btn_webstore: "<white>Webstore</white>"
+  btn_webstore: "<gray>Coming Soon</gray>"
   btn_shard_shop: "<white>Boutique d'Éclats</white>"
   btn_sell: "<white>Vendre</white>"
   btn_pay: "<white>Payer</white>"
@@ -133,9 +133,16 @@ menu:
   btn_skills: "<white>Skills</white>"
   btn_coming_soon: "<gray>Coming Soon</gray>"
   coming_soon_notice: "<prefix><gray>Cette fonctionnalité sera bientôt disponible dans une prochaine mise à jour !</gray>"
+  coming_soon_dialog_title: "<white>Bientôt disponible</white>"
+  coming_soon_dialog_body: "<gray>Cette fonctionnalité est en cours de développement et sera disponible dans une prochaine mise à jour !</gray>"
   btn_close: "<white>Fermer</white>"
   btn_back: "<white>Retour</white>"
   open_link_chat: "<prefix><newline><green>----------------------------------------</green><newline><yellow><bold>  CLARITY NETWORK STORE</bold></yellow><newline><gray>  Visitez notre boutique officielle pour les grades, objets & avantages :</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>Cliquez ici pour ouvrir <aqua><url></aqua> dans votre navigateur</green>'><gold><underlined><url></underlined></gold> <aqua><bold>[OUVRIR LA BOUTIQUE]</bold></aqua></hover></click><newline><green>----------------------------------------</green>"
+
+language:
+  title: "<white>Sélectionner la langue</white>"
+  body: "<gray>Choisissez votre langue préférée pour les menus et messages :</gray>"
+  changed: "<prefix><green>La langue a été changée pour <yellow><language></yellow> !</green>"
 
 pay:
   title: "<white>Payer</white>"

@@ -148,6 +148,7 @@ public class ClarityEssentials extends JavaPlugin {
         registerCommand("spawn", "Teleport to server spawn", List.of(), new SpawnCommand(spawnManager, teleportManager, configManager));
         registerCommand("mail", "Send and read offline player mails", List.of("email"), new MailCommand(mailManager, configManager));
         registerCommand("update", "View server updates and changelog", List.of("changelog", "news"), new UpdateCommand(updateDialogManager, configManager));
+        registerCommand("language", "Open language selector or change language", List.of("lang"), new LanguageCommand());
 
         getLogger().info("==================================================");
         getLogger().info(() -> " 🌟 ClarityEssentials v" + getPluginMeta().getVersion() + " has been enabled!");

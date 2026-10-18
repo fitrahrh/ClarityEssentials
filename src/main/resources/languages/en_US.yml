@@ -126,7 +126,7 @@ menu:
   btn_rtp: "<white>RTP</white>"
   btn_auction: "<white>Auction</white>"
   btn_friends: "<white>Friends</white>"
-  btn_webstore: "<white>Webstore</white>"
+  btn_webstore: "<gray>Coming Soon</gray>"
   btn_sell: "<white>Sell</white>"
   btn_pay: "<white>Pay</white>"
   btn_teleport: "<white>Teleport</white>"
@@ -136,9 +136,16 @@ menu:
   btn_skills: "<white>Skills</white>"
   btn_coming_soon: "<gray>Coming Soon</gray>"
   coming_soon_notice: "<prefix><gray>This feature is coming soon in a future update!</gray>"
+  coming_soon_dialog_title: "<white>Coming Soon</white>"
+  coming_soon_dialog_body: "<gray>This feature is currently in development and will be available in a future update!</gray>"
   btn_close: "<white>Close</white>"
   btn_back: "<white>Back</white>"
   open_link_chat: "<prefix><newline><green>----------------------------------------</green><newline><yellow><bold>  CLARITY NETWORK STORE</bold></yellow><newline><gray>  Visit our official webstore for ranks, items & perks:</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>Click here to open <aqua><url></aqua> in your browser</green>'><gold><underlined><url></underlined></gold> <aqua><bold>[OPEN STORE LINK]</bold></aqua></hover></click><newline><green>----------------------------------------</green>"
+
+language:
+  title: "<white>Select Language</white>"
+  body: "<gray>Choose your preferred language for menus and messages:</gray>"
+  changed: "<prefix><green>Language has been set to <yellow><language></yellow>!</green>"
 
 pay:
   title: "<white>Pay</white>"

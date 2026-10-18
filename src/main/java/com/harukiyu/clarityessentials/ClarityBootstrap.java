@@ -8,7 +8,6 @@ import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.TypedKey;
 import io.papermc.paper.registry.data.dialog.ActionButton;
 import io.papermc.paper.registry.data.dialog.DialogBase;
-import io.papermc.paper.registry.data.dialog.DialogBase.DialogAfterAction;
 import io.papermc.paper.registry.data.dialog.action.DialogAction;
 import io.papermc.paper.registry.data.dialog.type.DialogType;
 import io.papermc.paper.registry.event.RegistryEvents;
@@ -27,7 +26,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-import com.harukiyu.clarityessentials.hook.LanguageHook;
 
 import java.io.File;
 import java.io.InputStream;
@@ -72,7 +70,7 @@ public class ClarityBootstrap implements PluginBootstrap {
                 .tooltip(parseComponent("<gray>Return to game</gray>"))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player player) {
-                        closeScreenThenRun(player, () -> {});
+                        player.closeDialog();
                     }
                 }, CALLBACK_OPTIONS))
                 .build();
@@ -85,7 +83,7 @@ public class ClarityBootstrap implements PluginBootstrap {
                                 .externalTitle(externalTitle)
                                 .canCloseWithEscape(true)
                                 .pause(false)
-                                .afterAction(DialogAfterAction.NONE)
+                                .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                                 .build())
                         .type(DialogType.multiAction(buttons, exitButton, columns))
                 );
@@ -160,7 +158,7 @@ public class ClarityBootstrap implements PluginBootstrap {
         buttons.add(createFeatureButton("<white>Friends</white>", "<gray>Manage friends and teleport</gray>", "friends", "friends"));
 
         // Row 3
-        buttons.add(createFeatureButton("<white>Webstore</white>", "<gray>Visit our official webstore</gray>", "webstore", ""));
+        buttons.add(createFeatureButton("<gray>Coming Soon</gray>", "<gray>Feature in development</gray>", "coming_soon", ""));
         buttons.add(createFeatureButton("<white>Teleport</white>", "<gray>Quick teleport list to players</gray>", "teleport", "tpa"));
 
         // Row 4
@@ -201,40 +199,52 @@ public class ClarityBootstrap implements PluginBootstrap {
     }
 
     private static void executeFeature(@NotNull Player player, @NotNull String feature, @NotNull String commandFallback) {
-        closeScreenThenRun(player, () -> {
+        Runnable action = () -> {
             ClarityEssentials plugin = ClarityEssentials.getInstance();
             if (plugin == null || !plugin.isEnabled()) {
-                if ("webstore".equalsIgnoreCase(feature) || "store".equalsIgnoreCase(feature)) {
-                    player.sendMessage(parseComponent("<newline><green>----------------------------------------</green><newline><yellow><bold>  CLARITY NETWORK STORE</bold></yellow><newline><gray>  Visit our official webstore: </gray><click:open_url:'https://store.clarity-id.net'><gold><underlined>https://store.clarity-id.net</underlined></gold></click><newline><green>----------------------------------------</green>"));
-                } else if ("coming_soon".equalsIgnoreCase(feature)) {
+                if ("webstore".equalsIgnoreCase(feature) || "store".equalsIgnoreCase(feature) || "coming_soon".equalsIgnoreCase(feature)) {
                     player.sendMessage(parseComponent("<gray>This feature is coming soon in a future update!</gray>"));
                 } else if (!commandFallback.isBlank()) {
-                    try {
-                        player.performCommand(commandFallback.startsWith("/") ? commandFallback.substring(1) : commandFallback);
-                    } catch (CommandException | IllegalArgumentException | IllegalStateException ignored) {}
+                    closeScreenThenRun(player, () -> {
+                        try {
+                            player.performCommand(commandFallback.startsWith("/") ? commandFallback.substring(1) : commandFallback);
+                        } catch (CommandException | IllegalArgumentException | IllegalStateException ignored) {}
+                    });
                 }
                 return;
             }
 
             switch (feature.toLowerCase()) {
-                case "homes", "home" -> plugin.getHomeDialogManager().openHomeDialog(player);
-                case "teleport", "tp" -> plugin.getTeleportDialogManager().openTeleportList(player);
-                case "friends", "friend" -> plugin.getFriendsDialogManager().openFriends(player);
-                case "pay" -> plugin.getPayDialogManager().openPayPlayerList(player);
-                case "settings", "setting" -> plugin.getSettingsDialogManager().openMainSettings(player);
-                case "leaderboards", "leaderboard" -> plugin.getLeaderboardDialogManager().openCategories(player);
-                case "menu", "dashboard" -> plugin.getMenuDialogManager().openDashboard(player);
-                case "webstore", "store", "web" -> plugin.getMenuDialogManager().openWebstoreLink(player, plugin.getConfigManager().getWebstoreUrl());
-                case "coming_soon" -> LanguageHook.sendMessage(player, "menu.coming_soon_notice");
+                case "homes", "home" -> plugin.getHomeDialogManager().openHomeDialog(player, false);
+                case "teleport", "tp" -> plugin.getTeleportDialogManager().openTeleportList(player, false);
+                case "friends", "friend" -> plugin.getFriendsDialogManager().openFriends(player, false);
+                case "pay" -> plugin.getPayDialogManager().openPayPlayerList(player, false);
+                case "settings", "setting" -> plugin.getSettingsDialogManager().openMainSettings(player, false);
+                case "leaderboards", "leaderboard" -> plugin.getLeaderboardDialogManager().openCategories(player, false);
+                case "menu", "dashboard" -> plugin.getMenuDialogManager().openDashboard(player, false);
+                case "webstore", "store", "web", "coming_soon" -> plugin.getMenuDialogManager().openComingSoonDialog(player, false);
                 default -> {
                     if (!commandFallback.isBlank()) {
-                        try {
-                            player.performCommand(commandFallback.startsWith("/") ? commandFallback.substring(1) : commandFallback);
-                        } catch (CommandException | IllegalArgumentException | IllegalStateException ignored) {}
+                        closeScreenThenRun(player, () -> {
+                            try {
+                                player.performCommand(commandFallback.startsWith("/") ? commandFallback.substring(1) : commandFallback);
+                            } catch (CommandException | IllegalArgumentException | IllegalStateException ignored) {}
+                        });
                     }
                 }
             }
-        });
+        };
+
+        if (Bukkit.isPrimaryThread()) {
+            action.run();
+        } else {
+            ClarityEssentials plugin = ClarityEssentials.getInstance();
+            if (plugin != null && plugin.isEnabled()) {
+                Bukkit.getScheduler().runTask(plugin, action);
+            } else {
+                action.run();
+            }
+        }
     }
 
     private static void executeCommand(@NotNull Player player, @NotNull String type, @NotNull String rawCommand) {

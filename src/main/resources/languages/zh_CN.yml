@@ -119,7 +119,7 @@ menu:
   btn_rtp: "<white>随机传送</white>"
   btn_auction: "<white>拍卖行</white>"
   btn_friends: "<white>好友</white>"
-  btn_webstore: "<white>Webstore</white>"
+  btn_webstore: "<gray>Coming Soon</gray>"
   btn_sell: "<white>出售</white>"
   btn_pay: "<white>转账</white>"
   btn_teleport: "<white>传送</white>"
@@ -129,9 +129,16 @@ menu:
   btn_skills: "<white>技能</white>"
   btn_coming_soon: "<gray>Coming Soon</gray>"
   coming_soon_notice: "<prefix><gray>该功能即将在未来的更新中推出！</gray>"
+  coming_soon_dialog_title: "<white>敬请期待</white>"
+  coming_soon_dialog_body: "<gray>此功能正在开发中，将在未来的更新中提供！</gray>"
   btn_close: "<white>关闭</white>"
   btn_back: "<white>返回</white>"
   open_link_chat: "<prefix><newline><green>----------------------------------------</green><newline><yellow><bold>  CLARITY NETWORK STORE</bold></yellow><newline><gray>  访问我们的官方商城以获取段位、物品与特权:</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>点击此处在浏览器中打开 <aqua><url></aqua></green>'><gold><underlined><url></underlined></gold> <aqua><bold>[打开商城链接]</bold></aqua></hover></click><newline><green>----------------------------------------</green>"
+
+language:
+  title: "<white>选择语言</white>"
+  body: "<gray>选择您偏好的菜单和消息语言：</gray>"
+  changed: "<prefix><green>语言已设置为 <yellow><language></yellow>！</green>"
 
 pay:
   title: "<white>转账</white>"

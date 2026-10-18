@@ -118,8 +118,7 @@ public class MenuDialogManager {
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_webstore", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) {
-                        p.closeDialog();
-                        openWebstoreLink(p, configManager.getWebstoreUrl());
+                        openComingSoonDialog(p, false);
                     }
                 }, DEFAULT_OPTIONS)).build());
 
@@ -165,10 +164,7 @@ public class MenuDialogManager {
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_coming_soon", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) {
-                        LanguageHook.sendMessage(p, "menu.coming_soon_notice");
-                        if (configManager.isSoundsEnabled()) {
-                            p.playSound(p.getLocation(), configManager.getSoundActionFailure(), 1.0f, 1.0f);
-                        }
+                        openComingSoonDialog(p, false);
                     }
                 }, DEFAULT_OPTIONS)).build());
 
@@ -184,6 +180,40 @@ public class MenuDialogManager {
                         .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .build())
                 .type(DialogType.multiAction(buttons, closeBtn, 2))
+        );
+
+        player.showDialog(dialog);
+    }
+
+    /**
+     * Opens the Coming Soon Notice Dialog with instant back button
+     */
+    public void openComingSoonDialog(@NotNull Player player) {
+        openComingSoonDialog(player, true);
+    }
+
+    public void openComingSoonDialog(@NotNull Player player, boolean playSound) {
+        if (playSound && configManager.isSoundsEnabled()) {
+            player.playSound(player.getLocation(), configManager.getSoundDialogOpen(), 1.0f, 1.0f);
+        }
+
+        Component title = LanguageHook.getComponent("menu.coming_soon_dialog_title", player);
+        Component body = LanguageHook.getComponent("menu.coming_soon_dialog_body", player);
+
+        ActionButton backBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
+                .action(DialogAction.customClick((view, audience) -> {
+                    if (audience instanceof Player p) {
+                        openDashboard(p, false);
+                    }
+                }, DEFAULT_OPTIONS)).build();
+
+        Dialog dialog = Dialog.create(builder -> builder.empty()
+                .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
+                        .body(List.of(DialogBody.plainMessage(body)))
+                        .build())
+                .type(DialogType.notice(backBtn))
         );
 
         player.showDialog(dialog);

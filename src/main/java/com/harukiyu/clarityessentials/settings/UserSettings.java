@@ -46,6 +46,9 @@ public class UserSettings {
     // Staff Social Spy
     private boolean socialSpy = false;
 
+    // Language Preference (e.g. en_US, id_ID, or empty for client locale)
+    private String language = "";
+
     public UserSettings(UUID uuid) {
         this.uuid = uuid;
     }
@@ -309,5 +312,13 @@ public class UserSettings {
 
     public void setFirstJoinTipsShown(boolean firstJoinTipsShown) {
         this.firstJoinTipsShown = firstJoinTipsShown;
+    }
+
+    public String getLanguage() {
+        return language != null ? language : "";
+    }
+
+    public void setLanguage(String language) {
+        this.language = language != null ? language : "";
     }
 }

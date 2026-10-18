@@ -119,7 +119,7 @@ menu:
   btn_rtp: "<white>RTP</white>"
   btn_auction: "<white>Аукцион</white>"
   btn_friends: "<white>Друзья</white>"
-  btn_webstore: "<white>Webstore</white>"
+  btn_webstore: "<gray>Coming Soon</gray>"
   btn_sell: "<white>Продать</white>"
   btn_pay: "<white>Перевод</white>"
   btn_teleport: "<white>Телепортация</white>"
@@ -129,9 +129,16 @@ menu:
   btn_skills: "<white>Навыки</white>"
   btn_coming_soon: "<gray>Coming Soon</gray>"
   coming_soon_notice: "<prefix><gray>Эта функция скоро появится в будущих обновлениях!</gray>"
+  coming_soon_dialog_title: "<white>Скоро</white>"
+  coming_soon_dialog_body: "<gray>Эта функция находится в разработке и будет доступна в будущих обновлениях!</gray>"
   btn_close: "<white>Закрыть</white>"
   btn_back: "<white>Назад</white>"
   open_link_chat: "<prefix><newline><green>----------------------------------------</green><newline><yellow><bold>  CLARITY NETWORK STORE</bold></yellow><newline><gray>  Посетите наш официальный магазин для покупки рангов, предметов и бонусов:</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>Нажмите здесь, чтобы открыть <aqua><url></aqua> в браузере</green>'><gold><underlined><url></underlined></gold> <aqua><bold>[ОТКРЫТЬ МАГАЗИН]</bold></aqua></hover></click><newline><green>----------------------------------------</green>"
+
+language:
+  title: "<white>Выберите язык</white>"
+  body: "<gray>Выберите предпочтительный язык для меню и сообщений:</gray>"
+  changed: "<prefix><green>Язык успешно изменен на <yellow><language></yellow>!</green>"
 
 pay:
   title: "<white>Перевод</white>"

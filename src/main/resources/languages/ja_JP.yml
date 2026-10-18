@@ -122,7 +122,7 @@ menu:
   btn_quick_buy: "<white>クイック購入</white>"
   btn_friends: "<white>フレンド</white>"
   btn_orders: "<white>注文</white>"
-  btn_webstore: "<white>Webstore</white>"
+  btn_webstore: "<gray>Coming Soon</gray>"
   btn_shard_shop: "<white>シャードショップ</white>"
   btn_sell: "<white>売却</white>"
   btn_pay: "<white>送金</white>"
@@ -133,9 +133,16 @@ menu:
   btn_skills: "<white>Skills</white>"
   btn_coming_soon: "<gray>Coming Soon</gray>"
   coming_soon_notice: "<prefix><gray>この機能は今後のアップデートで公開予定です！</gray>"
+  coming_soon_dialog_title: "<white>近日公開</white>"
+  coming_soon_dialog_body: "<gray>この機能は現在開発中であり、今後のアップデートで利用可能になります！</gray>"
   btn_close: "<white>閉じる</white>"
   btn_back: "<white>戻る</white>"
   open_link_chat: "<prefix><newline><green>----------------------------------------</green><newline><yellow><bold>  CLARITY NETWORK STORE</bold></yellow><newline><gray>  ランク、アイテム、特典については公式Webストアをご覧ください:</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>ブラウザで <aqua><url></aqua> を開くにはここをクリック</green>'><gold><underlined><url></underlined></gold> <aqua><bold>[ストアリンクを開く]</bold></aqua></hover></click><newline><green>----------------------------------------</green>"
+
+language:
+  title: "<white>言語を選択</white>"
+  body: "<gray>メニューとメッセージの言語を選択してください：</gray>"
+  changed: "<prefix><green>言語が <yellow><language></yellow> に設定されました！</green>"
 
 pay:
   title: "<white>送金</white>"

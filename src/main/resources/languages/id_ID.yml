@@ -126,7 +126,7 @@ menu:
   btn_rtp: "<white>RTP</white>"
   btn_auction: "<white>Lelang</white>"
   btn_friends: "<white>Teman</white>"
-  btn_webstore: "<white>Webstore</white>"
+  btn_webstore: "<gray>Coming Soon</gray>"
   btn_sell: "<white>Jual</white>"
   btn_pay: "<white>Kirim Uang</white>"
   btn_teleport: "<white>Teleportasi</white>"
@@ -136,9 +136,16 @@ menu:
   btn_skills: "<white>Skills</white>"
   btn_coming_soon: "<gray>Coming Soon</gray>"
   coming_soon_notice: "<prefix><gray>Fitur ini akan segera hadir pada pembaruan mendatang!</gray>"
+  coming_soon_dialog_title: "<white>Segera Hadir</white>"
+  coming_soon_dialog_body: "<gray>Fitur ini sedang dalam tahap pengembangan dan akan tersedia pada pembaruan mendatang!</gray>"
   btn_close: "<white>Tutup</white>"
   btn_back: "<white>Kembali</white>"
   open_link_chat: "<prefix><newline><green>----------------------------------------</green><newline><yellow><bold>  CLARITY NETWORK STORE</bold></yellow><newline><gray>  Kunjungi webstore resmi kami untuk rank, item & donasi:</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>Klik di sini untuk membuka <aqua><url></aqua> di browser</green>'><gold><underlined><url></underlined></gold> <aqua><bold>[BUKA LINK STORE]</bold></aqua></hover></click><newline><green>----------------------------------------</green>"
+
+language:
+  title: "<white>Pilih Bahasa</white>"
+  body: "<gray>Pilih bahasa yang Anda inginkan untuk menu dan pesan:</gray>"
+  changed: "<prefix><green>Bahasa telah diubah menjadi <yellow><language></yellow>!</green>"
 
 pay:
   title: "<white>Kirim Uang</white>"

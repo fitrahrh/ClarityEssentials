@@ -82,6 +82,7 @@ public class UserSettingsManager {
         settings.setLastChangelogShownTime(config.getLong("misc.lastChangelogShownTime", 0L));
         settings.setLastDismissedUpdateId(config.getString("misc.lastDismissedUpdateId", ""));
         settings.setFirstJoinTipsShown(config.getBoolean("misc.firstJoinTipsShown", false));
+        settings.setLanguage(config.getString("misc.language", ""));
 
         return settings;
     }
@@ -128,6 +129,7 @@ public class UserSettingsManager {
         config.set("misc.lastChangelogShownTime", settings.getLastChangelogShownTime());
         config.set("misc.lastDismissedUpdateId", settings.getLastDismissedUpdateId());
         config.set("misc.firstJoinTipsShown", settings.isFirstJoinTipsShown());
+        config.set("misc.language", settings.getLanguage());
 
         try {
             config.save(file);

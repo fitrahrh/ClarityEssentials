@@ -122,7 +122,7 @@ menu:
   btn_quick_buy: "<white>Compra Rápida</white>"
   btn_friends: "<white>Amigos</white>"
   btn_orders: "<white>Pedidos</white>"
-  btn_webstore: "<white>Webstore</white>"
+  btn_webstore: "<gray>Coming Soon</gray>"
   btn_shard_shop: "<white>Loja Shard</white>"
   btn_sell: "<white>Vender</white>"
   btn_pay: "<white>Pagar</white>"
@@ -133,9 +133,16 @@ menu:
   btn_skills: "<white>Skills</white>"
   btn_coming_soon: "<gray>Coming Soon</gray>"
   coming_soon_notice: "<prefix><gray>Este recurso estará disponível em breve em uma atualização futura!</gray>"
+  coming_soon_dialog_title: "<white>Em Breve</white>"
+  coming_soon_dialog_body: "<gray>Este recurso está em desenvolvimento e estará disponível em uma atualização futura!</gray>"
   btn_close: "<white>Fechar</white>"
   btn_back: "<white>Voltar</white>"
   open_link_chat: "<prefix><newline><green>----------------------------------------</green><newline><yellow><bold>  CLARITY NETWORK STORE</bold></yellow><newline><gray>  Visite nossa loja oficial para ranks, itens e vantagens:</gray><newline>  <click:open_url:'<url>'><hover:show_text:'<green>Clique aqui para abrir <aqua><url></aqua> no seu navegador</green>'><gold><underlined><url></underlined></gold> <aqua><bold>[ABRIR LINK DA LOJA]</bold></aqua></hover></click><newline><green>----------------------------------------</green>"
+
+language:
+  title: "<white>Selecionar Idioma</white>"
+  body: "<gray>Escolha seu idioma de preferência para menus e mensagens:</gray>"
+  changed: "<prefix><green>O idioma foi definido para <yellow><language></yellow>!</green>"
 
 pay:
   title: "<white>Pagar</white>"

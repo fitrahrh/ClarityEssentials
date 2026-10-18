@@ -115,7 +115,7 @@ public class SettingsDialogManager {
         // General (Language & Nickname)
         buttons.add(ActionButton.builder(LanguageHook.getComponent("settings.btn_general", player))
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) LanguageHook.openLanguageDialog(p);
+                    if (audience instanceof Player p) LanguageHook.openLanguageDialog(p, false);
                 }, DEFAULT_OPTIONS)).build());
 
         // Back

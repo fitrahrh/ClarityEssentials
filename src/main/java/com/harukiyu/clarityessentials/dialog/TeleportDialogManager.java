@@ -33,6 +33,7 @@ public class TeleportDialogManager {
     private static final MiniMessage MM = MiniMessage.miniMessage();
     private static final ClickCallback.Options DEFAULT_OPTIONS = ClickCallback.Options.builder().build();
 
+    private final ConfigManager configManager;
     private final UserSettingsManager settingsManager;
     private final TeleportManager teleportManager;
     private MenuDialogManager menuDialogManager;
@@ -40,6 +41,7 @@ public class TeleportDialogManager {
     public TeleportDialogManager(@NotNull ConfigManager configManager,
                                  @NotNull UserSettingsManager settingsManager,
                                  @NotNull TeleportManager teleportManager) {
+        this.configManager = configManager;
         this.settingsManager = settingsManager;
         this.teleportManager = teleportManager;
     }
@@ -52,6 +54,14 @@ public class TeleportDialogManager {
      * Opens Teleport List (image copy 14.png)
      */
     public void openTeleportList(@NotNull Player player) {
+        openTeleportList(player, true);
+    }
+
+    public void openTeleportList(@NotNull Player player, boolean playSound) {
+        if (playSound && configManager != null && configManager.isSoundsEnabled()) {
+            player.playSound(player.getLocation(), configManager.getSoundDialogOpen(), 1.0f, 1.0f);
+        }
+
         Component title = LanguageHook.getComponent("teleport_menu.title", player);
         Component body = LanguageHook.getComponent("teleport_menu.body", player);
 
@@ -93,12 +103,16 @@ public class TeleportDialogManager {
         ActionButton exitBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p && menuDialogManager != null) {
-                        menuDialogManager.openDashboard(p);
+                        menuDialogManager.openDashboard(p, false);
+                    } else if (audience instanceof Player p) {
+                        p.closeDialog();
                     }
                 }, DEFAULT_OPTIONS)).build();
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .build())
                 .type(DialogType.multiAction(buttons, exitBtn, 2))
@@ -120,6 +134,8 @@ public class TeleportDialogManager {
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .inputs(List.of(textInput))
                         .build())
@@ -130,13 +146,13 @@ public class TeleportDialogManager {
                                         String raw = view.getText("player_name");
                                         PlayerValidator.ValidationResult res = PlayerValidator.validatePlayerName(p, raw);
                                         if (!res.valid()) {
-                                            openTeleportList(p);
+                                            openTeleportList(p, false);
                                             return;
                                         }
 
                                         String targetName = res.resolvedName();
                                         if (targetName == null) {
-                                            openTeleportList(p);
+                                            openTeleportList(p, false);
                                             return;
                                         }
 
@@ -144,7 +160,7 @@ public class TeleportDialogManager {
                                         if (s.getTeleportList().stream().anyMatch(n -> n.equalsIgnoreCase(targetName))) {
                                             LanguageHook.sendMessage(p, "general.already_added", Placeholder.unparsed("player", targetName));
                                             p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-                                            openTeleportList(p);
+                                            openTeleportList(p, false);
                                             return;
                                         }
 
@@ -152,12 +168,12 @@ public class TeleportDialogManager {
                                         settingsManager.saveSettingsAsync(p.getUniqueId());
                                         LanguageHook.sendMessage(p, "teleport_menu.player_added", Placeholder.unparsed("player", targetName));
                                         p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
-                                        openTeleportList(p);
+                                        openTeleportList(p, false);
                                     }
                                 }, DEFAULT_OPTIONS)).build(),
                         ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                                 .action(DialogAction.customClick((view, audience) -> {
-                                    if (audience instanceof Player p) openTeleportList(p);
+                                    if (audience instanceof Player p) openTeleportList(p, false);
                                 }, DEFAULT_OPTIONS)).build()
                 ))
         );
@@ -216,11 +232,14 @@ public class TeleportDialogManager {
 
         ActionButton exitBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) openTeleportList(p);
+                    if (audience instanceof Player p) openTeleportList(p, false);
                 }, DEFAULT_OPTIONS)).build();
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
-                .base(DialogBase.builder(title).build())
+                .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
+                        .build())
                 .type(DialogType.multiAction(buttons, exitBtn, 1))
         );
 
@@ -237,6 +256,8 @@ public class TeleportDialogManager {
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .build())
                 .type(DialogType.confirmation(
@@ -247,7 +268,7 @@ public class TeleportDialogManager {
                                         settingsManager.saveSettingsAsync(p.getUniqueId());
                                         LanguageHook.sendMessage(p, "teleport_menu.player_removed", Placeholder.unparsed("player", targetName));
                                         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f);
-                                        openTeleportList(p);
+                                        openTeleportList(p, false);
                                     }
                                 }, DEFAULT_OPTIONS)).build(),
                         ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
