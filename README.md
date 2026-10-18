@@ -18,13 +18,57 @@
 
 ### 🧭 2. Centralized Player Dashboard (`/menu`, `/dashboard`)
 * Comprehensive player hub rendered using Paper's native multi-action dialog.
-* **14 Core Feature Actions (2 Columns)**:
-  * **Left Column**: Homes, Auction, Quick Buy, Orders, Sell, Teleport, Leaderboards
-  * **Right Column**: RTP, RTP Queue, Friends, Shard Shop, Pay, Stats, Settings
+* **12 Core Feature Actions (2 Columns, 6 Rows)**:
+  * **Row 1**: Homes (L), RTP (R)
+  * **Row 2**: Auction (L), Friends (R)
+  * **Row 3**: Webstore (L), Teleport (R)
+  * **Row 4**: Pay (L), Stats (R)
+  * **Row 5**: Leaderboards (L), Settings (R)
+  * **Row 6**: Skills (L), Coming Soon (R)
   * **Bottom**: Clean exit button to return to gameplay.
+* **Webstore Button**: Sends an interactive clickable link in chat directing players to the official server store (`store.clarity-id.net`).
 * Clean, minimalist design using white typography without distracting clutter.
 
-### 🏠 3. Native Dialog Home Management & Digital Currency Limit (`/home`, `/sethome`, `/delhome`, `/homelimit`)
+### 🕊️ 3. Advanced Flight System (`/fly`)
+* Flight mode with duration support (e.g. `/fly 30m`, `/fly 1h`, `/fly 45s`, `/fly unlimited`).
+* Countdown warnings before flight expiration (60s, 30s, 15s, 10s, 5s-1s).
+* Temporary **fall damage protection** buffer upon flight expiration or disable.
+* **World & Region Protection**:
+  * Configurable **Blacklist / Whitelist** for Worlds.
+  * Configurable **Blacklist / Whitelist** for **WorldGuard 7 Regions** (e.g., spawn, pvp arena, warzone).
+  * Safely disables flight and notifies the player upon entering restricted zones.
+
+### ⚡ 4. Movement & Flight Speed (`/speed`)
+* EssentialsX-compliant speed multiplier system with automatic ground/flight detection:
+  * Running `/speed <0-10>` while walking modifies **walking speed**.
+  * Running `/speed <0-10>` while flying modifies **flying speed**.
+* Explicit speed modes: `/speed walk <value>` and `/speed fly <value>`.
+* Reset speeds back to vanilla defaults: `/speed reset` (or `/speed <walk|fly> reset`).
+* Target other players: `/speed <value> [player]`.
+
+### 💖 5. Player Vitals Management (`/feed`, `/heal`)
+* **`/feed [player]`**: Fully replenishes food hunger bar, saturation, clears hunger potion effects, and plays sound.
+* **`/heal [player]`**: Fully restores maximum health ([`Attribute.MAX_HEALTH`](https://jd.papermc.io/paper/1.21/org/bukkit/attribute/Attribute.html#MAX_HEALTH)), restores hunger, removes negative potion effects, and extinguishes fire.
+
+### 🎮 6. Game Mode Switcher & Direct Shortcuts (`/gamemode`, `/gmc`, `/gms`, `/gmsp`, `/gma`)
+* `/gamemode <mode> [player]` (alias `/gm`) supporting mode names (`survival`, `creative`, `adventure`, `spectator`) or numerical IDs (`0`, `1`, `2`, `3`).
+* Dedicated instant shortcut aliases:
+  * `/gmc [player]` - Creative Mode
+  * `/gms [player]` - Survival Mode
+  * `/gmsp [player]` - Spectator Mode
+  * `/gma [player]` - Adventure Mode
+
+### 📢 7. Global Announcement Broadcast (`/broadcast`, `/bc`, `/bcast`)
+* Global announcement broadcasts supporting Adventure MiniMessage formatting.
+* Full **PlaceholderAPI** expansion support in broadcast messages.
+* Attention-grabbing ping chime sound for all online players.
+
+### 💤 8. AFK Status System (`/afk`)
+* Toggle Away-From-Keyboard status with optional reason (`/afk [reason]`).
+* Server-wide broadcast announcements upon entering and leaving AFK status.
+* Automatic un-AFK detection when players move, chat, run commands, or interact.
+
+### 🏠 9. Native Dialog Home Management & Digital Currency Limit (`/home`, `/sethome`, `/delhome`, `/homelimit`)
 * All home operations (listing, creating, teleporting, deleting) operate via native dialogs.
 * **Interactive Text Input**: `/sethome` (or clicking "+ New Home") opens a native text dialog to name the home.
 * **Deletion Confirmation**: Prompts a confirmation dialog before deleting to prevent accidental loss.
@@ -33,18 +77,18 @@
   * Total Allowed Homes = Base Quota (from rank/default) + Extra Bonus Limit slots.
   * Perfect for store packages, voting rewards, or token purchases!
 
-### 💬 4. Private Messaging & Admin SocialSpy (`/msg`, `/r`, `/socialspy`)
+### 💬 10. Private Messaging & Admin SocialSpy (`/msg`, `/r`, `/socialspy`)
 * Fast, private 1-on-1 player messaging (`/msg <player> <message>`, aliases: `/tell`, `/w`, `/whisper`).
 * Quick reply command (`/r <message>`).
 * Privacy-aware: respects individual player `/menu` privacy settings (Anyone, Friends Only, Off).
 * **Staff Social Spy (`/socialspy`)**: Allows authorized administrators (`clarityessentials.socialspy`) to monitor player private messages in real-time. Preferences persist across restarts.
 
-### 🚪 5. Custom Join & Leave Messages (Default + VIP Permissions)
+### 🚪 11. Custom Join & Leave Messages (Default + VIP Permissions)
 * Suppresses vanilla join/quit notifications and broadcasts customizable MiniMessage announcements.
 * **VIP Custom Join Messages**: Priority-based permission checks (`clarityessentials.join.<group>`) allow ranks (Owner, Admin, VIP) to have unique entrance broadcasts.
 * Individual player control: players can filter join/leave broadcasts in `/menu` Settings (Anyone, Friends Only, or Off).
 
-### 👥 6. Friends System
+### 👥 12. Friends System
 * Add friends with instant player validation (prevents adding yourself or non-existent players).
 * Real-time online/offline player status.
 * Quick actions for each friend:
@@ -53,31 +97,40 @@
   * Friendly-fire protection toggle to avoid harming teammates.
   * Remove friend with a native confirmation dialog.
 
-### 🌀 7. Teleportation & Player List (`/tpa`, `/tpahere`, `/tptoggle`)
+### 🌀 13. Teleportation & Player List (`/tpa`, `/tpahere`, `/tptoggle`)
 * Interactive clickable chat messages for incoming teleport requests (`[ACCEPT]` and `[DENY]`).
 * Request timeout handling (default: 60s) and warmup countdown with movement cancellation.
 * Toggle incoming requests on/off via `/tptoggle`.
 * Quick teleport list in the dialog menu to quickly request teleport to saved players.
 
-### 💰 8. Quick Pay System (`/pay`)
+### 💰 14. Quick Pay System (`/pay`)
 * Vault Economy integration with transaction validation and balance checks.
 * Saved recipient list for quick transfers.
 * Preset denomination buttons and native text input dialog for custom transfer amounts.
 
-### 🏷️ 9. Smart Nickname System (`/nick`, `/realname`)
+### 🏷️ 15. Smart Nickname System (`/nick`, `/realname`)
 * Native text dialog to preview, change, or reset nicknames.
 * Strict regex validation (`allowed-nicks-regex: "^[a-zA-Z0-9_]{3,16}$"`) prevents exploit characters.
 * Dedicated permissions for colors (`clarityessentials.nick.color`) and unsafe character bypass (`clarityessentials.nick.allowunsafe`).
 * Automatic synchronization across chat and tablist.
 * `/realname <nickname>` command to resolve a player's real username.
 
-### ⚙️ 10. Player Settings & Leaderboards
+### ⚙️ 16. Player Settings & Leaderboards
 * Interactive native toggles for player preferences: Chat (Public Chat filter), Notifications, PvP, Visuals, Privacy, and Scoreboard.
 * Real-time leaderboards across multiple categories: Balance, Deaths, Playtime, Blocks Placed, Blocks Broken, and Mobs Killed.
 
-### 🌐 11. Multi-Language Support (ClarityLangCore Integration)
+### 🌐 17. Multi-Language Support (ClarityLangCore Integration)
 * Automatically connects to **ClarityLangCore** when available, enabling per-player dynamic language switching (`/lang`).
-* Includes 9 bundled language localizations: English (`en_US`), Indonesian (`id_ID`), German (`de_DE`), Spanish (`es_ES`), French (`fr_FR`), Japanese (`ja_JP`), Portuguese (`pt_BR`), Russian (`ru_RU`), and Chinese (`zh_CN`).
+* Includes 9 bundled language localizations:
+  * 🇺🇸 English (`en_US`)
+  * 🇮🇩 Indonesian (`id_ID`)
+  * 🇩🇪 German (`de_DE`)
+  * 🇪🇸 Spanish (`es_ES`)
+  * 🇫🇷 French (`fr_FR`)
+  * 🇯🇵 Japanese (`ja_JP`)
+  * 🇧🇷 Portuguese (`pt_BR`)
+  * 🇷🇺 Russian (`ru_RU`)
+  * 🇨🇳 Simplified Chinese (`zh_CN`)
 * Self-contained standalone fallback when running without ClarityLangCore.
 
 ---
@@ -111,6 +164,17 @@ ClarityEssentials natively registers expansion identifiers: `%clarityessentials_
 | Command | Aliases | Description | Permission |
 | :--- | :--- | :--- | :--- |
 | `/menu` | `/dashboard`, `/cp` | Open Centralized Player Dashboard | `clarityessentials.command.menu` |
+| `/feed [player]` | `/eat` | Replenish hunger and saturation bar | `clarityessentials.command.feed` |
+| `/heal [player]` | - | Restore max health, extinguish fire & status effects | `clarityessentials.command.heal` |
+| `/fly [duration] [player]`| `/flight` | Toggle flight or set duration (`30m`, `1h`, `unlimited`) | `clarityessentials.command.fly` |
+| `/speed [fly\|walk] <0-10>`| - | Modify ground walking or flight speed multiplier | `clarityessentials.command.speed` |
+| `/broadcast <message>` | `/bc`, `/bcast` | Broadcast a global announcement with MiniMessage & PAPI | `clarityessentials.command.broadcast` |
+| `/afk [reason]` | `/away` | Toggle away-from-keyboard status with optional reason | `clarityessentials.command.afk` |
+| `/gamemode <mode> [player]`| `/gm` | Switch player game mode (survival, creative, etc.) | `clarityessentials.command.gamemode` |
+| `/gmc [player]` | - | Instant shortcut to Creative mode | `clarityessentials.command.gamemode.creative` |
+| `/gms [player]` | - | Instant shortcut to Survival mode | `clarityessentials.command.gamemode.survival` |
+| `/gmsp [player]` | - | Instant shortcut to Spectator mode | `clarityessentials.command.gamemode.spectator` |
+| `/gma [player]` | - | Instant shortcut to Adventure mode | `clarityessentials.command.gamemode.adventure` |
 | `/msg <player> <msg>` | `/tell`, `/w`, `/whisper` | Send a private message to a player | `clarityessentials.command.msg` |
 | `/reply <msg>` | `/r` | Reply to the last messaged player | `clarityessentials.command.reply` |
 | `/socialspy` | `/spy` | Toggle admin monitoring of private messages | `clarityessentials.socialspy` |
@@ -128,6 +192,12 @@ ClarityEssentials natively registers expansion identifiers: `%clarityessentials_
 | `/ce reload` | `/clarityessentials` | Reload plugin configuration and data | `clarityessentials.admin` |
 
 ### Special Permissions:
+* `clarityessentials.command.feed.others`: Feed other players.
+* `clarityessentials.command.heal.others`: Heal other players.
+* `clarityessentials.command.fly.others`: Toggle flight for other players.
+* `clarityessentials.command.fly.unlimited`: Allow unlimited flight without duration expiration.
+* `clarityessentials.command.speed.others`: Change walking or flight speed of other players.
+* `clarityessentials.command.gamemode.others`: Change game mode for other players.
 * `clarityessentials.homelimit.admin`: Permission to view others' home quotas or give/take extra slots (`/homelimit give/take/set/check`).
 * `clarityessentials.socialspy`: Permission to toggle and view private messages via `/socialspy`.
 * `clarityessentials.chat.color`: Permission to use color and MiniMessage tags in chat.
@@ -152,15 +222,33 @@ esc-menu:
   button-text: "Clarity Menu"   # Button text on ESC Game Menu
   dialog-title: "Clarity Menu"  # Title header inside the dialog
   columns: 2
+  webstore-url: "https://store.clarity-id.net"
   commands:
     rtp: "rtp"
-    rtp-queue: "rtp queue"
     auction: "ah"
-    quick-buy: "buy"
-    orders: "orders"
-    shard-shop: "shards"
-    sell: "sell"
     stats: "stats"
+    skills: "skills"
+
+# Fly System Settings (/fly)
+fly:
+  enabled: true
+  default-duration: "unlimited"
+  world-mode: "BLACKLIST" # Options: BLACKLIST, WHITELIST, DISABLED
+  worlds:
+    - "world_nether"
+    - "world_the_end"
+  region-mode: "BLACKLIST" # Options: BLACKLIST, WHITELIST, DISABLED
+  regions:
+    - "pvp_arena"
+    - "warzone"
+    - "spawn"
+  fall-protection-seconds: 15
+
+# AFK System Settings (/afk)
+afk:
+  enabled: true
+  auto-unafk-on-move: true
+  auto-unafk-on-chat: true
 
 # Home settings
 homes:

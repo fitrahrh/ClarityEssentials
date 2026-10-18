@@ -10,6 +10,7 @@ import io.papermc.paper.registry.data.dialog.body.DialogBody;
 import io.papermc.paper.registry.data.dialog.type.DialogType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickCallback;
+import org.bukkit.command.CommandException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -147,6 +148,25 @@ public class MenuDialogManager {
                     if (audience instanceof Player p) settingsDialogManager.openMainSettings(p);
                 }, DEFAULT_OPTIONS)).build());
 
+        // Row 6
+        buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_skills", player))
+                .action(DialogAction.customClick((view, audience) -> {
+                    if (audience instanceof Player p) {
+                        p.closeDialog();
+                        executeSafeCommand(p, configManager.getCmdSkills());
+                    }
+                }, DEFAULT_OPTIONS)).build());
+
+        buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_coming_soon", player))
+                .action(DialogAction.customClick((view, audience) -> {
+                    if (audience instanceof Player p) {
+                        LanguageHook.sendMessage(p, "menu.coming_soon_notice");
+                        if (configManager.isSoundsEnabled()) {
+                            p.playSound(p.getLocation(), configManager.getSoundActionFailure(), 1.0f, 1.0f);
+                        }
+                    }
+                }, DEFAULT_OPTIONS)).build());
+
         // Close button
         ActionButton closeBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_close", player))
                 .action(DialogAction.customClick((view, audience) -> {
@@ -268,7 +288,7 @@ public class MenuDialogManager {
         String cleanCmd = command.startsWith("/") ? command.substring(1) : command;
         try {
             player.performCommand(cleanCmd);
-        } catch (Throwable t) {
+        } catch (CommandException | IllegalArgumentException | IllegalStateException e) {
             player.sendMessage(MiniMessage.miniMessage().deserialize("<prefix><gray>Command <yellow>/" + cleanCmd + "</yellow> could not be executed or is not installed.</gray>"));
         }
     }

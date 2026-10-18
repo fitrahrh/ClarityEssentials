@@ -7,16 +7,20 @@ import com.harukiyu.clarityessentials.config.ConfigManager;
 import com.harukiyu.clarityessentials.data.DataManager;
 import com.harukiyu.clarityessentials.dialog.*;
 import com.harukiyu.clarityessentials.home.HomeManager;
+import com.harukiyu.clarityessentials.afk.AfkManager;
+import com.harukiyu.clarityessentials.fly.FlyManager;
 import com.harukiyu.clarityessentials.hook.LanguageHook;
 import com.harukiyu.clarityessentials.hook.LuckPermsHook;
 import com.harukiyu.clarityessentials.hook.PlaceholderAPIHook;
 import com.harukiyu.clarityessentials.hook.VaultHook;
+import com.harukiyu.clarityessentials.hook.WorldGuardHook;
 import com.harukiyu.clarityessentials.leaderboard.LeaderboardManager;
 import com.harukiyu.clarityessentials.listeners.PlayerListener;
 import com.harukiyu.clarityessentials.nickname.NicknameManager;
 import com.harukiyu.clarityessentials.settings.UserSettingsManager;
 import com.harukiyu.clarityessentials.teleport.TeleportManager;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -43,6 +47,8 @@ public class ClarityEssentials extends JavaPlugin {
     private MenuDialogManager menuDialogManager;
     private ChatManager chatManager;
     private com.harukiyu.clarityessentials.message.PrivateMessageManager privateMessageManager;
+    private FlyManager flyManager;
+    private AfkManager afkManager;
 
     @Override
     public void onEnable() {
@@ -53,6 +59,7 @@ public class ClarityEssentials extends JavaPlugin {
         LuckPermsHook.init();
         PlaceholderAPIHook.init(this);
         VaultHook.init();
+        WorldGuardHook.init();
 
         // 2. Initialize Managers
         this.configManager = new ConfigManager(this);
@@ -86,16 +93,20 @@ public class ClarityEssentials extends JavaPlugin {
 
         this.chatManager = new ChatManager(configManager, nicknameManager);
         this.privateMessageManager = new com.harukiyu.clarityessentials.message.PrivateMessageManager(this, userSettingsManager, nicknameManager);
+        this.flyManager = new FlyManager(this, configManager);
+        this.afkManager = new AfkManager(this, configManager, nicknameManager);
 
         // 3. Register Events
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new PlayerListener(configManager, nicknameManager, teleportManager, userSettingsManager), this);
         pm.registerEvents(new ChatListener(chatManager, userSettingsManager), this);
+        pm.registerEvents(flyManager, this);
+        pm.registerEvents(afkManager, this);
 
         // 4. Clean up legacy pause menu datapack if present
         cleanupLegacyDatapack();
 
-        // 4. Register Paper Native Commands (BasicCommand)
+        // 5. Register Paper Native Commands (BasicCommand)
         registerCommand("nick", "Change or reset your nickname", List.of("nickname"), new NicknameCommand(configManager, nicknameManager, menuDialogManager));
         registerCommand("realname", "Lookup a player's real username from nickname", List.of(), new RealnameCommand(nicknameManager));
         registerCommand("tpa", "Request to teleport to a player", List.of(), new TpaCommand(teleportManager));
@@ -113,17 +124,34 @@ public class ClarityEssentials extends JavaPlugin {
         registerCommand("menu", "Open Centralized Player Dashboard", List.of("dashboard", "cp"), new MenuCommand(menuDialogManager));
         registerCommand("clarityessentials", "ClarityEssentials main command", List.of("ce", "essentials"), new ClarityEssentialsCommand(this));
 
+        // New Essentials Commands
+        registerCommand("feed", "Replenish hunger bar", List.of("eat"), new FeedCommand(configManager));
+        registerCommand("heal", "Heal health and status effects", List.of(), new HealCommand(configManager));
+        registerCommand("fly", "Toggle or set flight duration", List.of("flight"), new FlyCommand(flyManager, configManager));
+        registerCommand("broadcast", "Broadcast a global announcement", List.of("bc", "bcast"), new BroadcastCommand(configManager));
+        registerCommand("afk", "Toggle away-from-keyboard status", List.of("away"), new AfkCommand(afkManager));
+        registerCommand("gamemode", "Change player game mode", List.of("gm"), new GamemodeCommand(configManager));
+        registerCommand("gmc", "Switch game mode to creative", List.of(), new GamemodeAliasCommand(GameMode.CREATIVE, "clarityessentials.command.gamemode.creative"));
+        registerCommand("gms", "Switch game mode to survival", List.of(), new GamemodeAliasCommand(GameMode.SURVIVAL, "clarityessentials.command.gamemode.survival"));
+        registerCommand("gmsp", "Switch game mode to spectator", List.of(), new GamemodeAliasCommand(GameMode.SPECTATOR, "clarityessentials.command.gamemode.spectator"));
+        registerCommand("gma", "Switch game mode to adventure", List.of(), new GamemodeAliasCommand(GameMode.ADVENTURE, "clarityessentials.command.gamemode.adventure"));
+        registerCommand("speed", "Change walking or flight speed", List.of(), new SpeedCommand(configManager));
+
         getLogger().info("==================================================");
         getLogger().info(() -> " 🌟 ClarityEssentials v" + getPluginMeta().getVersion() + " has been enabled!");
         getLogger().info(() -> " Paper Native Dialog API: Active");
         getLogger().info(() -> " ClarityLangCore Integration: " + (LanguageHook.isCoreAvailable() ? "Connected" : "Fallback Standalone"));
         getLogger().info(() -> " LuckPerms Integration: " + (LuckPermsHook.isAvailable() ? "Active" : "Disabled"));
         getLogger().info(() -> " PlaceholderAPI Integration: " + (PlaceholderAPIHook.isAvailable() ? "Active" : "Disabled"));
+        getLogger().info(() -> " WorldGuard Integration: " + (WorldGuardHook.isAvailable() ? "Active" : "Disabled"));
         getLogger().info("==================================================");
     }
 
     @Override
     public void onDisable() {
+        if (flyManager != null) {
+            flyManager.stop();
+        }
         if (dataManager != null) {
             dataManager.saveSync();
         }
@@ -140,6 +168,7 @@ public class ClarityEssentials extends JavaPlugin {
         LuckPermsHook.init();
         PlaceholderAPIHook.init(this);
         VaultHook.init();
+        WorldGuardHook.init();
     }
 
     private void cleanupLegacyDatapack() {
@@ -238,5 +267,13 @@ public class ClarityEssentials extends JavaPlugin {
 
     public com.harukiyu.clarityessentials.message.PrivateMessageManager getPrivateMessageManager() {
         return privateMessageManager;
+    }
+
+    public FlyManager getFlyManager() {
+        return flyManager;
+    }
+
+    public AfkManager getAfkManager() {
+        return afkManager;
     }
 }

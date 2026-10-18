@@ -14,6 +14,7 @@ import io.papermc.paper.registry.data.dialog.type.DialogType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickCallback;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.command.CommandException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -47,7 +48,7 @@ public class SettingsDialogManager {
         String cleanCmd = command.startsWith("/") ? command.substring(1) : command;
         try {
             player.performCommand(cleanCmd);
-        } catch (Throwable t) {
+        } catch (CommandException | IllegalArgumentException | IllegalStateException e) {
             player.sendMessage(MM.deserialize("<prefix><gray>Command <yellow>/" + cleanCmd + "</yellow> could not be executed or is not installed.</gray>"));
         }
     }

@@ -111,4 +111,84 @@ public final class Utils {
     public static Component parseMiniMessage(@NotNull String text) {
         return MINI_MESSAGE.deserialize(text);
     }
+
+    /**
+     * Parses human-readable duration strings (e.g. "10s", "5m", "2h", "1d", "unlimited") into seconds.
+     * Returns -1 for unlimited/permanent, or -2 for invalid format.
+     */
+    public static long parseDuration(@NotNull String input) {
+        String trimmed = input.trim().toLowerCase();
+        if (trimmed.isEmpty()) {
+            return -2;
+        }
+
+        if (trimmed.equals("unlimited") || trimmed.equals("infinite") || trimmed.equals("inf")
+                || trimmed.equals("perm") || trimmed.equals("permanent") || trimmed.equals("forever")
+                || trimmed.equals("-1")) {
+            return -1;
+        }
+
+        // Pure numbers treated as seconds
+        if (trimmed.matches("^\\d+$")) {
+            try {
+                return Long.parseLong(trimmed);
+            } catch (NumberFormatException e) {
+                return -2;
+            }
+        }
+
+        Pattern pattern = Pattern.compile("(\\d+)\\s*([smhdw])");
+        Matcher matcher = pattern.matcher(trimmed);
+        long totalSeconds = 0;
+        boolean matched = false;
+
+        while (matcher.find()) {
+            matched = true;
+            long val;
+            try {
+                val = Long.parseLong(matcher.group(1));
+            } catch (NumberFormatException e) {
+                return -2;
+            }
+            String unit = matcher.group(2);
+            switch (unit) {
+                case "s" -> totalSeconds += val;
+                case "m" -> totalSeconds += val * 60L;
+                case "h" -> totalSeconds += val * 3600L;
+                case "d" -> totalSeconds += val * 86400L;
+                case "w" -> totalSeconds += val * 604800L;
+                default -> { return -2; }
+            }
+        }
+
+        return matched ? totalSeconds : -2;
+    }
+
+    /**
+     * Formats seconds into human readable format (e.g. "2h 30m", "45s").
+     */
+    @NotNull
+    public static String formatDuration(long seconds) {
+        if (seconds < 0) {
+            return "Unlimited";
+        }
+        if (seconds == 0) {
+            return "0s";
+        }
+
+        long days = seconds / 86400L;
+        long rem = seconds % 86400L;
+        long hours = rem / 3600L;
+        rem %= 3600L;
+        long minutes = rem / 60L;
+        long secs = rem % 60L;
+
+        StringBuilder sb = new StringBuilder();
+        if (days > 0) sb.append(days).append("d ");
+        if (hours > 0) sb.append(hours).append("h ");
+        if (minutes > 0) sb.append(minutes).append("m ");
+        if (secs > 0 || sb.isEmpty()) sb.append(secs).append("s");
+
+        return sb.toString().trim();
+    }
 }

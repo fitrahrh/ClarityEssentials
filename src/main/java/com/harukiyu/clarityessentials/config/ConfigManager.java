@@ -61,7 +61,7 @@ public class ConfigManager {
         load();
     }
 
-    public void load() {
+    public final void load() {
         plugin.saveDefaultConfig();
         plugin.reloadConfig();
         this.config = plugin.getConfig();
@@ -134,8 +134,23 @@ public class ConfigManager {
         this.cmdShardShop = config.getString("esc-menu.commands.shard-shop", "shards");
         this.cmdSell = config.getString("esc-menu.commands.sell", "sell");
         this.cmdStats = config.getString("esc-menu.commands.stats", "stats");
+        this.cmdSkills = config.getString("esc-menu.commands.skills", "skills");
         this.webstoreUrl = config.getString("esc-menu.webstore-url", "https://store.clarity-id.net");
         this.sellUrl = config.getString("esc-menu.sell-url", "https://store.clarity-id.net");
+
+        // Fly System
+        this.flyEnabled = config.getBoolean("fly.enabled", true);
+        this.flyDefaultDuration = config.getString("fly.default-duration", "unlimited");
+        this.flyWorldMode = config.getString("fly.world-mode", "BLACKLIST");
+        this.flyWorlds = config.getStringList("fly.worlds").stream().map(String::toLowerCase).toList();
+        this.flyRegionMode = config.getString("fly.region-mode", "BLACKLIST");
+        this.flyRegions = config.getStringList("fly.regions").stream().map(String::toLowerCase).toList();
+        this.flyFallProtectionSeconds = Math.max(1, config.getInt("fly.fall-protection-seconds", 15));
+
+        // AFK System
+        this.afkEnabled = config.getBoolean("afk.enabled", true);
+        this.afkAutoUnafkOnMove = config.getBoolean("afk.auto-unafk-on-move", true);
+        this.afkAutoUnafkOnChat = config.getBoolean("afk.auto-unafk-on-chat", true);
 
         // Join & Leave Messages
         this.joinLeaveEnabled = config.getBoolean("join-leave.enabled", true);
@@ -207,6 +222,7 @@ public class ConfigManager {
     private String cmdShardShop = "shards";
     private String cmdSell = "sell";
     private String cmdStats = "stats";
+    private String cmdSkills = "skills";
     private String webstoreUrl = "https://store.clarity-id.net";
     private String sellUrl = "https://store.clarity-id.net";
 
@@ -229,8 +245,35 @@ public class ConfigManager {
     public String getCmdShardShop() { return cmdShardShop; }
     public String getCmdSell() { return cmdSell; }
     public String getCmdStats() { return cmdStats; }
+    public String getCmdSkills() { return cmdSkills; }
     public String getWebstoreUrl() { return webstoreUrl; }
     public String getSellUrl() { return sellUrl; }
+
+    // Fly Settings
+    private boolean flyEnabled = true;
+    private String flyDefaultDuration = "unlimited";
+    private String flyWorldMode = "BLACKLIST";
+    private java.util.List<String> flyWorlds = new java.util.ArrayList<>();
+    private String flyRegionMode = "BLACKLIST";
+    private java.util.List<String> flyRegions = new java.util.ArrayList<>();
+    private int flyFallProtectionSeconds = 15;
+
+    public boolean isFlyEnabled() { return flyEnabled; }
+    public String getFlyDefaultDuration() { return flyDefaultDuration; }
+    public String getFlyWorldMode() { return flyWorldMode; }
+    public java.util.List<String> getFlyWorlds() { return flyWorlds; }
+    public String getFlyRegionMode() { return flyRegionMode; }
+    public java.util.List<String> getFlyRegions() { return flyRegions; }
+    public int getFlyFallProtectionSeconds() { return flyFallProtectionSeconds; }
+
+    // AFK Settings
+    private boolean afkEnabled = true;
+    private boolean afkAutoUnafkOnMove = true;
+    private boolean afkAutoUnafkOnChat = true;
+
+    public boolean isAfkEnabled() { return afkEnabled; }
+    public boolean isAfkAutoUnafkOnMove() { return afkAutoUnafkOnMove; }
+    public boolean isAfkAutoUnafkOnChat() { return afkAutoUnafkOnChat; }
 
     // Join & Leave Messages
     private boolean joinLeaveEnabled = true;

@@ -21,11 +21,13 @@ import net.kyori.adventure.text.event.ClickCallback;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandException;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import com.harukiyu.clarityessentials.hook.LanguageHook;
 
 import java.io.File;
 import java.io.InputStream;
@@ -34,6 +36,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ClarityBootstrap implements PluginBootstrap {
 
@@ -110,44 +113,43 @@ public class ClarityBootstrap implements PluginBootstrap {
         List<ActionButton> buttons = new ArrayList<>();
 
         ConfigurationSection customActions = config.getConfigurationSection("esc-menu.actions");
-        if (customActions != null && !customActions.getKeys(false).isEmpty()) {
-            for (String key : customActions.getKeys(false)) {
-                if (!customActions.getBoolean(key + ".enabled", true)) continue;
-                String label = customActions.getString(key + ".label", key);
-                String tooltip = customActions.getString(key + ".tooltip", "");
-                String type = customActions.getString(key + ".type", "player-command");
-                String command = customActions.getString(key + ".command", "");
-                String feature = customActions.getString(key + ".feature", key);
+        if (customActions != null) {
+            Set<String> actionKeys = customActions.getKeys(false);
+            if (!actionKeys.isEmpty()) {
+                for (String key : actionKeys) {
+                    if (!customActions.getBoolean(key + ".enabled", true)) continue;
+                    String label = java.util.Objects.requireNonNullElse(customActions.getString(key + ".label"), key);
+                    String tooltip = customActions.getString(key + ".tooltip");
+                    String type = java.util.Objects.requireNonNullElse(customActions.getString(key + ".type"), "player-command");
+                    String command = java.util.Objects.requireNonNullElse(customActions.getString(key + ".command"), "");
+                    String feature = java.util.Objects.requireNonNullElse(customActions.getString(key + ".feature"), key);
 
-                ActionButton.Builder btnBuilder = ActionButton.builder(parseComponent(label));
-                if (!tooltip.isBlank()) {
-                    btnBuilder.tooltip(parseComponent(tooltip));
-                }
-
-                btnBuilder.action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player player) {
-                        if ("feature".equalsIgnoreCase(type)) {
-                            executeFeature(player, feature, command);
-                        } else {
-                            executeCommand(player, type, command);
-                        }
+                    ActionButton.Builder btnBuilder = ActionButton.builder(parseComponent(label));
+                    if (tooltip != null && !tooltip.isBlank()) {
+                        btnBuilder.tooltip(parseComponent(tooltip));
                     }
-                }, CALLBACK_OPTIONS));
 
-                buttons.add(btnBuilder.build());
+                    btnBuilder.action(DialogAction.customClick((view, audience) -> {
+                        if (audience instanceof Player player) {
+                            if ("feature".equalsIgnoreCase(type)) {
+                                executeFeature(player, feature, command);
+                            } else {
+                                executeCommand(player, type, command);
+                            }
+                        }
+                    }, CALLBACK_OPTIONS));
+
+                    buttons.add(btnBuilder.build());
+                }
+                return buttons;
             }
-            return buttons;
         }
 
-        // Default: 14 Standard Buttons matching Donut SMP layout (2 columns)
+        // Default: 12 Standard Buttons matching Donut SMP layout (2 columns)
         String cmdRtp = config.getString("esc-menu.commands.rtp", "rtp");
-        String cmdRtpQueue = config.getString("esc-menu.commands.rtp-queue", "rtp queue");
         String cmdAuction = config.getString("esc-menu.commands.auction", "ah");
-        String cmdQuickBuy = config.getString("esc-menu.commands.quick-buy", "buy");
-        String cmdOrders = config.getString("esc-menu.commands.orders", "orders");
-        String cmdShardShop = config.getString("esc-menu.commands.shard-shop", "shards");
-        String cmdSell = config.getString("esc-menu.commands.sell", "sell");
         String cmdStats = config.getString("esc-menu.commands.stats", "stats");
+        String cmdSkills = config.getString("esc-menu.commands.skills", "skills");
 
         // Row 1
         buttons.add(createFeatureButton("<white>Homes</white>", "<gray>Manage and teleport to saved homes</gray>", "homes", "home"));
@@ -155,27 +157,23 @@ public class ClarityBootstrap implements PluginBootstrap {
 
         // Row 2
         buttons.add(createCommandButton("<white>Auction</white>", "<gray>Browse server auction house</gray>", cmdAuction));
-        buttons.add(createCommandButton("<white>RTP Queue</white>", "<gray>Join queue for wilderness teleport</gray>", cmdRtpQueue));
-
-        // Row 3
-        buttons.add(createCommandButton("<white>Quick Buy</white>", "<gray>Fast purchase shop</gray>", cmdQuickBuy));
         buttons.add(createFeatureButton("<white>Friends</white>", "<gray>Manage friends and teleport</gray>", "friends", "friends"));
 
-        // Row 4
-        buttons.add(createCommandButton("<white>Orders</white>", "<gray>View market orders</gray>", cmdOrders));
-        buttons.add(createCommandButton("<white>Shard Shop</white>", "<gray>Spend shards on rare items</gray>", cmdShardShop));
-
-        // Row 5
-        buttons.add(createCommandButton("<white>Sell</white>", "<gray>Sell items for money</gray>", cmdSell));
-        buttons.add(createFeatureButton("<white>Pay</white>", "<gray>Send money to other players</gray>", "pay", "pay"));
-
-        // Row 6
+        // Row 3
+        buttons.add(createFeatureButton("<white>Webstore</white>", "<gray>Visit our official webstore</gray>", "webstore", ""));
         buttons.add(createFeatureButton("<white>Teleport</white>", "<gray>Quick teleport list to players</gray>", "teleport", "tpa"));
+
+        // Row 4
+        buttons.add(createFeatureButton("<white>Pay</white>", "<gray>Send money to other players</gray>", "pay", "pay"));
         buttons.add(createCommandButton("<white>Stats</white>", "<gray>View player statistics</gray>", cmdStats));
 
-        // Row 7
+        // Row 5
         buttons.add(createFeatureButton("<white>Leaderboards</white>", "<gray>View top players rankings</gray>", "leaderboards", "leaderboard"));
         buttons.add(createFeatureButton("<white>Settings</white>", "<gray>Customize your player settings</gray>", "settings", "settings"));
+
+        // Row 6
+        buttons.add(createCommandButton("<white>Skills</white>", "<gray>Open player skills</gray>", cmdSkills));
+        buttons.add(createFeatureButton("<gray>Coming Soon</gray>", "<gray>Feature in development</gray>", "coming_soon", ""));
 
         return buttons;
     }
@@ -206,10 +204,14 @@ public class ClarityBootstrap implements PluginBootstrap {
         closeScreenThenRun(player, () -> {
             ClarityEssentials plugin = ClarityEssentials.getInstance();
             if (plugin == null || !plugin.isEnabled()) {
-                if (!commandFallback.isBlank()) {
+                if ("webstore".equalsIgnoreCase(feature) || "store".equalsIgnoreCase(feature)) {
+                    player.sendMessage(parseComponent("<newline><green>----------------------------------------</green><newline><yellow><bold>  CLARITY NETWORK STORE</bold></yellow><newline><gray>  Visit our official webstore: </gray><click:open_url:'https://store.clarity-id.net'><gold><underlined>https://store.clarity-id.net</underlined></gold></click><newline><green>----------------------------------------</green>"));
+                } else if ("coming_soon".equalsIgnoreCase(feature)) {
+                    player.sendMessage(parseComponent("<gray>This feature is coming soon in a future update!</gray>"));
+                } else if (!commandFallback.isBlank()) {
                     try {
                         player.performCommand(commandFallback.startsWith("/") ? commandFallback.substring(1) : commandFallback);
-                    } catch (Throwable ignored) {}
+                    } catch (CommandException | IllegalArgumentException | IllegalStateException ignored) {}
                 }
                 return;
             }
@@ -222,11 +224,13 @@ public class ClarityBootstrap implements PluginBootstrap {
                 case "settings", "setting" -> plugin.getSettingsDialogManager().openMainSettings(player);
                 case "leaderboards", "leaderboard" -> plugin.getLeaderboardDialogManager().openCategories(player);
                 case "menu", "dashboard" -> plugin.getMenuDialogManager().openDashboard(player);
+                case "webstore", "store", "web" -> plugin.getMenuDialogManager().openWebstoreLink(player, plugin.getConfigManager().getWebstoreUrl());
+                case "coming_soon" -> LanguageHook.sendMessage(player, "menu.coming_soon_notice");
                 default -> {
                     if (!commandFallback.isBlank()) {
                         try {
                             player.performCommand(commandFallback.startsWith("/") ? commandFallback.substring(1) : commandFallback);
-                        } catch (Throwable ignored) {}
+                        } catch (CommandException | IllegalArgumentException | IllegalStateException ignored) {}
                     }
                 }
             }
@@ -246,7 +250,7 @@ public class ClarityBootstrap implements PluginBootstrap {
                 } else {
                     player.performCommand(finalCmd);
                 }
-            } catch (Throwable ignored) {}
+            } catch (CommandException | IllegalArgumentException | IllegalStateException ignored) {}
         });
     }
 
@@ -256,19 +260,19 @@ public class ClarityBootstrap implements PluginBootstrap {
             if (Bukkit.isPrimaryThread()) {
                 try {
                     player.closeDialog();
-                } catch (Throwable ignored) {}
+                } catch (Exception ignored) {}
                 try {
                     player.closeInventory();
-                } catch (Throwable ignored) {}
+                } catch (Exception ignored) {}
                 Bukkit.getScheduler().runTaskLater(plugin, task, 1L);
             } else {
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     try {
                         player.closeDialog();
-                    } catch (Throwable ignored) {}
+                    } catch (Exception ignored) {}
                     try {
                         player.closeInventory();
-                    } catch (Throwable ignored) {}
+                    } catch (Exception ignored) {}
                     Bukkit.getScheduler().runTaskLater(plugin, task, 1L);
                 });
             }

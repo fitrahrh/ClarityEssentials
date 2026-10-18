@@ -22,6 +22,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
+import org.bukkit.command.CommandException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -333,7 +334,7 @@ public class PayDialogManager {
         if (!VaultHook.hasEconomy()) {
             try {
                 player.performCommand("pay " + targetName + " " + amount);
-            } catch (Throwable t) {
+            } catch (CommandException | IllegalArgumentException | IllegalStateException e) {
                 LanguageHook.sendMessage(player, "pay.economy_not_found");
             }
             return;

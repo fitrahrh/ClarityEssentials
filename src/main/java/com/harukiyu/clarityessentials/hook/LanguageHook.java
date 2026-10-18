@@ -136,6 +136,13 @@ public final class LanguageHook {
         player.sendMessage(getFallbackComponent(key, langCode, enriched));
     }
 
+    public static void broadcastMessage(@NotNull String key, @NotNull TagResolver... resolvers) {
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            sendMessage(online, key, resolvers);
+        }
+        sendMessage(Bukkit.getConsoleSender(), key, resolvers);
+    }
+
     @NotNull
     public static Component getComponent(@NotNull String key, @Nullable Player player, @NotNull TagResolver... resolvers) {
         String langCode = getEffectiveLanguageCode(player);

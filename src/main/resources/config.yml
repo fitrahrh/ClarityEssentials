@@ -113,6 +113,34 @@ esc-menu:
     rtp: "rtp"
     auction: "ah"
     stats: "stats"
+    skills: "skills"
+
+# Fly System Settings (/fly)
+fly:
+  enabled: true
+  # Default duration when none specified and player lacks unlimited perm ("unlimited", "30m", "1h", etc.)
+  default-duration: "unlimited"
+  # World restriction mode: BLACKLIST, WHITELIST, or DISABLED
+  world-mode: "BLACKLIST"
+  worlds:
+    - "world_nether"
+    - "world_the_end"
+  # WorldGuard region restriction mode: BLACKLIST, WHITELIST, or DISABLED
+  region-mode: "BLACKLIST"
+  regions:
+    - "pvp_arena"
+    - "warzone"
+    - "spawn"
+  # Fall damage protection duration in seconds after flight expires or is disabled
+  fall-protection-seconds: 15
+
+# AFK System Settings (/afk)
+afk:
+  enabled: true
+  # Automatically cancel AFK status when player moves
+  auto-unafk-on-move: true
+  # Automatically cancel AFK status when player sends a chat message
+  auto-unafk-on-chat: true
 
 # Custom Join & Leave Messages
 join-leave:
@@ -137,4 +165,5 @@ settings:
   commands:
     pvp: "pvp"
     scoreboard: "sb toggle"
+
 

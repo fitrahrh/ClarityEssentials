@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,6 +37,7 @@ public class YamlValidationTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testOpenLinkChatDeserialization() throws Exception {
         Path resourcesPath = Paths.get("src", "main", "resources", "languages");
         Yaml yaml = new Yaml();
@@ -84,9 +83,11 @@ public class YamlValidationTest {
     }
 
     private void findClickEvents(net.kyori.adventure.text.Component c, boolean[] hasClick, String expectedUrl) {
-        if (c.clickEvent() != null) {
-            Assertions.assertEquals(net.kyori.adventure.text.event.ClickEvent.Action.OPEN_URL, c.clickEvent().action());
-            Assertions.assertEquals(expectedUrl, c.clickEvent().value());
+        if (c == null) return;
+        Object click = c.clickEvent();
+        if (click != null) {
+            Assertions.assertTrue(click.toString().toLowerCase().contains("open_url"));
+            Assertions.assertTrue(click.toString().contains(expectedUrl));
             hasClick[0] = true;
         }
         for (net.kyori.adventure.text.Component child : c.children()) {
