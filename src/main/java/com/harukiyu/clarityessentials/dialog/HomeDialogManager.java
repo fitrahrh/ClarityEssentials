@@ -43,7 +43,11 @@ public class HomeDialogManager {
      * Opens the main Paper Native Dialog for home management.
      */
     public void openHomeDialog(@NotNull Player player) {
-        if (configManager.isSoundsEnabled()) {
+        openHomeDialog(player, true);
+    }
+
+    public void openHomeDialog(@NotNull Player player, boolean playSound) {
+        if (playSound && configManager.isSoundsEnabled()) {
             player.playSound(player.getLocation(), configManager.getSoundDialogOpen(), 1.0f, 1.0f);
         }
 
@@ -134,7 +138,7 @@ public class HomeDialogManager {
         ActionButton backBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p && menuDialogManager != null) {
-                        menuDialogManager.openDashboard(p);
+                        menuDialogManager.openDashboard(p, false);
                     } else if (audience instanceof Player p) {
                         p.closeDialog();
                     }
@@ -145,6 +149,7 @@ public class HomeDialogManager {
         Dialog homeDialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
                         .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(bodies)
                         .build())
                 .type(DialogType.multiAction(buttons, backBtn, columns))
@@ -197,7 +202,7 @@ public class HomeDialogManager {
                         switch (result) {
                             case SUCCESS -> {
                                 LanguageHook.sendMessage(p, "homes.set_success", Placeholder.unparsed("home", homeName));
-                                openHomeDialog(p);
+                                openHomeDialog(p, false);
                             }
                             case LIMIT_REACHED -> {
                                 LanguageHook.sendMessage(p, "homes.limit_reached", Placeholder.unparsed("limit", String.valueOf(max)));
@@ -215,7 +220,7 @@ public class HomeDialogManager {
         ActionButton cancelBtn = ActionButton.builder(LanguageHook.getComponent("homes.dialog_btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) {
-                        openHomeDialog(p);
+                        openHomeDialog(p, false);
                     }
                 }, DEFAULT_OPTIONS))
                 .build();
@@ -223,6 +228,7 @@ public class HomeDialogManager {
         Dialog inputDialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
                         .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .inputs(List.of(textInput))
                         .build())
@@ -238,7 +244,7 @@ public class HomeDialogManager {
     public void openDeleteSelectorDialog(@NotNull Player player) {
         Collection<Home> homes = homeManager.getHomes(player);
         if (homes.isEmpty()) {
-            openHomeDialog(player);
+            openHomeDialog(player, false);
             return;
         }
 
@@ -263,7 +269,7 @@ public class HomeDialogManager {
         ActionButton backBtn = ActionButton.builder(LanguageHook.getComponent("homes.dialog_btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) {
-                        openHomeDialog(p);
+                        openHomeDialog(p, false);
                     }
                 }, DEFAULT_OPTIONS))
                 .build();
@@ -271,6 +277,7 @@ public class HomeDialogManager {
         Dialog selectorDialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
                         .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .build())
                 .type(DialogType.multiAction(buttons, backBtn, 3))
@@ -296,7 +303,7 @@ public class HomeDialogManager {
                         if (deleted) {
                             LanguageHook.sendMessage(p, "homes.delete_success", Placeholder.unparsed("home", homeName));
                         }
-                        openHomeDialog(p);
+                        openHomeDialog(p, false);
                     }
                 }, DEFAULT_OPTIONS))
                 .build();
@@ -313,6 +320,7 @@ public class HomeDialogManager {
         Dialog confirmDialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
                         .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .build())
                 .type(DialogType.confirmation(confirmBtn, cancelBtn))

@@ -78,9 +78,9 @@ public class ClarityEssentials extends JavaPlugin {
 
         this.payDialogManager = new PayDialogManager(this, configManager, userSettingsManager);
         this.teleportDialogManager = new TeleportDialogManager(configManager, userSettingsManager, teleportManager);
-        this.leaderboardDialogManager = new LeaderboardDialogManager(leaderboardManager);
+        this.leaderboardDialogManager = new LeaderboardDialogManager(configManager, leaderboardManager);
         this.settingsDialogManager = new SettingsDialogManager(configManager, userSettingsManager, teleportManager);
-        this.friendsDialogManager = new FriendsDialogManager(userSettingsManager, teleportManager, payDialogManager);
+        this.friendsDialogManager = new FriendsDialogManager(configManager, userSettingsManager, teleportManager, payDialogManager);
 
         this.menuDialogManager = new MenuDialogManager(
                 configManager,

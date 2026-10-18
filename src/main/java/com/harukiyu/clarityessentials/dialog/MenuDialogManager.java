@@ -67,24 +67,29 @@ public class MenuDialogManager {
      * Opens the Centralized Native Player Dashboard dialog (image copy.png)
      */
     public void openDashboard(@NotNull Player player) {
-        if (configManager.isSoundsEnabled()) {
+        openDashboard(player, true);
+    }
+
+    public void openDashboard(@NotNull Player player, boolean playSound) {
+        if (playSound && configManager.isSoundsEnabled()) {
             player.playSound(player.getLocation(), configManager.getSoundDialogOpen(), 1.0f, 1.0f);
         }
 
         Component title = LanguageHook.getComponent("menu.title", player);
 
-        // Arranged in 2 columns (5 rows, 10 buttons):
+        // Arranged in 2 columns (6 rows, 12 buttons):
         // Row 1: Homes (L), RTP (R)
         // Row 2: Auction (L), Friends (R)
         // Row 3: Webstore (L), Teleport (R)
         // Row 4: Pay (L), Stats (R)
         // Row 5: Leaderboards (L), Settings (R)
+        // Row 6: Skills (L), Coming Soon (R)
         List<ActionButton> buttons = new ArrayList<>();
 
         // Row 1
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_homes", player))
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) homeDialogManager.openHomeDialog(p);
+                    if (audience instanceof Player p) homeDialogManager.openHomeDialog(p, false);
                 }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_rtp", player))
@@ -106,7 +111,7 @@ public class MenuDialogManager {
 
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_friends", player))
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) friendsDialogManager.openFriends(p);
+                    if (audience instanceof Player p) friendsDialogManager.openFriends(p, false);
                 }, DEFAULT_OPTIONS)).build());
 
         // Row 3
@@ -120,13 +125,13 @@ public class MenuDialogManager {
 
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_teleport", player))
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) teleportDialogManager.openTeleportList(p);
+                    if (audience instanceof Player p) teleportDialogManager.openTeleportList(p, false);
                 }, DEFAULT_OPTIONS)).build());
 
         // Row 4
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_pay", player))
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) payDialogManager.openPayPlayerList(p);
+                    if (audience instanceof Player p) payDialogManager.openPayPlayerList(p, false);
                 }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_stats", player))
@@ -140,12 +145,12 @@ public class MenuDialogManager {
         // Row 5
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_leaderboards", player))
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) leaderboardDialogManager.openCategories(p);
+                    if (audience instanceof Player p) leaderboardDialogManager.openCategories(p, false);
                 }, DEFAULT_OPTIONS)).build());
 
         buttons.add(ActionButton.builder(LanguageHook.getComponent("menu.btn_settings", player))
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) settingsDialogManager.openMainSettings(p);
+                    if (audience instanceof Player p) settingsDialogManager.openMainSettings(p, false);
                 }, DEFAULT_OPTIONS)).build());
 
         // Row 6
@@ -176,6 +181,7 @@ public class MenuDialogManager {
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
                         .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .build())
                 .type(DialogType.multiAction(buttons, closeBtn, 2))
         );
@@ -274,6 +280,7 @@ public class MenuDialogManager {
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
                         .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .inputs(List.of(textInput))
                         .build())

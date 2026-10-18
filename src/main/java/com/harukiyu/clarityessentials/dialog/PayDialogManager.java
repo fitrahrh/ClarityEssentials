@@ -36,12 +36,14 @@ public class PayDialogManager {
     private static final MiniMessage MM = MiniMessage.miniMessage();
     private static final ClickCallback.Options DEFAULT_OPTIONS = ClickCallback.Options.builder().build();
 
+    private final ConfigManager configManager;
     private final UserSettingsManager settingsManager;
     private MenuDialogManager menuDialogManager;
 
     public PayDialogManager(@NotNull ClarityEssentials plugin,
                             @NotNull ConfigManager configManager,
                             @NotNull UserSettingsManager settingsManager) {
+        this.configManager = configManager;
         this.settingsManager = settingsManager;
     }
 
@@ -53,6 +55,14 @@ public class PayDialogManager {
      * Opens Pay list (image copy 4.png)
      */
     public void openPayPlayerList(@NotNull Player player) {
+        openPayPlayerList(player, true);
+    }
+
+    public void openPayPlayerList(@NotNull Player player, boolean playSound) {
+        if (playSound && configManager != null && configManager.isSoundsEnabled()) {
+            player.playSound(player.getLocation(), configManager.getSoundDialogOpen(), 1.0f, 1.0f);
+        }
+
         Component title = LanguageHook.getComponent("pay.title", player);
         Component body = LanguageHook.getComponent("pay.body", player);
 
@@ -95,12 +105,16 @@ public class PayDialogManager {
         ActionButton exitBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p && menuDialogManager != null) {
-                        menuDialogManager.openDashboard(p);
+                        menuDialogManager.openDashboard(p, false);
+                    } else if (audience instanceof Player p) {
+                        p.closeDialog();
                     }
                 }, DEFAULT_OPTIONS)).build();
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .build())
                 .type(DialogType.multiAction(buttons, exitBtn, 2))
@@ -122,6 +136,8 @@ public class PayDialogManager {
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .inputs(List.of(textInput))
                         .build())
@@ -132,13 +148,13 @@ public class PayDialogManager {
                                         String raw = view.getText("player_name");
                                         PlayerValidator.ValidationResult res = PlayerValidator.validatePlayerName(p, raw);
                                         if (!res.valid()) {
-                                            openPayPlayerList(p);
+                                            openPayPlayerList(p, false);
                                             return;
                                         }
 
                                         String targetName = res.resolvedName();
                                         if (targetName == null) {
-                                            openPayPlayerList(p);
+                                            openPayPlayerList(p, false);
                                             return;
                                         }
 
@@ -146,7 +162,7 @@ public class PayDialogManager {
                                         if (s.isPayPlayer(targetName)) {
                                             LanguageHook.sendMessage(p, "general.already_added", Placeholder.unparsed("player", targetName));
                                             p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-                                            openPayPlayerList(p);
+                                            openPayPlayerList(p, false);
                                             return;
                                         }
 
@@ -159,7 +175,7 @@ public class PayDialogManager {
                                 }, DEFAULT_OPTIONS)).build(),
                         ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                                 .action(DialogAction.customClick((view, audience) -> {
-                                    if (audience instanceof Player p) openPayPlayerList(p);
+                                    if (audience instanceof Player p) openPayPlayerList(p, false);
                                 }, DEFAULT_OPTIONS)).build()
                 ))
         );
@@ -209,11 +225,13 @@ public class PayDialogManager {
 
         ActionButton exitBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) openPayPlayerList(p);
+                    if (audience instanceof Player p) openPayPlayerList(p, false);
                 }, DEFAULT_OPTIONS)).build();
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .build())
                 .type(DialogType.multiAction(buttons, exitBtn, 2))
@@ -232,6 +250,8 @@ public class PayDialogManager {
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .build())
                 .type(DialogType.confirmation(
@@ -242,7 +262,7 @@ public class PayDialogManager {
                                         settingsManager.saveSettingsAsync(p.getUniqueId());
                                         LanguageHook.sendMessage(p, "pay.player_removed", Placeholder.unparsed("player", targetName));
                                         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f);
-                                        openPayPlayerList(p);
+                                        openPayPlayerList(p, false);
                                     }
                                 }, DEFAULT_OPTIONS)).build(),
                         ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
@@ -269,6 +289,8 @@ public class PayDialogManager {
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .inputs(List.of(textInput))
                         .build())

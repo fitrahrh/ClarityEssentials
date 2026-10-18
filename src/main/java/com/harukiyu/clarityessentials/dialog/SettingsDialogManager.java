@@ -57,6 +57,14 @@ public class SettingsDialogManager {
      * Opens Main Settings Category Menu (image copy 9.png)
      */
     public void openMainSettings(@NotNull Player player) {
+        openMainSettings(player, true);
+    }
+
+    public void openMainSettings(@NotNull Player player, boolean playSound) {
+        if (playSound && configManager.isSoundsEnabled()) {
+            player.playSound(player.getLocation(), configManager.getSoundDialogOpen(), 1.0f, 1.0f);
+        }
+
         Component title = LanguageHook.getComponent("settings.title", player);
         Component body = LanguageHook.getComponent("settings.body", player);
 
@@ -79,14 +87,14 @@ public class SettingsDialogManager {
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) {
                         executeSafeCommand(p, configManager.getCmdPvp());
-                        openMainSettings(p);
+                        openMainSettings(p, false);
                     }
                 }, DEFAULT_OPTIONS)).build());
 
         // Visuals
         buttons.add(ActionButton.builder(LanguageHook.getComponent("settings.btn_visuals", player))
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) openMainSettings(p);
+                    if (audience instanceof Player p) openMainSettings(p, false);
                 }, DEFAULT_OPTIONS)).build());
 
         // Privacy
@@ -100,7 +108,7 @@ public class SettingsDialogManager {
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p) {
                         executeSafeCommand(p, configManager.getCmdScoreboard());
-                        openMainSettings(p);
+                        openMainSettings(p, false);
                     }
                 }, DEFAULT_OPTIONS)).build());
 
@@ -114,12 +122,16 @@ public class SettingsDialogManager {
         ActionButton exitBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p && menuDialogManager != null) {
-                        menuDialogManager.openDashboard(p);
+                        menuDialogManager.openDashboard(p, false);
+                    } else if (audience instanceof Player p) {
+                        p.closeDialog();
                     }
                 }, DEFAULT_OPTIONS)).build();
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .build())
                 .type(DialogType.multiAction(buttons, exitBtn, 2))
@@ -209,11 +221,14 @@ public class SettingsDialogManager {
 
         ActionButton exitBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) openMainSettings(p);
+                    if (audience instanceof Player p) openMainSettings(p, false);
                 }, DEFAULT_OPTIONS)).build();
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
-                .base(DialogBase.builder(title).build())
+                .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
+                        .build())
                 .type(DialogType.multiAction(buttons, exitBtn, 1))
         );
 
@@ -283,11 +298,14 @@ public class SettingsDialogManager {
 
         ActionButton exitBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) openMainSettings(p);
+                    if (audience instanceof Player p) openMainSettings(p, false);
                 }, DEFAULT_OPTIONS)).build();
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
-                .base(DialogBase.builder(title).build())
+                .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
+                        .build())
                 .type(DialogType.multiAction(buttons, exitBtn, 1))
         );
 
@@ -368,11 +386,14 @@ public class SettingsDialogManager {
 
         ActionButton exitBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) openMainSettings(p);
+                    if (audience instanceof Player p) openMainSettings(p, false);
                 }, DEFAULT_OPTIONS)).build();
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
-                .base(DialogBase.builder(title).build())
+                .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
+                        .build())
                 .type(DialogType.multiAction(buttons, exitBtn, 1))
         );
 

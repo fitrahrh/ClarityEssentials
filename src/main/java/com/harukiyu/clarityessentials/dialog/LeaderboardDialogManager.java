@@ -1,5 +1,6 @@
 package com.harukiyu.clarityessentials.dialog;
 
+import com.harukiyu.clarityessentials.config.ConfigManager;
 import com.harukiyu.clarityessentials.hook.LanguageHook;
 import com.harukiyu.clarityessentials.leaderboard.LeaderboardManager;
 import io.papermc.paper.dialog.Dialog;
@@ -23,11 +24,18 @@ public class LeaderboardDialogManager {
     private static final MiniMessage MM = MiniMessage.miniMessage();
     private static final ClickCallback.Options DEFAULT_OPTIONS = ClickCallback.Options.builder().build();
 
+    private final ConfigManager configManager;
     private final LeaderboardManager leaderboardManager;
     private MenuDialogManager menuDialogManager;
 
-    public LeaderboardDialogManager(@NotNull LeaderboardManager leaderboardManager) {
+    public LeaderboardDialogManager(@NotNull ConfigManager configManager,
+                                    @NotNull LeaderboardManager leaderboardManager) {
+        this.configManager = configManager;
         this.leaderboardManager = leaderboardManager;
+    }
+
+    public LeaderboardDialogManager(@NotNull LeaderboardManager leaderboardManager) {
+        this(null, leaderboardManager);
     }
 
     public void setMenuDialogManager(@NotNull MenuDialogManager menuDialogManager) {
@@ -38,6 +46,14 @@ public class LeaderboardDialogManager {
      * Opens Leaderboard Categories Menu (image copy 6.png)
      */
     public void openCategories(@NotNull Player player) {
+        openCategories(player, true);
+    }
+
+    public void openCategories(@NotNull Player player, boolean playSound) {
+        if (playSound && configManager != null && configManager.isSoundsEnabled()) {
+            player.playSound(player.getLocation(), configManager.getSoundDialogOpen(), 1.0f, 1.0f);
+        }
+
         Component title = LanguageHook.getComponent("leaderboards.title", player);
 
         List<ActionButton> buttons = new ArrayList<>();
@@ -81,12 +97,17 @@ public class LeaderboardDialogManager {
         ActionButton exitBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p && menuDialogManager != null) {
-                        menuDialogManager.openDashboard(p);
+                        menuDialogManager.openDashboard(p, false);
+                    } else if (audience instanceof Player p) {
+                        p.closeDialog();
                     }
                 }, DEFAULT_OPTIONS)).build();
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
-                .base(DialogBase.builder(title).build())
+                .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
+                        .build())
                 .type(DialogType.multiAction(buttons, exitBtn, 3))
         );
 
@@ -120,16 +141,18 @@ public class LeaderboardDialogManager {
         List<ActionButton> buttons = new ArrayList<>();
         buttons.add(ActionButton.builder(LanguageHook.getComponent("leaderboards.btn_view_full", player))
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) openCategories(p);
+                    if (audience instanceof Player p) openCategories(p, false);
                 }, DEFAULT_OPTIONS)).build());
 
         ActionButton backBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) openCategories(p);
+                    if (audience instanceof Player p) openCategories(p, false);
                 }, DEFAULT_OPTIONS)).build();
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(bodyComp)))
                         .build())
                 .type(DialogType.confirmation(backBtn, buttons.get(0)))

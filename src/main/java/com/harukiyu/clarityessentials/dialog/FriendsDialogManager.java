@@ -1,5 +1,6 @@
 package com.harukiyu.clarityessentials.dialog;
 
+import com.harukiyu.clarityessentials.config.ConfigManager;
 import com.harukiyu.clarityessentials.hook.LanguageHook;
 import com.harukiyu.clarityessentials.settings.UserSettings;
 import com.harukiyu.clarityessentials.settings.UserSettingsManager;
@@ -30,17 +31,26 @@ public class FriendsDialogManager {
     private static final MiniMessage MM = MiniMessage.miniMessage();
     private static final ClickCallback.Options DEFAULT_OPTIONS = ClickCallback.Options.builder().build();
 
+    private final ConfigManager configManager;
     private final UserSettingsManager settingsManager;
     private final TeleportManager teleportManager;
     private final PayDialogManager payDialogManager;
     private MenuDialogManager menuDialogManager;
 
-    public FriendsDialogManager(@NotNull UserSettingsManager settingsManager,
+    public FriendsDialogManager(@NotNull ConfigManager configManager,
+                                @NotNull UserSettingsManager settingsManager,
                                 @NotNull TeleportManager teleportManager,
                                 @NotNull PayDialogManager payDialogManager) {
+        this.configManager = configManager;
         this.settingsManager = settingsManager;
         this.teleportManager = teleportManager;
         this.payDialogManager = payDialogManager;
+    }
+
+    public FriendsDialogManager(@NotNull UserSettingsManager settingsManager,
+                                @NotNull TeleportManager teleportManager,
+                                @NotNull PayDialogManager payDialogManager) {
+        this(null, settingsManager, teleportManager, payDialogManager);
     }
 
     public void setMenuDialogManager(@NotNull MenuDialogManager menuDialogManager) {
@@ -51,6 +61,14 @@ public class FriendsDialogManager {
      * Opens Friends Menu (image copy 16.png)
      */
     public void openFriends(@NotNull Player player) {
+        openFriends(player, true);
+    }
+
+    public void openFriends(@NotNull Player player, boolean playSound) {
+        if (playSound && configManager != null && configManager.isSoundsEnabled()) {
+            player.playSound(player.getLocation(), configManager.getSoundDialogOpen(), 1.0f, 1.0f);
+        }
+
         UserSettings s = settingsManager.getSettings(player);
         int friendsCount = s.getFriendsList().size();
 
@@ -96,12 +114,17 @@ public class FriendsDialogManager {
         ActionButton exitBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
                     if (audience instanceof Player p && menuDialogManager != null) {
-                        menuDialogManager.openDashboard(p);
+                        menuDialogManager.openDashboard(p, false);
+                    } else if (audience instanceof Player p) {
+                        p.closeDialog();
                     }
                 }, DEFAULT_OPTIONS)).build();
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
-                .base(DialogBase.builder(title).build())
+                .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
+                        .build())
                 .type(DialogType.multiAction(buttons, exitBtn, 2))
         );
 
@@ -121,6 +144,8 @@ public class FriendsDialogManager {
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .inputs(List.of(textInput))
                         .build())
@@ -131,13 +156,13 @@ public class FriendsDialogManager {
                                         String raw = view.getText("player_name");
                                         PlayerValidator.ValidationResult res = PlayerValidator.validatePlayerName(p, raw);
                                         if (!res.valid()) {
-                                            openFriends(p);
+                                            openFriends(p, false);
                                             return;
                                         }
 
                                         String targetName = res.resolvedName();
                                         if (targetName == null) {
-                                            openFriends(p);
+                                            openFriends(p, false);
                                             return;
                                         }
 
@@ -145,7 +170,7 @@ public class FriendsDialogManager {
                                         if (s.isFriend(targetName)) {
                                             LanguageHook.sendMessage(p, "general.already_added", Placeholder.unparsed("player", targetName));
                                             p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-                                            openFriends(p);
+                                            openFriends(p, false);
                                             return;
                                         }
 
@@ -153,12 +178,12 @@ public class FriendsDialogManager {
                                         settingsManager.saveSettingsAsync(p.getUniqueId());
                                         LanguageHook.sendMessage(p, "friends.added_success", Placeholder.unparsed("target", targetName));
                                         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
-                                        openFriends(p);
+                                        openFriends(p, false);
                                     }
                                 }, DEFAULT_OPTIONS)).build(),
                         ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                                 .action(DialogAction.customClick((view, audience) -> {
-                                    if (audience instanceof Player p) openFriends(p);
+                                    if (audience instanceof Player p) openFriends(p, false);
                                 }, DEFAULT_OPTIONS)).build()
                 ))
         );
@@ -179,6 +204,8 @@ public class FriendsDialogManager {
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .inputs(List.of(textInput))
                         .build())
@@ -188,7 +215,7 @@ public class FriendsDialogManager {
                                     if (audience instanceof Player p) {
                                         String query = view.getText("search_name");
                                         if (query == null || query.isBlank()) {
-                                            openFriends(p);
+                                            openFriends(p, false);
                                             return;
                                         }
 
@@ -206,13 +233,13 @@ public class FriendsDialogManager {
                                         } else {
                                             LanguageHook.sendMessage(p, "friends.search_not_found", Placeholder.unparsed("target", trimmed));
                                             p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-                                            openFriends(p);
+                                            openFriends(p, false);
                                         }
                                     }
                                 }, DEFAULT_OPTIONS)).build(),
                         ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                                 .action(DialogAction.customClick((view, audience) -> {
-                                    if (audience instanceof Player p) openFriends(p);
+                                    if (audience instanceof Player p) openFriends(p, false);
                                 }, DEFAULT_OPTIONS)).build()
                 ))
         );
@@ -269,11 +296,13 @@ public class FriendsDialogManager {
 
         ActionButton exitBtn = ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
                 .action(DialogAction.customClick((view, audience) -> {
-                    if (audience instanceof Player p) openFriends(p);
+                    if (audience instanceof Player p) openFriends(p, false);
                 }, DEFAULT_OPTIONS)).build();
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .build())
                 .type(DialogType.multiAction(buttons, exitBtn, 1))
@@ -292,6 +321,8 @@ public class FriendsDialogManager {
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
                 .base(DialogBase.builder(title)
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.WAIT_FOR_RESPONSE)
                         .body(List.of(DialogBody.plainMessage(body)))
                         .build())
                 .type(DialogType.confirmation(
@@ -302,7 +333,7 @@ public class FriendsDialogManager {
                                         settingsManager.saveSettingsAsync(p.getUniqueId());
                                         LanguageHook.sendMessage(p, "friends.removed_success", Placeholder.unparsed("target", friendName));
                                         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f);
-                                        openFriends(p);
+                                        openFriends(p, false);
                                     }
                                 }, DEFAULT_OPTIONS)).build(),
                         ActionButton.builder(LanguageHook.getComponent("menu.btn_back", player))
