@@ -349,3 +349,48 @@ speed:
   reset_all_target: "<prefix><green>Flug- und Gehgeschwindigkeit von <white><target></white> wurden auf Standard zurückgesetzt.</green>"
   reset_all_target_notify: "<prefix><green>Deine Flug- und Gehgeschwindigkeit wurden von <white><sender></white> auf Standard zurückgesetzt.</green>"
   no_permission_others: "<prefix><red>Du hast keine Berechtigung, die Geschwindigkeit anderer Spieler zu ändern.</red>"
+
+spawn:
+  set_default: "<prefix><green>Der Standard-Spawnpunkt wurde auf deine aktuelle Position gesetzt.</green>"
+  set_firstjoin: "<prefix><green>Der Erstbeitritts-Spawnpunkt wurde auf deine aktuelle Position gesetzt.</green>"
+  teleported_self: "<prefix><green>Teleportiere zum Spawn...</green>"
+  teleported_target: "<prefix><green><white><target></white> wurde zum Spawn teleportiert.</green>"
+  target_teleported: "<prefix><green>Du wurdest von <white><sender></white> zum Spawn teleportiert.</green>"
+  no_permission_others: "<prefix><red>Du hast keine Berechtigung, andere Spieler zum Spawn zu teleportieren.</red>"
+  usage_console: "<prefix><red>Konsolenbefehl: /spawn <player></red>"
+
+mail:
+  help: |
+    <newline><gold><bold>===== Postsystem Hilfe =====</bold></gold>
+    <yellow>/mail read [seite]</yellow> <gray>- Deine Nachrichten lesen</gray>
+    <yellow>/mail send <spieler> <nachricht></yellow> <gray>- Nachricht an einen Spieler senden</gray>
+    <yellow>/mail clear [nummer]</yellow> <gray>- Eine bestimmte Nachricht löschen</gray>
+    <yellow>/mail clearall</yellow> <gray>- Alle Nachrichten in deinem Postfach löschen</gray>
+    <yellow>/mail sendall <nachricht></yellow> <gray>- Rundschreiben an alle Spieler senden</gray>
+    <yellow>/mail sendtempall <dauer> <nachricht></yellow> <gray>- Zeitlich begrenztes Rundschreiben senden</gray><newline>
+  read_header: "<gold>===== Postfach (Seite <yellow><page></yellow>/<yellow><total></yellow> - <yellow><count></yellow> Nachrichten) =====</gold>"
+  read_entry: "<gold>[<index>]</gold> <type><yellow><sender></yellow> <gray>(<date>):</gray> <white><message></white>"
+  read_footer: "<gold>====================================</gold>"
+  empty_inbox: "<prefix><yellow>Dein Postfach ist derzeit leer.</yellow>"
+  sent_success: "<prefix><green>Nachricht erfolgreich an <white><target></white> gesendet!</green>"
+  sendall_success: "<prefix><green>Rundschreiben erfolgreich an alle Spieler gesendet!</green>"
+  sendtempall_success: "<prefix><green>Temporäres Rundschreiben an alle Spieler gesendet (läuft ab in <white><duration></white>)!</green>"
+  cleared_single: "<prefix><green>Nachricht #<index> erfolgreich gelöscht.</green>"
+  cleared_all: "<prefix><green>Alle Nachrichten in deinem Postfach wurden gelöscht.</green>"
+  cleared_target_single: "<prefix><green>Nachricht #<index> für <white><target></white> gelöscht.</green>"
+  cleared_target_all: "<prefix><green>Alle Nachrichten für <white><target></white> gelöscht.</green>"
+  invalid_index: "<prefix><red>Ungültiger Nachrichten-Index: <white><index></white>.</red>"
+  invalid_duration: "<prefix><red>Ungültiges Zeitformat '<white><duration></white>'. Beispiel: 30m, 2h, 7d.</red>"
+  usage_send: "<prefix><red>Verwendung: /mail send <spieler> <nachricht></red>"
+  usage_sendall: "<prefix><red>Verwendung: /mail sendall <nachricht></red>"
+  usage_sendtempall: "<prefix><red>Verwendung: /mail sendtempall <dauer> <nachricht></red>"
+  usage_clear: "<prefix><red>Verwendung: /mail clear [nummer] oder /mail clear <spieler> [nummer]</red>"
+  unread_join_notice: "<prefix><gold>[✉] Du hast <yellow><bold><count></bold></yellow> ungelesene Nachricht(en)! Klicke <click:run_command:'/mail read'><hover:show_text:'<gray>Klicken zum Lesen</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> zum Lesen.</gold>"
+  received_notification: "<prefix><gold>[✉] Neue Nachricht von <white><sender></white> erhalten! Klicke <click:run_command:'/mail read'><hover:show_text:'<gray>Klicken zum Lesen</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> zum Lesen.</gold>"
+  received_broadcast_notification: "<prefix><gold>[✉] Neue Server-Mitteilung von <white><sender></white> erhalten! Klicke <click:run_command:'/mail read'><hover:show_text:'<gray>Klicken zum Lesen</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> zum Lesen.</gold>"
+
+joindialog:
+  btn_close: "<red>Schließen</red>"
+  btn_dont_remind: "<gold>Nicht mehr erinnern</gold>"
+  dont_remind_ack: "<prefix><green>Du wirst für diese Version nicht mehr erinnert.</green>"
+

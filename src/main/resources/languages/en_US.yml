@@ -354,3 +354,48 @@ speed:
   reset_all_target: "<prefix><green>Reset flight and walking speed of <white><target></white> to default.</green>"
   reset_all_target_notify: "<prefix><green>Your flight and walking speed were reset to default by <white><sender></white>.</green>"
   no_permission_others: "<prefix><red>You do not have permission to change speed for others.</red>"
+
+spawn:
+  set_default: "<prefix><green>Default spawn location has been set to your current position.</green>"
+  set_firstjoin: "<prefix><green>First-join spawn location has been set to your current position.</green>"
+  teleported_self: "<prefix><green>Teleporting to spawn...</green>"
+  teleported_target: "<prefix><green>Teleported <white><target></white> to spawn.</green>"
+  target_teleported: "<prefix><green>You were teleported to spawn by <white><sender></white>.</green>"
+  no_permission_others: "<prefix><red>You do not have permission to teleport other players to spawn.</red>"
+  usage_console: "<prefix><red>Console usage: /spawn <player></red>"
+
+mail:
+  help: |
+    <newline><gold><bold>===== Mail System Help =====</bold></gold>
+    <yellow>/mail read [page]</yellow> <gray>- Read your messages</gray>
+    <yellow>/mail send <player> <message></yellow> <gray>- Send mail to a player</gray>
+    <yellow>/mail clear [number]</yellow> <gray>- Clear a specific mail message</gray>
+    <yellow>/mail clearall</yellow> <gray>- Clear all messages in your mailbox</gray>
+    <yellow>/mail sendall <message></yellow> <gray>- Broadcast a mail to all players</gray>
+    <yellow>/mail sendtempall <duration> <message></yellow> <gray>- Broadcast an expiring mail</gray><newline>
+  read_header: "<gold>===== Mailbox (Page <yellow><page></yellow>/<yellow><total></yellow> - <yellow><count></yellow> Messages) =====</gold>"
+  read_entry: "<gold>[<index>]</gold> <type><yellow><sender></yellow> <gray>(<date>):</gray> <white><message></white>"
+  read_footer: "<gold>====================================</gold>"
+  empty_inbox: "<prefix><yellow>Your mailbox is currently empty.</yellow>"
+  sent_success: "<prefix><green>Mail sent successfully to <white><target></white>!</green>"
+  sendall_success: "<prefix><green>Broadcast mail sent to all players successfully!</green>"
+  sendtempall_success: "<prefix><green>Temporary broadcast mail sent to all players (expires in <white><duration></white>)!</green>"
+  cleared_single: "<prefix><green>Mail message #<index> cleared successfully.</green>"
+  cleared_all: "<prefix><green>All messages in your mailbox have been cleared.</green>"
+  cleared_target_single: "<prefix><green>Cleared mail message #<index> for <white><target></white>.</green>"
+  cleared_target_all: "<prefix><green>Cleared all mail messages for <white><target></white>.</green>"
+  invalid_index: "<prefix><red>Invalid mail index: <white><index></white>.</red>"
+  invalid_duration: "<prefix><red>Invalid duration format '<white><duration></white>'. Example: 30m, 2h, 7d.</red>"
+  usage_send: "<prefix><red>Usage: /mail send <player> <message></red>"
+  usage_sendall: "<prefix><red>Usage: /mail sendall <message></red>"
+  usage_sendtempall: "<prefix><red>Usage: /mail sendtempall <duration> <message></red>"
+  usage_clear: "<prefix><red>Usage: /mail clear [number] or /mail clear <player> [number]</red>"
+  unread_join_notice: "<prefix><gold>[✉] You have <yellow><bold><count></bold></yellow> unread mail(s)! Type <click:run_command:'/mail read'><hover:show_text:'<gray>Click to read mail</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> to view them.</gold>"
+  received_notification: "<prefix><gold>[✉] You received a new mail from <white><sender></white>! Type <click:run_command:'/mail read'><hover:show_text:'<gray>Click to read mail</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> to view.</gold>"
+  received_broadcast_notification: "<prefix><gold>[✉] A new server announcement was sent by <white><sender></white>! Type <click:run_command:'/mail read'><hover:show_text:'<gray>Click to read mail</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> to view.</gold>"
+
+joindialog:
+  btn_close: "<red>Close</red>"
+  btn_dont_remind: "<gold>Don't remind again</gold>"
+  dont_remind_ack: "<prefix><green>You will no longer be reminded of this update version.</green>"
+

@@ -166,4 +166,55 @@ settings:
     pvp: "pvp"
     scoreboard: "sb toggle"
 
+# Spawn System
+spawn:
+  enabled: true
+  # Whether players should respawn at default spawn on death
+  respawn-at-spawn: true
+  # If true, overrides bed and respawn anchor spawns as well
+  respawn-override-bed: false
+  # Teleport player to first-join spawn (or default spawn) on first join
+  teleport-on-first-join: true
+  # Teleport player to default spawn on every join
+  teleport-on-join: false
+
+# Mail System
+mail:
+  enabled: true
+  # Notify player of unread mails upon joining the server
+  notify-on-join: true
+
+# JoinDialog & Changelog System (Paper Native Dialog API)
+join-dialog:
+  enabled: true
+  # Update ID: Bump this string (e.g. v1.0.1) when releasing new updates so players who clicked "Don't remind again" will see the new update
+  current-update-id: "v1.0.0"
+  # Show the changelog dialog once a day when players join
+  daily-reminder: true
+
+  # First Join Tips dialog (shown only once to first-time players)
+  first-join-tips:
+    enabled: true
+    title: "<gradient:#00fbff:#0077ff><bold>Welcome to Clarity Network!</bold></gradient>"
+    body:
+      - "<yellow>★ <bold>Beginner Tips & Guidelines:</bold></yellow>"
+      - "<gray>1. Use <white>/menu</white> or press <white>ESC</white> to open the Central Dashboard.</gray>"
+      - "<gray>2. Teleport into the wilderness using <white>/rtp</white> to build your base.</gray>"
+      - "<gray>3. Set a home using <white>/sethome <name></white> so you can easily return.</gray>"
+      - "<gray>4. Protect your land and trade with others using <white>/ah</white> and <white>/pay</white>.</gray>"
+      - "<gray>5. Need help? Contact our staff or join our community Discord!</gray>"
+
+  # Changelog Dialog (shown via daily reminder or manual /update, /changelog)
+  changelog:
+    title: "<gradient:#ffaa00:#ff5555><bold>Server Updates & Changelog</bold></gradient>"
+    body:
+      - "<gold><bold>What's New in Clarity Network:</bold></gold>"
+      - "<gray>• Added <white>/spawn</white> with dedicated new player first-join spawn point.</gray>"
+      - "<gray>• Added <white>/mail</white> system for persistent inboxes & announcements.</gray>"
+      - "<gray>• Added <white>/speed</white> command to adjust walking and flight speed.</gray>"
+      - "<gray>• Added <white>/fly</white>, <white>/feed</white>, <white>/heal</white>, and <white>/afk</white> with custom reasons.</gray>"
+      - "<gray>• Added fast gamemode shortcuts: <white>/gmc</white>, <white>/gms</white>, <white>/gmsp</white>, <white>/gma</white>.</gray>"
+      - "<gray>• Dashboard updated with <white>Skills</white> and official <white>Webstore</white>!</gray>"
+
+
 

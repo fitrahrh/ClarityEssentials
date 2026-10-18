@@ -354,3 +354,48 @@ speed:
   reset_all_target: "<prefix><green>Mereset kecepatan terbang dan berjalan <white><target></white> ke default.</green>"
   reset_all_target_notify: "<prefix><green>Kecepatan terbang dan berjalan Anda direset ke default oleh <white><sender></white>.</green>"
   no_permission_others: "<prefix><red>Anda tidak memiliki izin untuk mengubah kecepatan pemain lain.</red>"
+
+spawn:
+  set_default: "<prefix><green>Lokasi default spawn telah berhasil diatur ke posisi Anda saat ini.</green>"
+  set_firstjoin: "<prefix><green>Lokasi spawn first-join telah berhasil diatur ke posisi Anda saat ini.</green>"
+  teleported_self: "<prefix><green>Menteleportasi ke spawn...</green>"
+  teleported_target: "<prefix><green>Berhasil menteleportasikan <white><target></white> ke spawn.</green>"
+  target_teleported: "<prefix><green>Anda telah diteleportasikan ke spawn oleh <white><sender></white>.</green>"
+  no_permission_others: "<prefix><red>Anda tidak memiliki izin untuk menteleportasikan pemain lain ke spawn.</red>"
+  usage_console: "<prefix><red>Penggunaan dari konsol: /spawn <player></red>"
+
+mail:
+  help: |
+    <newline><gold><bold>===== Bantuan Sistem Surat (Mail) =====</bold></gold>
+    <yellow>/mail read [page]</yellow> <gray>- Membaca pesan surat Anda</gray>
+    <yellow>/mail send <player> <message></yellow> <gray>- Mengirim surat ke pemain</gray>
+    <yellow>/mail clear [number]</yellow> <gray>- Menghapus pesan surat tertentu</gray>
+    <yellow>/mail clearall</yellow> <gray>- Menghapus semua surat di kotak masuk Anda</gray>
+    <yellow>/mail sendall <message></yellow> <gray>- Menyiarkan surat ke semua pemain</gray>
+    <yellow>/mail sendtempall <duration> <message></yellow> <gray>- Menyiarkan surat dengan batas waktu</gray><newline>
+  read_header: "<gold>===== Kotak Surat (Halaman <yellow><page></yellow>/<yellow><total></yellow> - <yellow><count></yellow> Pesan) =====</gold>"
+  read_entry: "<gold>[<index>]</gold> <type><yellow><sender></yellow> <gray>(<date>):</gray> <white><message></white>"
+  read_footer: "<gold>====================================</gold>"
+  empty_inbox: "<prefix><yellow>Kotak surat Anda saat ini kosong.</yellow>"
+  sent_success: "<prefix><green>Surat berhasil dikirim ke <white><target></white>!</green>"
+  sendall_success: "<prefix><green>Surat siaran berhasil dikirim ke semua pemain!</green>"
+  sendtempall_success: "<prefix><green>Surat siaran sementara berhasil dikirim ke semua pemain (kedaluwarsa dalam <white><duration></white>)!</green>"
+  cleared_single: "<prefix><green>Pesan surat #<index> berhasil dihapus.</green>"
+  cleared_all: "<prefix><green>Semua pesan di kotak surat Anda telah dihapus.</green>"
+  cleared_target_single: "<prefix><green>Menghapus pesan surat #<index> milik <white><target></white>.</green>"
+  cleared_target_all: "<prefix><green>Menghapus seluruh kotak surat milik <white><target></white>.</green>"
+  invalid_index: "<prefix><red>Nomor indeks surat tidak valid: <white><index></white>.</red>"
+  invalid_duration: "<prefix><red>Format durasi '<white><duration></white>' tidak valid. Contoh: 30m, 2h, 7d.</red>"
+  usage_send: "<prefix><red>Penggunaan: /mail send <player> <message></red>"
+  usage_sendall: "<prefix><red>Penggunaan: /mail sendall <message></red>"
+  usage_sendtempall: "<prefix><red>Penggunaan: /mail sendtempall <duration> <message></red>"
+  usage_clear: "<prefix><red>Penggunaan: /mail clear [number] atau /mail clear <player> [number]</red>"
+  unread_join_notice: "<prefix><gold>[✉] Anda memiliki <yellow><bold><count></bold></yellow> surat belum dibaca! Ketuk <click:run_command:'/mail read'><hover:show_text:'<gray>Klik untuk membuka surat</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> untuk membacanya.</gold>"
+  received_notification: "<prefix><gold>[✉] Anda menerima surat baru dari <white><sender></white>! Ketuk <click:run_command:'/mail read'><hover:show_text:'<gray>Klik untuk membuka surat</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> untuk membacanya.</gold>"
+  received_broadcast_notification: "<prefix><gold>[✉] Pengumuman server baru diterima dari <white><sender></white>! Ketuk <click:run_command:'/mail read'><hover:show_text:'<gray>Klik untuk membuka surat</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> untuk membacanya.</gold>"
+
+joindialog:
+  btn_close: "<red>Tutup</red>"
+  btn_dont_remind: "<gold>Jangan ingatkan lagi</gold>"
+  dont_remind_ack: "<prefix><green>Pembaruan ini tidak akan diingatkan lagi.</green>"
+

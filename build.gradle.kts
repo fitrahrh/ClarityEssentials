@@ -24,6 +24,8 @@ dependencies {
     compileOnly(files("libs/ClarityLangCore-1.0.0.jar"))
 
     testImplementation("org.yaml:snakeyaml:2.2")
+    testImplementation("net.kyori:adventure-text-minimessage:4.17.0")
+    testImplementation("net.kyori:adventure-text-serializer-plain:4.17.0")
     testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

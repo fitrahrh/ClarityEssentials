@@ -49,6 +49,9 @@ public class ClarityEssentials extends JavaPlugin {
     private com.harukiyu.clarityessentials.message.PrivateMessageManager privateMessageManager;
     private FlyManager flyManager;
     private AfkManager afkManager;
+    private com.harukiyu.clarityessentials.spawn.SpawnManager spawnManager;
+    private com.harukiyu.clarityessentials.mail.MailManager mailManager;
+    private com.harukiyu.clarityessentials.dialog.UpdateDialogManager updateDialogManager;
 
     @Override
     public void onEnable() {
@@ -95,10 +98,13 @@ public class ClarityEssentials extends JavaPlugin {
         this.privateMessageManager = new com.harukiyu.clarityessentials.message.PrivateMessageManager(this, userSettingsManager, nicknameManager);
         this.flyManager = new FlyManager(this, configManager);
         this.afkManager = new AfkManager(this, configManager, nicknameManager);
+        this.spawnManager = new com.harukiyu.clarityessentials.spawn.SpawnManager(this);
+        this.mailManager = new com.harukiyu.clarityessentials.mail.MailManager(this, configManager);
+        this.updateDialogManager = new com.harukiyu.clarityessentials.dialog.UpdateDialogManager(this, configManager, userSettingsManager);
 
         // 3. Register Events
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(new PlayerListener(configManager, nicknameManager, teleportManager, userSettingsManager), this);
+        pm.registerEvents(new PlayerListener(configManager, nicknameManager, teleportManager, userSettingsManager, spawnManager, mailManager, updateDialogManager), this);
         pm.registerEvents(new ChatListener(chatManager, userSettingsManager), this);
         pm.registerEvents(flyManager, this);
         pm.registerEvents(afkManager, this);
@@ -124,7 +130,7 @@ public class ClarityEssentials extends JavaPlugin {
         registerCommand("menu", "Open Centralized Player Dashboard", List.of("dashboard", "cp"), new MenuCommand(menuDialogManager));
         registerCommand("clarityessentials", "ClarityEssentials main command", List.of("ce", "essentials"), new ClarityEssentialsCommand(this));
 
-        // New Essentials Commands
+        // Essentials Commands
         registerCommand("feed", "Replenish hunger bar", List.of("eat"), new FeedCommand(configManager));
         registerCommand("heal", "Heal health and status effects", List.of(), new HealCommand(configManager));
         registerCommand("fly", "Toggle or set flight duration", List.of("flight"), new FlyCommand(flyManager, configManager));
@@ -136,6 +142,12 @@ public class ClarityEssentials extends JavaPlugin {
         registerCommand("gmsp", "Switch game mode to spectator", List.of(), new GamemodeAliasCommand(GameMode.SPECTATOR, "clarityessentials.command.gamemode.spectator"));
         registerCommand("gma", "Switch game mode to adventure", List.of(), new GamemodeAliasCommand(GameMode.ADVENTURE, "clarityessentials.command.gamemode.adventure"));
         registerCommand("speed", "Change walking or flight speed", List.of(), new SpeedCommand(configManager));
+
+        // Spawn, Mail, and Update Commands
+        registerCommand("setspawn", "Set server spawn location", List.of(), new SetSpawnCommand(spawnManager, configManager));
+        registerCommand("spawn", "Teleport to server spawn", List.of(), new SpawnCommand(spawnManager, teleportManager, configManager));
+        registerCommand("mail", "Send and read offline player mails", List.of("email"), new MailCommand(mailManager, configManager));
+        registerCommand("update", "View server updates and changelog", List.of("changelog", "news"), new UpdateCommand(updateDialogManager, configManager));
 
         getLogger().info("==================================================");
         getLogger().info(() -> " 🌟 ClarityEssentials v" + getPluginMeta().getVersion() + " has been enabled!");
@@ -152,6 +164,12 @@ public class ClarityEssentials extends JavaPlugin {
         if (flyManager != null) {
             flyManager.stop();
         }
+        if (mailManager != null) {
+            mailManager.saveSync();
+        }
+        if (spawnManager != null) {
+            spawnManager.save();
+        }
         if (dataManager != null) {
             dataManager.saveSync();
         }
@@ -164,6 +182,12 @@ public class ClarityEssentials extends JavaPlugin {
     public void reloadPlugin() {
         configManager.load();
         dataManager.load();
+        if (spawnManager != null) {
+            spawnManager.load();
+        }
+        if (mailManager != null) {
+            mailManager.load();
+        }
         LanguageHook.init(this);
         LuckPermsHook.init();
         PlaceholderAPIHook.init(this);
@@ -275,5 +299,17 @@ public class ClarityEssentials extends JavaPlugin {
 
     public AfkManager getAfkManager() {
         return afkManager;
+    }
+
+    public com.harukiyu.clarityessentials.spawn.SpawnManager getSpawnManager() {
+        return spawnManager;
+    }
+
+    public com.harukiyu.clarityessentials.mail.MailManager getMailManager() {
+        return mailManager;
+    }
+
+    public com.harukiyu.clarityessentials.dialog.UpdateDialogManager getUpdateDialogManager() {
+        return updateDialogManager;
     }
 }

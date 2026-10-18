@@ -349,3 +349,48 @@ speed:
   reset_all_target: "<prefix><green><white><target></white> の歩行および飛行速度をデフォルトにリセットしました。</green>"
   reset_all_target_notify: "<prefix><green><white><sender></white> によって歩行および飛行速度がデフォルトにリセットされました。</green>"
   no_permission_others: "<prefix><red>他のプレイヤーの速度を変更する権限がありません。</red>"
+
+spawn:
+  set_default: "<prefix><green>デフォルトのスポーン地点を現在位置に設定しました。</green>"
+  set_firstjoin: "<prefix><green>初参加時スポーン地点を現在位置に設定しました。</green>"
+  teleported_self: "<prefix><green>スポーン地点へテレポート中...</green>"
+  teleported_target: "<prefix><green><white><target></white> をスポーン地点へテレポートしました。</green>"
+  target_teleported: "<prefix><green><white><sender></white> によってスポーン地点へテレポートされました。</green>"
+  no_permission_others: "<prefix><red>他のプレイヤーをスポーン地点へテレポートする権限がありません。</red>"
+  usage_console: "<prefix><red>コンソールでの使用方法: /spawn <player></red>"
+
+mail:
+  help: |
+    <newline><gold><bold>===== メールシステム ヘルプ =====</bold></gold>
+    <yellow>/mail read [ページ]</yellow> <gray>- 受信メールを読む</gray>
+    <yellow>/mail send <プレイヤー> <メッセージ></yellow> <gray>- プレイヤーにメールを送信</gray>
+    <yellow>/mail clear [番号]</yellow> <gray>- 指定したメールを削除</gray>
+    <yellow>/mail clearall</yellow> <gray>- すべてのメールを削除</gray>
+    <yellow>/mail sendall <メッセージ></yellow> <gray>- 全プレイヤーに一斉送信</gray>
+    <yellow>/mail sendtempall <有効期間> <メッセージ></yellow> <gray>- 期限付き一斉送信</gray><newline>
+  read_header: "<gold>===== メールボックス (ページ <yellow><page></yellow>/<yellow><total></yellow> - <yellow><count></yellow> 件) =====</gold>"
+  read_entry: "<gold>[<index>]</gold> <type><yellow><sender></yellow> <gray>(<date>):</gray> <white><message></white>"
+  read_footer: "<gold>====================================</gold>"
+  empty_inbox: "<prefix><yellow>メールボックスは空です。</yellow>"
+  sent_success: "<prefix><green><white><target></white> へメールを送信しました！</green>"
+  sendall_success: "<prefix><green>全プレイヤーへ一斉メールを送信しました！</green>"
+  sendtempall_success: "<prefix><green>期限付き一斉メールを送信しました (有効期限: <white><duration></white>)！</green>"
+  cleared_single: "<prefix><green>メール #<index> を削除しました。</green>"
+  cleared_all: "<prefix><green>すべてのメールを削除しました。</green>"
+  cleared_target_single: "<prefix><green><white><target></white> のメール #<index> を削除しました。</green>"
+  cleared_target_all: "<prefix><green><white><target></white> のすべてのメールを削除しました。</green>"
+  invalid_index: "<prefix><red>無効なメール番号です: <white><index></white>。</red>"
+  invalid_duration: "<prefix><red>無効な時間形式です '<white><duration></white>'。例: 30m, 2h, 7d。</red>"
+  usage_send: "<prefix><red>使用方法: /mail send <プレイヤー> <メッセージ></red>"
+  usage_sendall: "<prefix><red>使用方法: /mail sendall <メッセージ></red>"
+  usage_sendtempall: "<prefix><red>使用方法: /mail sendtempall <有効期間> <メッセージ></red>"
+  usage_clear: "<prefix><red>使用方法: /mail clear [番号] または /mail clear <プレイヤー> [番号]</red>"
+  unread_join_notice: "<prefix><gold>[✉] 未読メールが <yellow><bold><count></bold></yellow> 件あります！ <click:run_command:'/mail read'><hover:show_text:'<gray>クリックしてメールを読む</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> で確認してください。</gold>"
+  received_notification: "<prefix><gold>[✉] <white><sender></white> から新しいメールが届きました！ <click:run_command:'/mail read'><hover:show_text:'<gray>クリックしてメールを読む</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> で確認してください。</gold>"
+  received_broadcast_notification: "<prefix><gold>[✉] <white><sender></white> から新しい一斉連絡が届きました！ <click:run_command:'/mail read'><hover:show_text:'<gray>クリックしてメールを読む</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> で確認してください。</gold>"
+
+joindialog:
+  btn_close: "<red>閉じる</red>"
+  btn_dont_remind: "<gold>今後通知しない</gold>"
+  dont_remind_ack: "<prefix><green>このアップデートについて再通知されなくなります。</green>"
+

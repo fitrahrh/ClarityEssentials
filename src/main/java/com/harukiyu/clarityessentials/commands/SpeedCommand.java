@@ -51,36 +51,40 @@ public class SpeedCommand implements BasicCommand {
             return;
         }
 
-        SpeedMode mode = SpeedMode.AUTO;
+        SpeedMode mode;
         String speedArg;
         String targetArg = null;
 
         String firstArgLower = args[0].toLowerCase(Locale.ROOT);
-        if (firstArgLower.equals("fly") || firstArgLower.equals("flying")) {
-            mode = SpeedMode.FLY;
-            if (args.length < 2) {
-                LanguageHook.sendMessage(sender, "speed.usage");
-                return;
+        switch (firstArgLower) {
+            case "fly", "flying" -> {
+                mode = SpeedMode.FLY;
+                if (args.length < 2) {
+                    LanguageHook.sendMessage(sender, "speed.usage");
+                    return;
+                }
+                speedArg = args[1];
+                if (args.length >= 3) {
+                    targetArg = args[2];
+                }
             }
-            speedArg = args[1];
-            if (args.length >= 3) {
-                targetArg = args[2];
+            case "walk", "walking" -> {
+                mode = SpeedMode.WALK;
+                if (args.length < 2) {
+                    LanguageHook.sendMessage(sender, "speed.usage");
+                    return;
+                }
+                speedArg = args[1];
+                if (args.length >= 3) {
+                    targetArg = args[2];
+                }
             }
-        } else if (firstArgLower.equals("walk") || firstArgLower.equals("walking")) {
-            mode = SpeedMode.WALK;
-            if (args.length < 2) {
-                LanguageHook.sendMessage(sender, "speed.usage");
-                return;
-            }
-            speedArg = args[1];
-            if (args.length >= 3) {
-                targetArg = args[2];
-            }
-        } else {
-            mode = SpeedMode.AUTO;
-            speedArg = args[0];
-            if (args.length >= 2) {
-                targetArg = args[1];
+            default -> {
+                mode = SpeedMode.AUTO;
+                speedArg = args[0];
+                if (args.length >= 2) {
+                    targetArg = args[1];
+                }
             }
         }
 
@@ -165,30 +169,34 @@ public class SpeedCommand implements BasicCommand {
     }
 
     private void handleReset(@NotNull CommandSender sender, @NotNull Player target, @NotNull SpeedMode mode) {
-        if (mode == SpeedMode.FLY) {
-            target.setFlySpeed(0.1f);
-            if (sender.equals(target)) {
-                LanguageHook.sendMessage(sender, "speed.reset_fly_self");
-            } else {
-                LanguageHook.sendMessage(sender, "speed.reset_fly_target", Placeholder.unparsed("target", target.getName()));
-                LanguageHook.sendMessage(target, "speed.reset_fly_target_notify", Placeholder.unparsed("sender", sender.getName()));
+        switch (mode) {
+            case FLY -> {
+                target.setFlySpeed(0.1f);
+                if (sender.equals(target)) {
+                    LanguageHook.sendMessage(sender, "speed.reset_fly_self");
+                } else {
+                    LanguageHook.sendMessage(sender, "speed.reset_fly_target", Placeholder.unparsed("target", target.getName()));
+                    LanguageHook.sendMessage(target, "speed.reset_fly_target_notify", Placeholder.unparsed("sender", sender.getName()));
+                }
             }
-        } else if (mode == SpeedMode.WALK) {
-            target.setWalkSpeed(0.2f);
-            if (sender.equals(target)) {
-                LanguageHook.sendMessage(sender, "speed.reset_walk_self");
-            } else {
-                LanguageHook.sendMessage(sender, "speed.reset_walk_target", Placeholder.unparsed("target", target.getName()));
-                LanguageHook.sendMessage(target, "speed.reset_walk_target_notify", Placeholder.unparsed("sender", sender.getName()));
+            case WALK -> {
+                target.setWalkSpeed(0.2f);
+                if (sender.equals(target)) {
+                    LanguageHook.sendMessage(sender, "speed.reset_walk_self");
+                } else {
+                    LanguageHook.sendMessage(sender, "speed.reset_walk_target", Placeholder.unparsed("target", target.getName()));
+                    LanguageHook.sendMessage(target, "speed.reset_walk_target_notify", Placeholder.unparsed("sender", sender.getName()));
+                }
             }
-        } else {
-            target.setFlySpeed(0.1f);
-            target.setWalkSpeed(0.2f);
-            if (sender.equals(target)) {
-                LanguageHook.sendMessage(sender, "speed.reset_all_self");
-            } else {
-                LanguageHook.sendMessage(sender, "speed.reset_all_target", Placeholder.unparsed("target", target.getName()));
-                LanguageHook.sendMessage(target, "speed.reset_all_target_notify", Placeholder.unparsed("sender", sender.getName()));
+            default -> {
+                target.setFlySpeed(0.1f);
+                target.setWalkSpeed(0.2f);
+                if (sender.equals(target)) {
+                    LanguageHook.sendMessage(sender, "speed.reset_all_self");
+                } else {
+                    LanguageHook.sendMessage(sender, "speed.reset_all_target", Placeholder.unparsed("target", target.getName()));
+                    LanguageHook.sendMessage(target, "speed.reset_all_target_notify", Placeholder.unparsed("sender", sender.getName()));
+                }
             }
         }
 

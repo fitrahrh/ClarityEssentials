@@ -202,6 +202,11 @@ public final class LanguageHook {
     }
 
     @Nullable
+    public static String getRawString(@NotNull String key) {
+        return getRawString(key, "en_US");
+    }
+
+    @Nullable
     public static String getRawString(@NotNull String key, @NotNull String langCode) {
         if (isClarityLangCorePresent) {
             try {

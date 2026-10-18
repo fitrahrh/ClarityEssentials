@@ -169,6 +169,48 @@ public class ConfigManager {
         // Settings commands
         this.cmdPvp = config.getString("settings.commands.pvp", "pvp");
         this.cmdScoreboard = config.getString("settings.commands.scoreboard", "sb toggle");
+
+        // Spawn Settings
+        this.spawnEnabled = config.getBoolean("spawn.enabled", true);
+        this.spawnRespawnAtSpawn = config.getBoolean("spawn.respawn-at-spawn", true);
+        this.spawnRespawnOverrideBed = config.getBoolean("spawn.respawn-override-bed", false);
+        this.spawnTeleportOnFirstJoin = config.getBoolean("spawn.teleport-on-first-join", true);
+        this.spawnTeleportOnJoin = config.getBoolean("spawn.teleport-on-join", false);
+
+        // Mail Settings
+        this.mailEnabled = config.getBoolean("mail.enabled", true);
+        this.mailNotifyOnJoin = config.getBoolean("mail.notify-on-join", true);
+
+        // JoinDialog & Changelog Settings
+        this.joinDialogEnabled = config.getBoolean("join-dialog.enabled", true);
+        this.joinDialogUpdateId = config.getString("join-dialog.current-update-id", "v1.0.0");
+        this.joinDialogDailyReminder = config.getBoolean("join-dialog.daily-reminder", true);
+        this.firstJoinTipsEnabled = config.getBoolean("join-dialog.first-join-tips.enabled", true);
+        this.firstJoinTipsTitle = config.getString("join-dialog.first-join-tips.title", "<gradient:#00fbff:#0077ff><bold>Welcome to Clarity Network!</bold></gradient>");
+        this.firstJoinTipsBody = config.getStringList("join-dialog.first-join-tips.body");
+        if (this.firstJoinTipsBody.isEmpty()) {
+            this.firstJoinTipsBody = java.util.List.of(
+                    "<yellow>★ <bold>Beginner Tips & Guidelines:</bold></yellow>",
+                    "<gray>1. Use <white>/menu</white> or press <white>ESC</white> to open the Central Dashboard.</gray>",
+                    "<gray>2. Teleport into the wilderness using <white>/rtp</white> to build your base.</gray>",
+                    "<gray>3. Set a home using <white>/sethome <name></white> so you can easily return.</gray>",
+                    "<gray>4. Protect your land and trade with others using <white>/ah</white> and <white>/pay</white>.</gray>",
+                    "<gray>5. Need help? Contact our staff or join our community Discord!</gray>"
+            );
+        }
+        this.changelogTitle = config.getString("join-dialog.changelog.title", "<gradient:#ffaa00:#ff5555><bold>Server Updates & Changelog</bold></gradient>");
+        this.changelogBody = config.getStringList("join-dialog.changelog.body");
+        if (this.changelogBody.isEmpty()) {
+            this.changelogBody = java.util.List.of(
+                    "<gold><bold>What's New in Clarity Network:</bold></gold>",
+                    "<gray>• Added <white>/spawn</white> with dedicated new player first-join spawn point.</gray>",
+                    "<gray>• Added <white>/mail</white> system for persistent inboxes & announcements.</gray>",
+                    "<gray>• Added <white>/speed</white> command to adjust walking and flight speed.</gray>",
+                    "<gray>• Added <white>/fly</white>, <white>/feed</white>, <white>/heal</white>, and <white>/afk</white> with custom reasons.</gray>",
+                    "<gray>• Added fast gamemode shortcuts: <white>/gmc</white>, <white>/gms</white>, <white>/gmsp</white>, <white>/gma</white>.</gray>",
+                    "<gray>• Dashboard updated with <white>Skills</white> and official <white>Webstore</white>!</gray>"
+            );
+        }
     }
 
     @SuppressWarnings("removal")
@@ -294,4 +336,43 @@ public class ConfigManager {
 
     public String getCmdPvp() { return cmdPvp; }
     public String getCmdScoreboard() { return cmdScoreboard; }
+
+    // Spawn Settings
+    private boolean spawnEnabled = true;
+    private boolean spawnRespawnAtSpawn = true;
+    private boolean spawnRespawnOverrideBed = false;
+    private boolean spawnTeleportOnFirstJoin = true;
+    private boolean spawnTeleportOnJoin = false;
+
+    public boolean isSpawnEnabled() { return spawnEnabled; }
+    public boolean isSpawnRespawnAtSpawn() { return spawnRespawnAtSpawn; }
+    public boolean isSpawnRespawnOverrideBed() { return spawnRespawnOverrideBed; }
+    public boolean isSpawnTeleportOnFirstJoin() { return spawnTeleportOnFirstJoin; }
+    public boolean isSpawnTeleportOnJoin() { return spawnTeleportOnJoin; }
+
+    // Mail Settings
+    private boolean mailEnabled = true;
+    private boolean mailNotifyOnJoin = true;
+
+    public boolean isMailEnabled() { return mailEnabled; }
+    public boolean isMailNotifyOnJoin() { return mailNotifyOnJoin; }
+
+    // JoinDialog & Changelog Settings
+    private boolean joinDialogEnabled = true;
+    private String joinDialogUpdateId = "v1.0.0";
+    private boolean joinDialogDailyReminder = true;
+    private boolean firstJoinTipsEnabled = true;
+    private String firstJoinTipsTitle = "<gradient:#00fbff:#0077ff><bold>Welcome to Clarity Network!</bold></gradient>";
+    private java.util.List<String> firstJoinTipsBody = new java.util.ArrayList<>();
+    private String changelogTitle = "<gradient:#ffaa00:#ff5555><bold>Server Updates & Changelog</bold></gradient>";
+    private java.util.List<String> changelogBody = new java.util.ArrayList<>();
+
+    public boolean isJoinDialogEnabled() { return joinDialogEnabled; }
+    public String getJoinDialogUpdateId() { return joinDialogUpdateId; }
+    public boolean isJoinDialogDailyReminder() { return joinDialogDailyReminder; }
+    public boolean isFirstJoinTipsEnabled() { return firstJoinTipsEnabled; }
+    public String getFirstJoinTipsTitle() { return firstJoinTipsTitle; }
+    public java.util.List<String> getFirstJoinTipsBody() { return firstJoinTipsBody; }
+    public String getChangelogTitle() { return changelogTitle; }
+    public java.util.List<String> getChangelogBody() { return changelogBody; }
 }

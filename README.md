@@ -133,6 +133,34 @@
   * 🇨🇳 Simplified Chinese (`zh_CN`)
 * Self-contained standalone fallback when running without ClarityLangCore.
 
+### 📍 18. Spawn & First-Join System (`/spawn`, `/setspawn`)
+* Dedicated spawn system with separate **default spawn** and **first-join spawn** locations.
+* `/setspawn [default|firstjoin]`: Define the main server spawn or a dedicated welcoming area for first-time players.
+* `/spawn [player]`: Teleport self or send target players to the server spawn. Supports warmup delay and movement cancellation.
+* Configurable death respawn routing: automatically respawns players at spawn point, with option to respect or override beds/respawn anchors.
+
+### ✉️ 19. Mailbox & Broadcast Mail System (`/mail`)
+* EssentialsX-style persistent mailbox system supporting offline player recipients.
+* **Personal & Admin Commands**:
+  * `/mail read [page]`: Read incoming messages with automated pagination and unread status tracking.
+  * `/mail send <player> <message>`: Send private mail to online or offline players.
+  * `/mail clear [number]`: Clear a specific mail message by index.
+  * `/mail clearall`: Clear all messages from your mailbox.
+  * `/mail sendall <message>`: Broadcast a permanent mail announcement to all players.
+  * `/mail sendtempall <duration> <message>`: Broadcast an expiring announcement mail (e.g., `30m`, `24h`, `7d`).
+  * `/mail clear <player> [number]`: Staff command to purge messages from a specific player's mailbox.
+* Automated join notification with clickable `/mail read` link when players log in with unread messages.
+
+### 📰 20. Native JoinDialog & Server Update / Changelog (`/update`, `/changelog`)
+* Uses **Paper Native Dialog API** to present visually appealing, client-native modals without any chest GUI hacks.
+* **First-Join Tips Dialog**: Welcomes brand new players with a beginner guidelines modal on their first connection.
+* **Server Update & Changelog Dialog**:
+  * Displays changelog highlights once a day on player join.
+  * Includes interactive action buttons: **Tutup (Close)** and **Jangan ingatkan lagi (Don't remind again)**.
+  * Dismissing reminders suppresses daily popups for the current version (`current-update-id`), but automatically re-alerts players when an admin bumps the update ID!
+  * Manually viewable anytime via `/update` or `/changelog`.
+
+
 ---
 
 ## 🧩 PlaceholderAPI Expansion
@@ -188,6 +216,10 @@ ClarityEssentials natively registers expansion identifiers: `%clarityessentials_
 | `/tpahere <player>` | - | Request a player to teleport to you | `clarityessentials.command.tpahere` |
 | `/tpaccept [player]` | `/tpyes` | Accept a pending teleport request | `clarityessentials.command.tpaccept` |
 | `/tpdeny [player]` | `/tpno` | Decline a pending teleport request | `clarityessentials.command.tpdeny` |
+| `/spawn [player]` | - | Teleport self or others to server spawn | `clarityessentials.command.spawn` |
+| `/setspawn [default\|firstjoin]` | - | Set default spawn or first-join spawn location | `clarityessentials.command.setspawn` |
+| `/mail <subcommand>` | - | EssentialsX-style mailbox system | `clarityessentials.command.mail` |
+| `/update` | `/changelog`, `/news` | View server updates and patch notes modal | `clarityessentials.command.update` |
 | `/tptoggle` | - | Toggle incoming teleport requests | `clarityessentials.command.tptoggle` |
 | `/ce reload` | `/clarityessentials` | Reload plugin configuration and data | `clarityessentials.admin` |
 
@@ -198,6 +230,9 @@ ClarityEssentials natively registers expansion identifiers: `%clarityessentials_
 * `clarityessentials.command.fly.unlimited`: Allow unlimited flight without duration expiration.
 * `clarityessentials.command.speed.others`: Change walking or flight speed of other players.
 * `clarityessentials.command.gamemode.others`: Change game mode for other players.
+* `clarityessentials.command.spawn.others`: Teleport other players to spawn.
+* `clarityessentials.command.mail.sendall`: Send global broadcast and temporary broadcast mails (`/mail sendall`, `/mail sendtempall`).
+* `clarityessentials.command.mail.admin`: Manage and clear mail messages from other players' mailboxes.
 * `clarityessentials.homelimit.admin`: Permission to view others' home quotas or give/take extra slots (`/homelimit give/take/set/check`).
 * `clarityessentials.socialspy`: Permission to toggle and view private messages via `/socialspy`.
 * `clarityessentials.chat.color`: Permission to use color and MiniMessage tags in chat.
@@ -216,6 +251,37 @@ ClarityEssentials natively registers expansion identifiers: `%clarityessentials_
 The main configuration file is located at `plugins/ClarityEssentials/config.yml`.
 
 ```yaml
+# Spawn System
+spawn:
+  enabled: true
+  respawn-at-spawn: true
+  respawn-override-bed: false
+  teleport-on-first-join: true
+  teleport-on-join: false
+
+# Mail System
+mail:
+  enabled: true
+  notify-on-join: true
+
+# JoinDialog & Changelog System (Paper Native Dialog API)
+join-dialog:
+  enabled: true
+  current-update-id: "v1.0.0"
+  daily-reminder: true
+  first-join-tips:
+    enabled: true
+    title: "<gradient:#00fbff:#0077ff><bold>Welcome to Clarity Network!</bold></gradient>"
+    body:
+      - "<yellow>★ <bold>Beginner Tips & Guidelines:</bold></yellow>"
+      - "<gray>1. Use <white>/menu</white> or press <white>ESC</white> to open Dashboard.</gray>"
+  changelog:
+    title: "<gradient:#ffaa00:#ff5555><bold>Server Updates & Changelog</bold></gradient>"
+    body:
+      - "<gold><bold>What's New:</bold></gold>"
+      - "<gray>• Added <white>/spawn</white> with dedicated first-join spawn point.</gray>"
+      - "<gray>• Added <white>/mail</white> system for persistent inboxes.</gray>"
+
 # ESC (Pause Menu) Custom Button & Native Dialog Menu
 esc-menu:
   enabled: true

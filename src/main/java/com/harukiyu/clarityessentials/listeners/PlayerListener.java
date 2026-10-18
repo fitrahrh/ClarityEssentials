@@ -28,21 +28,46 @@ public class PlayerListener implements Listener {
     private final NicknameManager nicknameManager;
     private final TeleportManager teleportManager;
     private final UserSettingsManager userSettingsManager;
+    private final com.harukiyu.clarityessentials.spawn.SpawnManager spawnManager;
+    private final com.harukiyu.clarityessentials.mail.MailManager mailManager;
+    private final com.harukiyu.clarityessentials.dialog.UpdateDialogManager updateDialogManager;
 
     public PlayerListener(@NotNull ConfigManager configManager,
                           @NotNull NicknameManager nicknameManager,
                           @NotNull TeleportManager teleportManager,
-                          @NotNull UserSettingsManager userSettingsManager) {
+                          @NotNull UserSettingsManager userSettingsManager,
+                          @NotNull com.harukiyu.clarityessentials.spawn.SpawnManager spawnManager,
+                          @NotNull com.harukiyu.clarityessentials.mail.MailManager mailManager,
+                          @NotNull com.harukiyu.clarityessentials.dialog.UpdateDialogManager updateDialogManager) {
         this.configManager = configManager;
         this.nicknameManager = nicknameManager;
         this.teleportManager = teleportManager;
         this.userSettingsManager = userSettingsManager;
+        this.spawnManager = spawnManager;
+        this.mailManager = mailManager;
+        this.updateDialogManager = updateDialogManager;
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerRespawn(org.bukkit.event.player.PlayerRespawnEvent event) {
+        if (configManager.isSpawnEnabled() && configManager.isSpawnRespawnAtSpawn()) {
+            if (configManager.isSpawnRespawnOverrideBed() || (!event.isBedSpawn() && !event.isAnchorSpawn())) {
+                event.setRespawnLocation(spawnManager.getSpawn());
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         nicknameManager.applyNickname(player);
+
+        // Spawn Teleportation Check
+        if (!player.hasPlayedBefore() && configManager.isSpawnEnabled() && configManager.isSpawnTeleportOnFirstJoin()) {
+            player.teleportAsync(spawnManager.getFirstJoinSpawn());
+        } else if (configManager.isSpawnEnabled() && configManager.isSpawnTeleportOnJoin()) {
+            player.teleportAsync(spawnManager.getSpawn());
+        }
 
         if (configManager.isEscMenuEnabled()) {
             try {
@@ -74,6 +99,19 @@ public class PlayerListener implements Listener {
             }
             org.bukkit.Bukkit.getConsoleSender().sendMessage(joinMsg);
         }
+
+        // Unread Mail Notification
+        if (configManager.isMailEnabled() && configManager.isMailNotifyOnJoin()) {
+            int unread = mailManager.getUnreadCount(player.getUniqueId());
+            if (unread > 0) {
+                LanguageHook.sendMessage(player, "mail.unread_join_notice",
+                        Placeholder.unparsed("count", String.valueOf(unread))
+                );
+            }
+        }
+
+        // Join Dialog & Changelog check
+        updateDialogManager.checkAndShowJoinDialog(player);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

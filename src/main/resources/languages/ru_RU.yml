@@ -345,3 +345,48 @@ speed:
   reset_all_target: "<prefix><green>Скорость полета и ходьбы игрока <white><target></white> сброшена на стандартную.</green>"
   reset_all_target_notify: "<prefix><green>Ваша скорость полета и ходьбы была сброшена игроком <white><sender></white>.</green>"
   no_permission_others: "<prefix><red>У вас нет разрешения изменять скорость другим игрокам.</red>"
+
+spawn:
+  set_default: "<prefix><green>Основная точка спавна установлена на вашу текущую позицию.</green>"
+  set_firstjoin: "<prefix><green>Точка первого спавна для новичков установлена на вашу текущую позицию.</green>"
+  teleported_self: "<prefix><green>Телепортация на спавн...</green>"
+  teleported_target: "<prefix><green>Игрок <white><target></white> телепортирован на спавн.</green>"
+  target_teleported: "<prefix><green>Вы были телепортированы на спавн игроком <white><sender></white>.</green>"
+  no_permission_others: "<prefix><red>У вас нет прав для телепортации других игроков на спавн.</red>"
+  usage_console: "<prefix><red>Использование из консоли: /spawn <игрок></red>"
+
+mail:
+  help: |
+    <newline><gold><bold>===== Помощь по почтовой системе =====</bold></gold>
+    <yellow>/mail read [страница]</yellow> <gray>- Прочитать входящие письма</gray>
+    <yellow>/mail send <игрок> <сообщение></yellow> <gray>- Отправить письмо игроку</gray>
+    <yellow>/mail clear [номер]</yellow> <gray>- Удалить определенное письмо</gray>
+    <yellow>/mail clearall</yellow> <gray>- Очистить весь почтовый ящик</gray>
+    <yellow>/mail sendall <сообщение></yellow> <gray>- Отправить рассылку всем игрокам</gray>
+    <yellow>/mail sendtempall <длительность> <сообщение></yellow> <gray>- Отправить временную рассылку</gray><newline>
+  read_header: "<gold>===== Почтовый ящик (Стр. <yellow><page></yellow>/<yellow><total></yellow> - <yellow><count></yellow> писем) =====</gold>"
+  read_entry: "<gold>[<index>]</gold> <type><yellow><sender></yellow> <gray>(<date>):</gray> <white><message></white>"
+  read_footer: "<gold>====================================</gold>"
+  empty_inbox: "<prefix><yellow>Ваш почтовый ящик пуст.</yellow>"
+  sent_success: "<prefix><green>Письмо успешно отправлено игроку <white><target></white>!</green>"
+  sendall_success: "<prefix><green>Рассылка успешно отправлена всем игрокам!</green>"
+  sendtempall_success: "<prefix><green>Временная рассылка отправлена всем игрокам (истекает через <white><duration></white>)!</green>"
+  cleared_single: "<prefix><green>Письмо #<index> успешно удалено.</green>"
+  cleared_all: "<prefix><green>Все письма в вашем почтовом ящике удалены.</green>"
+  cleared_target_single: "<prefix><green>Удалено письмо #<index> у игрока <white><target></white>.</green>"
+  cleared_target_all: "<prefix><green>Очищены все письма у игрока <white><target></white>.</green>"
+  invalid_index: "<prefix><red>Неверный номер письма: <white><index></white>.</red>"
+  invalid_duration: "<prefix><red>Неверный формат времени '<white><duration></white>'. Пример: 30m, 2h, 7d.</red>"
+  usage_send: "<prefix><red>Использование: /mail send <игрок> <сообщение></red>"
+  usage_sendall: "<prefix><red>Использование: /mail sendall <сообщение></red>"
+  usage_sendtempall: "<prefix><red>Использование: /mail sendtempall <длительность> <сообщение></red>"
+  usage_clear: "<prefix><red>Использование: /mail clear [номер] или /mail clear <игрок> [номер]</red>"
+  unread_join_notice: "<prefix><gold>[✉] У вас <yellow><bold><count></bold></yellow> непрочитанных писем! Нажмите <click:run_command:'/mail read'><hover:show_text:'<gray>Нажмите для чтения</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click>, чтобы открыть их.</gold>"
+  received_notification: "<prefix><gold>[✉] Вы получили новое письмо от <white><sender></white>! Нажмите <click:run_command:'/mail read'><hover:show_text:'<gray>Нажмите для чтения</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click>, чтобы прочитать.</gold>"
+  received_broadcast_notification: "<prefix><gold>[✉] Новое системное объявление от <white><sender></white>! Нажмите <click:run_command:'/mail read'><hover:show_text:'<gray>Нажмите для чтения</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click>, чтобы прочитать.</gold>"
+
+joindialog:
+  btn_close: "<red>Закрыть</red>"
+  btn_dont_remind: "<gold>Больше не напоминать</gold>"
+  dont_remind_ack: "<prefix><green>Напоминания об этом обновлении отключены.</green>"
+

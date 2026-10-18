@@ -79,6 +79,10 @@ public class UserSettingsManager {
             settings.addFollowing(f);
         }
 
+        settings.setLastChangelogShownTime(config.getLong("misc.lastChangelogShownTime", 0L));
+        settings.setLastDismissedUpdateId(config.getString("misc.lastDismissedUpdateId", ""));
+        settings.setFirstJoinTipsShown(config.getBoolean("misc.firstJoinTipsShown", false));
+
         return settings;
     }
 
@@ -120,6 +124,10 @@ public class UserSettingsManager {
         config.set("payList", settings.getPayList());
         config.set("friendsList", settings.getFriendsList());
         config.set("followingList", settings.getFollowingList());
+
+        config.set("misc.lastChangelogShownTime", settings.getLastChangelogShownTime());
+        config.set("misc.lastDismissedUpdateId", settings.getLastDismissedUpdateId());
+        config.set("misc.firstJoinTipsShown", settings.isFirstJoinTipsShown());
 
         try {
             config.save(file);

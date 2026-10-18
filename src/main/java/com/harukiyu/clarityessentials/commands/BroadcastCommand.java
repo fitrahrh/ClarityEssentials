@@ -58,7 +58,8 @@ public class BroadcastCommand implements BasicCommand {
             parsedContent = Component.text(rawContent);
         }
 
-        String format = LanguageHook.getRawString("broadcast.format", null);
+        String langCode = (sender instanceof Player player) ? LanguageHook.getEffectiveLanguageCode(player) : "en_US";
+        String format = LanguageHook.getRawString("broadcast.format", langCode);
         if (format == null || format.isBlank()) {
             format = "<newline><gold><bold>[BROADCAST]</bold></gold> <yellow><message></yellow><newline>";
         }

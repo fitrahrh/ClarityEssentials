@@ -345,3 +345,48 @@ speed:
   reset_all_target: "<prefix><green>已将 <white><target></white> 的飞行和步行速度重置为默认值。</green>"
   reset_all_target_notify: "<prefix><green>你的飞行和步行速度已被 <white><sender></white> 重置为默认值。</green>"
   no_permission_others: "<prefix><red>你没有权限修改其他玩家的速度。</red>"
+
+spawn:
+  set_default: "<prefix><green>已成功将默认出生点设置为当前位置。</green>"
+  set_firstjoin: "<prefix><green>已成功将首次加入出生点设置为当前位置。</green>"
+  teleported_self: "<prefix><green>正在传送至出生点...</green>"
+  teleported_target: "<prefix><green>已将 <white><target></white> 传送至出生点。</green>"
+  target_teleported: "<prefix><green>你已被 <white><sender></white> 传送至出生点。</green>"
+  no_permission_others: "<prefix><red>你没有将其他玩家传送至出生点的权限。</red>"
+  usage_console: "<prefix><red>控制台用法: /spawn <玩家></red>"
+
+mail:
+  help: |
+    <newline><gold><bold>===== 邮件系统帮助 =====</bold></gold>
+    <yellow>/mail read [页码]</yellow> <gray>- 阅读收件箱邮件</gray>
+    <yellow>/mail send <玩家> <内容></yellow> <gray>- 向玩家发送邮件</gray>
+    <yellow>/mail clear [序号]</yellow> <gray>- 删除指定序号的邮件</gray>
+    <yellow>/mail clearall</yellow> <gray>- 清空收件箱中的全部邮件</gray>
+    <yellow>/mail sendall <内容></yellow> <gray>- 向全服玩家发送公告邮件</gray>
+    <yellow>/mail sendtempall <时长> <内容></yellow> <gray>- 发送限时公告邮件</gray><newline>
+  read_header: "<gold>===== 收件箱 (第 <yellow><page></yellow>/<yellow><total></yellow> 页 - 共 <yellow><count></yellow> 封邮件) =====</gold>"
+  read_entry: "<gold>[<index>]</gold> <type><yellow><sender></yellow> <gray>(<date>):</gray> <white><message></white>"
+  read_footer: "<gold>====================================</gold>"
+  empty_inbox: "<prefix><yellow>你的收件箱当前为空。</yellow>"
+  sent_success: "<prefix><green>已成功向 <white><target></white> 发送邮件！</green>"
+  sendall_success: "<prefix><green>已成功向所有玩家发送全服公告邮件！</green>"
+  sendtempall_success: "<prefix><green>全服限时邮件发送成功 (有效期: <white><duration></white>)！</green>"
+  cleared_single: "<prefix><green>已成功清除邮件 #<index>。</green>"
+  cleared_all: "<prefix><green>已清空收件箱中的所有邮件。</green>"
+  cleared_target_single: "<prefix><green>已清除玩家 <white><target></white> 的邮件 #<index>。</green>"
+  cleared_target_all: "<prefix><green>已清空玩家 <white><target></white> 的所有邮件。</green>"
+  invalid_index: "<prefix><red>无效的邮件序号: <white><index></white>。</red>"
+  invalid_duration: "<prefix><red>时间格式无效 '<white><duration></white>'。示例: 30m, 2h, 7d。</red>"
+  usage_send: "<prefix><red>用法: /mail send <玩家> <内容></red>"
+  usage_sendall: "<prefix><red>用法: /mail sendall <内容></red>"
+  usage_sendtempall: "<prefix><red>用法: /mail sendtempall <时长> <内容></red>"
+  usage_clear: "<prefix><red>用法: /mail clear [序号] 或 /mail clear <玩家> [序号]</red>"
+  unread_join_notice: "<prefix><gold>[✉] 你有 <yellow><bold><count></bold></yellow> 封未读邮件！点击 <click:run_command:'/mail read'><hover:show_text:'<gray>点击阅读邮件</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> 查收。</gold>"
+  received_notification: "<prefix><gold>[✉] 收到来自 <white><sender></white> 的新邮件！点击 <click:run_command:'/mail read'><hover:show_text:'<gray>点击阅读邮件</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> 查收。</gold>"
+  received_broadcast_notification: "<prefix><gold>[✉] 收到来自 <white><sender></white> 的新全服公告！点击 <click:run_command:'/mail read'><hover:show_text:'<gray>点击阅读邮件</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> 查收。</gold>"
+
+joindialog:
+  btn_close: "<red>关闭</red>"
+  btn_dont_remind: "<gold>不再提醒</gold>"
+  dont_remind_ack: "<prefix><green>你将不再收到关于此版本更新的提醒。</green>"
+

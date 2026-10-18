@@ -281,4 +281,33 @@ public class UserSettings {
     public void setSocialSpy(boolean socialSpy) {
         this.socialSpy = socialSpy;
     }
+
+    // Join Dialog & Changelog Tracking
+    private long lastChangelogShownTime = 0L;
+    private String lastDismissedUpdateId = "";
+    private boolean firstJoinTipsShown = false;
+
+    public long getLastChangelogShownTime() {
+        return lastChangelogShownTime;
+    }
+
+    public void setLastChangelogShownTime(long lastChangelogShownTime) {
+        this.lastChangelogShownTime = lastChangelogShownTime;
+    }
+
+    public String getLastDismissedUpdateId() {
+        return lastDismissedUpdateId != null ? lastDismissedUpdateId : "";
+    }
+
+    public void setLastDismissedUpdateId(String lastDismissedUpdateId) {
+        this.lastDismissedUpdateId = lastDismissedUpdateId;
+    }
+
+    public boolean isFirstJoinTipsShown() {
+        return firstJoinTipsShown;
+    }
+
+    public void setFirstJoinTipsShown(boolean firstJoinTipsShown) {
+        this.firstJoinTipsShown = firstJoinTipsShown;
+    }
 }

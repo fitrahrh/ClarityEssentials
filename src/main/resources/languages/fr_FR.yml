@@ -349,3 +349,48 @@ speed:
   reset_all_target: "<prefix><green>Les vitesses de vol et de marche de <white><target></white> ont été réinitialisées par défaut.</green>"
   reset_all_target_notify: "<prefix><green>Vos vitesses de vol et de marche ont été réinitialisées par défaut par <white><sender></white>.</green>"
   no_permission_others: "<prefix><red>Vous n'avez pas la permission de modifier la vitesse des autres joueurs.</red>"
+
+spawn:
+  set_default: "<prefix><green>Le point d'apparition par défaut a été défini à votre position actuelle.</green>"
+  set_firstjoin: "<prefix><green>Le point d'apparition pour les nouveaux joueurs a été défini à votre position.</green>"
+  teleported_self: "<prefix><green>Téléportation au point d'apparition...</green>"
+  teleported_target: "<prefix><green><white><target></white> a été téléporté au point d'apparition.</green>"
+  target_teleported: "<prefix><green>Vous avez été téléporté au point d'apparition par <white><sender></white>.</green>"
+  no_permission_others: "<prefix><red>Vous n'avez pas la permission de téléporter d'autres joueurs au point d'apparition.</red>"
+  usage_console: "<prefix><red>Utilisation depuis la console: /spawn <joueur></red>"
+
+mail:
+  help: |
+    <newline><gold><bold>===== Aide Système de Messagerie =====</bold></gold>
+    <yellow>/mail read [page]</yellow> <gray>- Lire vos messages</gray>
+    <yellow>/mail send <joueur> <message></yellow> <gray>- Envoyer un message à un joueur</gray>
+    <yellow>/mail clear [numéro]</yellow> <gray>- Supprimer un message spécifique</gray>
+    <yellow>/mail clearall</yellow> <gray>- Supprimer tous les messages de votre boîte</gray>
+    <yellow>/mail sendall <message></yellow> <gray>- Diffuser un message à tous les joueurs</gray>
+    <yellow>/mail sendtempall <durée> <message></yellow> <gray>- Diffuser un message temporaire</gray><newline>
+  read_header: "<gold>===== Boîte aux lettres (Page <yellow><page></yellow>/<yellow><total></yellow> - <yellow><count></yellow> Messages) =====</gold>"
+  read_entry: "<gold>[<index>]</gold> <type><yellow><sender></yellow> <gray>(<date>):</gray> <white><message></white>"
+  read_footer: "<gold>====================================</gold>"
+  empty_inbox: "<prefix><yellow>Votre boîte aux lettres est actuellement vide.</yellow>"
+  sent_success: "<prefix><green>Message envoyé avec succès à <white><target></white> !</green>"
+  sendall_success: "<prefix><green>Message général diffusé avec succès à tous les joueurs !</green>"
+  sendtempall_success: "<prefix><green>Message temporaire envoyé à tous les joueurs (expire dans <white><duration></white>) !</green>"
+  cleared_single: "<prefix><green>Message #<index> supprimé avec succès.</green>"
+  cleared_all: "<prefix><green>Tous les messages de votre boîte aux lettres ont été supprimés.</green>"
+  cleared_target_single: "<prefix><green>Message #<index> de <white><target></white> supprimé.</green>"
+  cleared_target_all: "<prefix><green>Tous les messages de <white><target></white> ont été supprimés.</green>"
+  invalid_index: "<prefix><red>Numéro de message invalide: <white><index></white>.</red>"
+  invalid_duration: "<prefix><red>Format de durée invalide '<white><duration></white>'. Exemple: 30m, 2h, 7d.</red>"
+  usage_send: "<prefix><red>Utilisation: /mail send <joueur> <message></red>"
+  usage_sendall: "<prefix><red>Utilisation: /mail sendall <message></red>"
+  usage_sendtempall: "<prefix><red>Utilisation: /mail sendtempall <durée> <message></red>"
+  usage_clear: "<prefix><red>Utilisation: /mail clear [numéro] ou /mail clear <joueur> [numéro]</red>"
+  unread_join_notice: "<prefix><gold>[✉] Vous avez <yellow><bold><count></bold></yellow> message(s) non lu(s) ! Cliquez sur <click:run_command:'/mail read'><hover:show_text:'<gray>Cliquez pour lire</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> pour les lire.</gold>"
+  received_notification: "<prefix><gold>[✉] Nouveau message reçu de <white><sender></white> ! Cliquez sur <click:run_command:'/mail read'><hover:show_text:'<gray>Cliquez pour lire</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> pour le lire.</gold>"
+  received_broadcast_notification: "<prefix><gold>[✉] Nouvelle annonce générale reçue de <white><sender></white> ! Cliquez sur <click:run_command:'/mail read'><hover:show_text:'<gray>Cliquez pour lire</gray>'><aqua><underlined>/mail read</underlined></aqua></hover></click> pour la lire.</gold>"
+
+joindialog:
+  btn_close: "<red>Fermer</red>"
+  btn_dont_remind: "<gold>Ne plus rappeler</gold>"
+  dont_remind_ack: "<prefix><green>Vous ne recevrez plus de rappels pour cette mise à jour.</green>"
+
